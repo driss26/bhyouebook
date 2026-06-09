@@ -80,9 +80,41 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
           <div className="preview-grid">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <span className="badge badge-primary">Premium Digital Cookbook</span>
-              <h1 style={{ fontSize: '42px', letterSpacing: '-0.02em', marginBottom: '16px' }}>
+              <h1 style={{ fontSize: '42px', letterSpacing: '-0.02em', marginBottom: '8px' }}>
                 {seoConfig?.ogTitle || 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories'}
               </h1>
+
+              {/* Shopify-style Review rating */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-muted-dark)', marginBottom: '8px' }}>
+                <div style={{ color: '#fbbf24', display: 'flex', gap: '2px' }}>
+                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                </div>
+                <span style={{ fontWeight: 600, color: 'var(--text-dark)' }}>4.9/5.0</span>
+                <span>(142 verified reviews)</span>
+              </div>
+
+              {/* Shopify-style Price block */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '8px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)', padding: '12px 0' }}>
+                <span style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-dark)' }}>$11.99</span>
+                <span style={{ fontSize: '18px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$24.99</span>
+                <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 700 }}>SAVE 52%</span>
+              </div>
+
+              {/* Shopify-style Format selector */}
+              <div style={{ margin: '8px 0 16px 0' }}>
+                <span style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted-dark)', display: 'block', marginBottom: '8px' }}>Format</span>
+                <div style={{ border: '2px solid var(--primary)', backgroundColor: 'var(--primary-glow)', padding: '10px 16px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '12px', cursor: 'default' }}>
+                  <BookOpen size={18} style={{ color: 'var(--primary)' }} />
+                  <div>
+                    <strong style={{ fontSize: '14px', display: 'block', color: 'var(--text-dark)' }}>Digital PDF</strong>
+                    <span style={{ fontSize: '12px', color: 'var(--text-muted-dark)' }}>Instant email delivery</span>
+                  </div>
+                </div>
+              </div>
 
               {/* Mobile-only eBook cover mockup */}
               <div className="mobile-only-mockup">

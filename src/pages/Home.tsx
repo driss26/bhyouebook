@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Sparkles, Flame, CheckCircle, ArrowRight, ShieldCheck, Heart } from 'lucide-react';
+import { BookOpen, Sparkles, Flame, CheckCircle, ArrowRight, ShieldCheck, Heart, Star } from 'lucide-react';
 import { firePageView, firePixel, db } from '../db';
 import type { PageSeo } from '../db';
 
@@ -45,11 +45,25 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-content">
-            <span className="badge badge-primary" style={{ marginBottom: '20px' }}>
+            <span className="badge badge-primary" style={{ marginBottom: '16px' }}>
               <Sparkles size={12} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
               Fresh Nutrition Launch
             </span>
-            <h1 className="hero-title">
+
+            {/* Shopify-style Review rating */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-muted-dark)', marginBottom: '16px' }}>
+              <div style={{ color: '#fbbf24', display: 'flex', gap: '2px' }}>
+                <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                <Star size={16} fill="#fbbf24" color="#fbbf24" />
+              </div>
+              <span style={{ fontWeight: 600, color: 'var(--text-dark)' }}>4.9/5.0</span>
+              <span>(142 verified reviews)</span>
+            </div>
+
+            <h1 className="hero-title" style={{ marginBottom: '16px' }}>
               {seoConfig?.ogTitle ? (
                 <>
                   {seoConfig.ogTitle.includes(':') ? (
@@ -66,6 +80,13 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                 </>
               )}
             </h1>
+
+            {/* Shopify-style Price block */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', margin: '8px 0 24px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)', padding: '10px 0', width: '100%', maxWidth: '340px' }}>
+              <span style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>$11.99</span>
+              <span style={{ fontSize: '16px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$24.99</span>
+              <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '3px 6px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>SAVE 52%</span>
+            </div>
 
             {/* Mobile-only eBook cover mockup */}
             <div className="mobile-only-mockup">

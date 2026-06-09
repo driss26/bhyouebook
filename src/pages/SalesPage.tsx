@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { ShieldCheck, Flame, BookOpen, Clock, Heart, Award, Star, Plus, Minus } from 'lucide-react';
-import { firePageView, firePixel } from '../db';
+import { firePageView, firePixel, db } from '../db';
+import type { PageSeo } from '../db';
 
 interface SalesPageProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
 }
 
 export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
+  const [seoConfig, setSeoConfig] = useState<PageSeo | null>(null);
+
   useEffect(() => {
     firePageView('/cookbook');
+    db.getSeoConfigs().then(configs => {
+      const salesConfig = configs.find(c => c.pageId === 'sales');
+      if (salesConfig) {
+        setSeoConfig(salesConfig);
+        if (salesConfig.seoTitle) {
+          document.title = salesConfig.seoTitle;
+        }
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc && salesConfig.metaDescription) {
+          metaDesc.setAttribute('content', salesConfig.metaDescription);
+        }
+      }
+    }).catch(err => {
+      console.error("Error loading sales page SEO config:", err);
+    });
   }, []);
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -63,11 +81,11 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <span className="badge badge-primary">Premium Digital Cookbook</span>
               <h1 style={{ fontSize: '42px', letterSpacing: '-0.02em', marginBottom: '16px' }}>
-                High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories
+                {seoConfig?.ogTitle || 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories'}
               </h1>
               <div style={{ color: 'var(--text-muted-dark)', fontSize: '16px', lineHeight: 1.7, display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <p>
-                  <strong>"High-Protein Recipes Under 400 Calories"</strong> is a premium digital recipe ebook featuring 50+ delicious, beginner-friendly meals designed for fat loss, muscle support, and everyday healthy eating.
+                  <strong>"{seoConfig?.ogTitle ? seoConfig.ogTitle.split(':')[0] : 'High-Protein Recipes Under 400 Calories'}"</strong> is a premium digital recipe ebook featuring 50+ delicious, beginner-friendly meals designed for fat loss, muscle support, and everyday healthy eating.
                 </p>
                 <p>
                   Every recipe is under 400 calories and high in protein — including 10 breakfast recipes, 15 protein desserts, 10 chicken meals, 10 lunch and dinner recipes, and 5 protein smoothies. The ebook also includes a full 7-Day Meal Plan, a Protein Sources Guide, a Grocery Shopping List, Kitchen Essentials guide, and a High-Protein Food Cheat Sheet.

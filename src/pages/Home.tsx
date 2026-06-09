@@ -1,15 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Sparkles, Flame, CheckCircle, ArrowRight, ShieldCheck } from 'lucide-react';
-import { firePageView, firePixel } from '../db';
+import { BookOpen, Sparkles, Flame, CheckCircle, ArrowRight, ShieldCheck, Heart } from 'lucide-react';
+import { firePageView, firePixel, db } from '../db';
+import type { PageSeo } from '../db';
 
 interface HomeProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ onToast }) => {
+  const [seoConfig, setSeoConfig] = useState<PageSeo | null>(null);
+
   useEffect(() => {
     firePageView('/');
+    db.getSeoConfigs().then(configs => {
+      const homeConfig = configs.find(c => c.pageId === 'home');
+      if (homeConfig) {
+        setSeoConfig(homeConfig);
+        if (homeConfig.seoTitle) {
+          document.title = homeConfig.seoTitle;
+        }
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc && homeConfig.metaDescription) {
+          metaDesc.setAttribute('content', homeConfig.metaDescription);
+        }
+      }
+    }).catch(err => {
+      console.error("Error loading home page SEO config:", err);
+    });
   }, []);
 
   const handleBuyClick = () => {
@@ -32,7 +50,21 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
               Fresh Nutrition Launch
             </span>
             <h1 className="hero-title">
-              High-Protein Recipes: <span>50 Guilt-Free Healthy Recipes Under 400 Calories</span>
+              {seoConfig?.ogTitle ? (
+                <>
+                  {seoConfig.ogTitle.includes(':') ? (
+                    <>
+                      {seoConfig.ogTitle.split(':')[0]}: <span>{seoConfig.ogTitle.split(':').slice(1).join(':')}</span>
+                    </>
+                  ) : (
+                    <span>{seoConfig.ogTitle}</span>
+                  )}
+                </>
+              ) : (
+                <>
+                  High-Protein Recipes: <span>50 Guilt-Free Healthy Recipes Under 400 Calories</span>
+                </>
+              )}
             </h1>
 
             {/* Mobile-only eBook cover mockup */}
@@ -52,21 +84,33 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
             </div>
 
             <p className="hero-subheadline">
-              Ditch the bland food. Build muscle, lose weight, and satisfy your sweet tooth with 50 macro-friendly, mouth-watering recipes.
+              {seoConfig?.ogDescription || seoConfig?.metaDescription || `"High-Protein Recipes Under 400 Calories" is a premium digital recipe ebook featuring 50+ delicious, beginner-friendly meals designed for fat loss, muscle support, and everyday healthy eating.`}
             </p>
             
             <div className="hero-bullet-list">
               <div className="hero-bullet">
                 <Flame size={16} />
-                <span>15 Guilt-Free Desserts</span>
+                <span>Section 1: Breakfasts — 10 Recipes</span>
+              </div>
+              <div className="hero-bullet">
+                <Sparkles size={16} />
+                <span>Section 2: Healthy Desserts — 15 Recipes</span>
+              </div>
+              <div className="hero-bullet">
+                <Flame size={16} />
+                <span>Section 3: Chicken Meals — 10 Recipes</span>
               </div>
               <div className="hero-bullet">
                 <BookOpen size={16} />
-                <span>10 Juicy Chicken Meals</span>
+                <span>Section 4: Lunch & Dinner — 10 Recipes</span>
+              </div>
+              <div className="hero-bullet">
+                <Heart size={16} />
+                <span>Section 5: Smoothies & Drinks — 5 Recipes</span>
               </div>
               <div className="hero-bullet">
                 <CheckCircle size={16} />
-                <span>7-Day Weight Loss Meal Plan</span>
+                <span>Section 6: 7-Day Structured Meal Plan</span>
               </div>
             </div>
 

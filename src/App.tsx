@@ -186,10 +186,6 @@ function App() {
 
             {/* CTA buttons */}
             <div className="nav-cta">
-              <Link to="/admin" className="btn btn-dark btn-sm nav-link" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Lock size={13} />
-                Admin Panel
-              </Link>
               <button 
                 className="mobile-menu-toggle" 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

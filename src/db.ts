@@ -316,8 +316,9 @@ export const db = {
       const { error } = await supabase
         .from('posts')
         .upsert(post);
-      if (!error) return;
-      console.warn("Supabase savePost error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase savePost error, falling back to localStorage:", error);
+      }
     }
 
     const posts: BlogPost[] = JSON.parse(localStorage.getItem(KEYS.POSTS) || '[]');
@@ -336,8 +337,9 @@ export const db = {
         .from('posts')
         .delete()
         .eq('id', id);
-      if (!error) return;
-      console.warn("Supabase deletePost error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase deletePost error, falling back to localStorage:", error);
+      }
     }
     const posts: BlogPost[] = JSON.parse(localStorage.getItem(KEYS.POSTS) || '[]');
     const filtered = posts.filter(p => p.id !== id);
@@ -379,8 +381,9 @@ export const db = {
       const { error } = await supabase
         .from('seo_configs')
         .upsert(config);
-      if (!error) return;
-      console.warn("Supabase saveSeoConfig error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase saveSeoConfig error, falling back to localStorage:", error);
+      }
     }
 
     const configs: PageSeo[] = JSON.parse(localStorage.getItem(KEYS.SEO) || '[]');
@@ -418,11 +421,9 @@ export const db = {
       const { error } = await supabase
         .from('tracking_settings')
         .upsert({ id: 1, ...settings });
-      if (!error) {
-        cachedTrackingSettings = settings;
-        return;
+      if (error) {
+        console.warn("Supabase saveTrackingSettings error, falling back to localStorage:", error);
       }
-      console.warn("Supabase saveTrackingSettings error, falling back to localStorage:", error);
     }
     cachedTrackingSettings = settings;
     localStorage.setItem(KEYS.TRACKING, JSON.stringify(settings));
@@ -448,8 +449,9 @@ export const db = {
       const { error } = await supabase
         .from('robots_config')
         .upsert({ id: 1, content });
-      if (!error) return;
-      console.warn("Supabase saveRobotsTxt error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase saveRobotsTxt error, falling back to localStorage:", error);
+      }
     }
     localStorage.setItem(KEYS.ROBOTS, content);
   },
@@ -479,8 +481,9 @@ export const db = {
       const { error } = await supabase
         .from('leads')
         .insert(newLead);
-      if (!error) return;
-      console.warn("Supabase saveLead error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase saveLead error, falling back to localStorage:", error);
+      }
     }
     const leads = JSON.parse(localStorage.getItem(KEYS.LEADS) || '[]');
     leads.unshift(newLead);
@@ -514,8 +517,9 @@ export const db = {
       const { error } = await supabase
         .from('messages')
         .insert(newMessage);
-      if (!error) return;
-      console.warn("Supabase saveMessage error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase saveMessage error, falling back to localStorage:", error);
+      }
     }
     const messages: ContactMessage[] = JSON.parse(localStorage.getItem(KEYS.MESSAGES) || '[]');
     messages.unshift(newMessage);
@@ -549,8 +553,9 @@ export const db = {
       const { error } = await supabase
         .from('announcement_settings')
         .upsert({ id: 1, ...settings });
-      if (!error) return;
-      console.warn("Supabase saveAnnouncementSettings error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase saveAnnouncementSettings error, falling back to localStorage:", error);
+      }
     }
     localStorage.setItem(KEYS.ANNOUNCEMENT, JSON.stringify(settings));
   },
@@ -574,8 +579,9 @@ export const db = {
       const { error } = await supabase
         .from('media_gallery')
         .insert(item);
-      if (!error) return;
-      console.warn("Supabase saveMediaItem error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase saveMediaItem error, falling back to localStorage:", error);
+      }
     }
     const media: MediaItem[] = JSON.parse(localStorage.getItem(KEYS.MEDIA) || '[]');
     media.unshift(item);
@@ -588,8 +594,9 @@ export const db = {
         .from('media_gallery')
         .delete()
         .eq('id', id);
-      if (!error) return;
-      console.warn("Supabase deleteMediaItem error, falling back to localStorage:", error);
+      if (error) {
+        console.warn("Supabase deleteMediaItem error, falling back to localStorage:", error);
+      }
     }
     const media: MediaItem[] = JSON.parse(localStorage.getItem(KEYS.MEDIA) || '[]');
     const filtered = media.filter(m => m.id !== id);

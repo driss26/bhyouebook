@@ -2169,7 +2169,8 @@ input:checked + .slider-round:before {
     margin: 32px auto;
   }
   
-  .hero-grid .mockup-container {
+  .hero-grid .mockup-container,
+  .preview-grid .mockup-container {
     display: none !important;
   }
 }

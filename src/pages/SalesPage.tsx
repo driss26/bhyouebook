@@ -83,6 +83,19 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
               <h1 style={{ fontSize: '42px', letterSpacing: '-0.02em', marginBottom: '16px' }}>
                 {seoConfig?.ogTitle || 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories'}
               </h1>
+
+              {/* Mobile-only eBook cover mockup */}
+              <div className="mobile-only-mockup">
+                <div className="ebook-mockup">
+                  <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook Cover" className="ebook-cover-img" />
+                  <div className="ebook-spine"></div>
+                  <div className="mockup-badge">
+                    ONLY
+                    <span>$11.99</span>
+                  </div>
+                </div>
+              </div>
+
               <div style={{ color: 'var(--text-muted-dark)', fontSize: '16px', lineHeight: 1.7, display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <p>
                   <strong>"{seoConfig?.ogTitle ? seoConfig.ogTitle.split(':')[0] : 'High-Protein Recipes Under 400 Calories'}"</strong> is a premium digital recipe ebook featuring 50+ delicious, beginner-friendly meals designed for fat loss, muscle support, and everyday healthy eating.
@@ -150,7 +163,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className="mockup-container">
               <div className="ebook-mockup" style={{ width: '300px', height: '420px' }}>
                 <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook" className="ebook-cover-img" />
                 <div className="ebook-spine"></div>

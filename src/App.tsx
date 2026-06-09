@@ -256,15 +256,6 @@ function App() {
                 </ul>
               </div>
 
-              {/* Navigation Col */}
-              <div className="footer-column">
-                <h4>Company</h4>
-                <ul className="footer-links">
-                  <li><Link to="/admin" className="footer-link">SEO Admin Login</Link></li>
-                  <li><Link to="/cookbook" className="footer-link">Meal Prep Guide</Link></li>
-                </ul>
-              </div>
-
               {/* Newsletter Col */}
               <div className="footer-newsletter">
                 <h4>Weekly Free Recipes</h4>
@@ -294,7 +285,6 @@ function App() {
                   <Shield size={12} /> Privacy Policy
                 </a>
                 <a href="#/cookbook">Terms of Service</a>
-                <a href="#/admin">Affiliate Terms</a>
               </div>
             </div>
 

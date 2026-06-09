@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ShieldCheck, Flame, BookOpen, Clock, Heart, Award, Star, Plus, Minus } from 'lucide-react';
+import { Flame, BookOpen, Clock, Heart, Award, Star, Plus, Minus } from 'lucide-react';
 import { firePageView, firePixel, db } from '../db';
 import type { PageSeo } from '../db';
 
@@ -397,25 +397,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
         </div>
       </section>
 
-      {/* Money-Back Guarantee Section */}
-      <section className="section-padding">
-        <div className="container">
-          <div className="guarantee-box">
-            <div className="guarantee-badge-container">
-              <ShieldCheck className="guarantee-svg" />
-            </div>
-            <div className="guarantee-content">
-              <h3>30-Day Money-Back Guarantee</h3>
-              <p>
-                We are so confident that you will love the BHYou recipes and get real results that we offer a full, no-questions-asked refund policy. Purchase the ebook, cook the recipes for a month, and if you are not fully satisfied, simply email our support and get 100% of your money back immediately. No risk. Just delicious food.
-              </p>
-              <button onClick={handleBuyClick} className="btn btn-primary">
-                Buy With Confidence ($11.99)
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* FAQ Section */}
       <section className="section-padding" style={{ backgroundColor: 'var(--light-surface)' }}>

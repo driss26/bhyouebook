@@ -45,7 +45,7 @@ export const BlogPost: React.FC<BlogPostProps> = ({ onToast }) => {
 
     return () => {
       // Reset title to default when leaving
-      document.title = 'BHYou | 50 High-Protein Recipes Under 400 Calories';
+      document.title = '50 High-Protein Recipes Under 400 Calories';
     };
   }, [slug]);
 

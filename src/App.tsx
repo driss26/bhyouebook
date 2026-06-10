@@ -162,7 +162,7 @@ function App() {
           <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             {/* Logo */}
             <Link to="/" className="nav-logo" onClick={() => setMobileMenuOpen(false)}>
-              BHYou<span className="nav-logo-dot">.</span>
+              <img src="https://i.ibb.co/zVRtqFyS/BHYou-Healthful-Protein-Logo-removebg-preview.png" alt="BHYou Logo" className="nav-logo-img" />
             </Link>
 
             {/* Desktop Menu links */}
@@ -229,7 +229,9 @@ function App() {
               
               {/* Brand Col */}
               <div className="footer-brand">
-                <h3>BHYou<span style={{ color: 'var(--primary)' }}>.</span></h3>
+                <Link to="/" className="footer-logo-link" style={{ display: 'inline-block' }}>
+                  <img src="https://i.ibb.co/zVRtqFyS/BHYou-Healthful-Protein-Logo-removebg-preview.png" alt="BHYou Logo" className="footer-logo-img" />
+                </Link>
                 <p>
                   Helping busy fitness enthusiasts fuel their muscles, burn stubborn fat, and live happily with premium, low-calorie gourmet recipes.
                 </p>

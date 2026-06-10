@@ -177,13 +177,13 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
   {
     pageId: 'home',
     pageName: 'Home Page',
-    seoTitle: 'BHYou | 50 High-Protein Recipes Under 400 Calories',
+    seoTitle: '50 High-Protein Recipes Under 400 Calories',
     metaDescription: 'Boost your metabolism and burn fat with BHYou. Get 50 mouth-watering, high-protein recipes under 400 calories. Includes desserts and meal plans!',
     focusKeyword: 'high protein recipes',
     seoScore: 92,
     slug: '',
     canonicalUrl: 'https://bhyou.com',
-    ogTitle: 'BHYou | 50 High-Protein Recipes Under 400 Calories',
+    ogTitle: '50 High-Protein Recipes Under 400 Calories',
     ogDescription: 'Get 50 protein-packed, low-calorie recipes designed to burn fat and build muscle. Standard and free options available!',
     ogImage: 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'
   },
@@ -252,6 +252,24 @@ export const initDb = () => {
   }
   if (!localStorage.getItem(KEYS.SEO)) {
     localStorage.setItem(KEYS.SEO, JSON.stringify(DEFAULT_SEO_CONFIGS));
+  } else {
+    try {
+      const currentSeo = JSON.parse(localStorage.getItem(KEYS.SEO) || '[]');
+      let updated = false;
+      const newSeo = currentSeo.map((item: any) => {
+        if (item.pageId === 'home' && item.seoTitle.startsWith('BHYou | ')) {
+          item.seoTitle = '50 High-Protein Recipes Under 400 Calories';
+          item.ogTitle = '50 High-Protein Recipes Under 400 Calories';
+          updated = true;
+        }
+        return item;
+      });
+      if (updated) {
+        localStorage.setItem(KEYS.SEO, JSON.stringify(newSeo));
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
   if (!localStorage.getItem(KEYS.TRACKING)) {
     localStorage.setItem(KEYS.TRACKING, JSON.stringify(DEFAULT_TRACKING));

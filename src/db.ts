@@ -296,6 +296,28 @@ export const initDb = () => {
   }
 };
 
+export const checkAndFixSeoConfigs = async () => {
+  try {
+    const configs = await db.getSeoConfigs();
+    const homeConfig = configs.find(c => c.pageId === 'home');
+    const salesConfig = configs.find(c => c.pageId === 'sales');
+    
+    if (homeConfig && homeConfig.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
+      homeConfig.seoTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+      homeConfig.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+      await db.saveSeoConfig(homeConfig);
+    }
+    
+    if (salesConfig && salesConfig.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
+      salesConfig.seoTitle = 'High-Protein Recipes Cookbook - Get 50 Recipes for $11.99';
+      salesConfig.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+      await db.saveSeoConfig(salesConfig);
+    }
+  } catch (e) {
+    console.error("Failed to verify/fix SEO configs in database:", e);
+  }
+};
+
 export const db = {
   // Posts
   getPosts: async (): Promise<BlogPost[]> => {

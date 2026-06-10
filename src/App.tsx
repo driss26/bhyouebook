@@ -13,7 +13,7 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
 
-import { initDb, firePixel, db } from './db';
+import { initDb, checkAndFixSeoConfigs, firePixel, db } from './db';
 
 interface Toast {
   id: string;
@@ -25,6 +25,7 @@ function App() {
   // Initialize Mock DB
   useEffect(() => {
     initDb();
+    checkAndFixSeoConfigs();
   }, []);
 
   const [toasts, setToasts] = useState<Toast[]>([]);

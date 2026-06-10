@@ -10,6 +10,8 @@ import { SalesPage } from './pages/SalesPage';
 import { Blog } from './pages/Blog';
 import { BlogPost } from './pages/BlogPost';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { Privacy } from './pages/Privacy';
+import { Terms } from './pages/Terms';
 
 import { initDb, firePixel, db } from './db';
 
@@ -219,6 +221,8 @@ function App() {
             <Route path="/blog" element={<Blog onToast={showToast} />} />
             <Route path="/blog/:slug" element={<BlogPost onToast={showToast} />} />
             <Route path="/admin" element={<AdminDashboard onToast={showToast} />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
           </Routes>
         </main>
 
@@ -283,10 +287,10 @@ function App() {
                 © {new Date().getFullYear()} BHYou Nutrition. All rights reserved.
               </div>
               <div className="footer-bottom-links">
-                <a href="#/cookbook" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Link to="/privacy" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Shield size={12} /> Privacy Policy
-                </a>
-                <a href="#/cookbook">Terms of Service</a>
+                </Link>
+                <Link to="/terms">Terms of Service</Link>
               </div>
             </div>
 

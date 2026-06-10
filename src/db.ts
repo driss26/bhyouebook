@@ -190,13 +190,13 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
   {
     pageId: 'sales',
     pageName: 'Ebook Sales Page',
-    seoTitle: 'BHYou High-Protein Cookbook - Get 50 Recipes for $11.99',
+    seoTitle: 'High-Protein Recipes Cookbook - Get 50 Recipes for $11.99',
     metaDescription: 'Get your copy of 50 High-Protein Recipes Under 400 Calories. Fuel your muscles, lose fat, and satisfy sweet cravings. Money-back guarantee!',
     focusKeyword: 'under 400 calories',
     seoScore: 96,
     slug: 'cookbook',
     canonicalUrl: 'https://bhyou.com/cookbook',
-    ogTitle: 'BHYou Cookbook: 50 High-Protein Recipes Under 400 Calories',
+    ogTitle: 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories',
     ogDescription: 'Ready to burn fat without giving up desserts? Purchase our premium cookbook today for only $11.99!',
     ogImage: 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'
   }
@@ -259,6 +259,11 @@ export const initDb = () => {
       const newSeo = currentSeo.map((item: any) => {
         if (item.pageId === 'home' && item.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
           item.seoTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+          item.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+          updated = true;
+        }
+        if (item.pageId === 'sales' && item.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
+          item.seoTitle = 'High-Protein Recipes Cookbook - Get 50 Recipes for $11.99';
           item.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
           updated = true;
         }

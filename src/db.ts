@@ -384,6 +384,21 @@ export const checkAndFixSeoConfigs = async () => {
       await db.saveAnnouncementSettings(announcementSettings);
       window.dispatchEvent(new Event('announcement_updated'));
     }
+
+    // Verify and fix blog posts (seed new chicken recipes post if missing)
+    try {
+      const posts = await db.getPosts();
+      const hasChickenRecipes = posts.some(p => p.slug === 'high-protein-chicken-recipes');
+      if (!hasChickenRecipes) {
+        const chickenRecipesPost = DEFAULT_POSTS.find(p => p.slug === 'high-protein-chicken-recipes');
+        if (chickenRecipesPost) {
+          await db.savePost(chickenRecipesPost);
+          console.log("Seeded 'high-protein-chicken-recipes' into database!");
+        }
+      }
+    } catch (e) {
+      console.error("Failed to seed new blog post in database:", e);
+    }
   } catch (e) {
     console.error("Failed to verify/fix SEO/announcement configs in database:", e);
   }

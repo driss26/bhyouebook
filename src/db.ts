@@ -240,9 +240,9 @@ const KEYS = {
 const DEFAULT_ANNOUNCEMENT: AnnouncementSettings = {
   enabled: true,
   text: '🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — or unlock it FREE by installing our featured app. Click here to learn more →',
-  bgGradientStart: '#064e3b',
-  bgGradientEnd: '#10b981',
-  textColor: '#ecfdf5',
+  bgGradientStart: '#453416',
+  bgGradientEnd: '#c5a059',
+  textColor: '#fefcf0',
 };
 
 // Initialize DB helper
@@ -290,6 +290,18 @@ export const initDb = () => {
   }
   if (!localStorage.getItem(KEYS.ANNOUNCEMENT)) {
     localStorage.setItem(KEYS.ANNOUNCEMENT, JSON.stringify(DEFAULT_ANNOUNCEMENT));
+  } else {
+    try {
+      const currentAnn = JSON.parse(localStorage.getItem(KEYS.ANNOUNCEMENT) || '{}');
+      if (currentAnn.bgGradientStart === '#064e3b') {
+        currentAnn.bgGradientStart = '#453416';
+        currentAnn.bgGradientEnd = '#c5a059';
+        currentAnn.textColor = '#fefcf0';
+        localStorage.setItem(KEYS.ANNOUNCEMENT, JSON.stringify(currentAnn));
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
   if (!localStorage.getItem(KEYS.MEDIA)) {
     localStorage.setItem(KEYS.MEDIA, JSON.stringify([]));
@@ -313,8 +325,17 @@ export const checkAndFixSeoConfigs = async () => {
       salesConfig.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
       await db.saveSeoConfig(salesConfig);
     }
+
+    const announcementSettings = await db.getAnnouncementSettings();
+    if (announcementSettings && announcementSettings.bgGradientStart === '#064e3b') {
+      announcementSettings.bgGradientStart = '#453416';
+      announcementSettings.bgGradientEnd = '#c5a059';
+      announcementSettings.textColor = '#fefcf0';
+      await db.saveAnnouncementSettings(announcementSettings);
+      window.dispatchEvent(new Event('announcement_updated'));
+    }
   } catch (e) {
-    console.error("Failed to verify/fix SEO configs in database:", e);
+    console.error("Failed to verify/fix SEO/announcement configs in database:", e);
   }
 };
 

@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS "announcement_settings" (
 
 -- Seed announcement settings
 INSERT INTO "announcement_settings" ("id", "enabled", "text", "bgGradientStart", "bgGradientEnd", "textColor")
-VALUES (1, true, '🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — or unlock it FREE by installing our featured app. Click here to learn more →', '#064e3b', '#10b981', '#ecfdf5')
+VALUES (1, true, '🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — or unlock it FREE by installing our featured app. Click here to learn more →', '#453416', '#c5a059', '#fefcf0')
 ON CONFLICT ("id") DO NOTHING;
 
 -- 10. Media Gallery Table

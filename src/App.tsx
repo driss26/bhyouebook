@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, NavLink, useLocation } from 'react-router-dom';
 import { 
   Shield, Lock, Menu, X, Send, Bell, Smartphone
 } from 'lucide-react';
@@ -19,6 +19,16 @@ interface Toast {
   id: string;
   message: string;
   type: 'success' | 'error' | 'info';
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
 }
 
 function App() {
@@ -137,6 +147,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         
         {/* Sticky Announcement Bar */}

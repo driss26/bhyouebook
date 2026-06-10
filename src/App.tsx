@@ -37,6 +37,7 @@ function App() {
   const [announcementBgStart, setAnnouncementBgStart] = useState('#064e3b');
   const [announcementBgEnd, setAnnouncementBgEnd] = useState('#10b981');
   const [announcementTextColor, setAnnouncementTextColor] = useState('#ecfdf5');
+  const [footerEmail, setFooterEmail] = useState('');
 
   // Scroll detection for Navbar transparency
   useEffect(() => {
@@ -83,10 +84,19 @@ function App() {
     }, 4000);
   };
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    showToast('Subscribed to BHYou Newsletter!', 'success');
-    firePixel('Google Analytics 4', 'newsletter_optin');
+    if (!footerEmail) return;
+
+    try {
+      await db.saveLead(footerEmail, 'footer_newsletter');
+      showToast('Subscribed to BHYou Newsletter!', 'success');
+      firePixel('Google Analytics 4', 'newsletter_optin');
+      setFooterEmail('');
+    } catch (err) {
+      console.error("Error saving lead:", err);
+      showToast('Failed to subscribe. Please try again.', 'error');
+    }
   };
 
   const triggerAdBlueMedia = () => {
@@ -272,6 +282,8 @@ function App() {
                     type="email" 
                     placeholder="Enter email..." 
                     className="newsletter-input"
+                    value={footerEmail}
+                    onChange={(e) => setFooterEmail(e.target.value)}
                     required 
                   />
                   <button type="submit" className="btn btn-primary newsletter-btn">

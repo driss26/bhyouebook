@@ -177,13 +177,13 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
   {
     pageId: 'home',
     pageName: 'Home Page',
-    seoTitle: '50 High-Protein Recipes Under 400 Calories',
+    seoTitle: 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories',
     metaDescription: 'Boost your metabolism and burn fat with BHYou. Get 50 mouth-watering, high-protein recipes under 400 calories. Includes desserts and meal plans!',
     focusKeyword: 'high protein recipes',
     seoScore: 92,
     slug: '',
     canonicalUrl: 'https://bhyou.com',
-    ogTitle: '50 High-Protein Recipes Under 400 Calories',
+    ogTitle: 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories',
     ogDescription: 'Get 50 protein-packed, low-calorie recipes designed to burn fat and build muscle. Standard and free options available!',
     ogImage: 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'
   },
@@ -257,9 +257,9 @@ export const initDb = () => {
       const currentSeo = JSON.parse(localStorage.getItem(KEYS.SEO) || '[]');
       let updated = false;
       const newSeo = currentSeo.map((item: any) => {
-        if (item.pageId === 'home' && item.seoTitle.startsWith('BHYou | ')) {
-          item.seoTitle = '50 High-Protein Recipes Under 400 Calories';
-          item.ogTitle = '50 High-Protein Recipes Under 400 Calories';
+        if (item.pageId === 'home' && item.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
+          item.seoTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+          item.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
           updated = true;
         }
         return item;

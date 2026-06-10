@@ -191,7 +191,7 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
     pageId: 'sales',
     pageName: 'Ebook Sales Page',
     seoTitle: 'High-Protein Recipes Cookbook - Get 50 Recipes for $11.99',
-    metaDescription: 'Get your copy of 50 High-Protein Recipes Under 400 Calories. Fuel your muscles, lose fat, and satisfy sweet cravings. Money-back guarantee!',
+    metaDescription: 'Get your copy of 50 High-Protein Recipes Under 400 Calories. Fuel your muscles, lose fat, and satisfy sweet cravings. Start cooking healthy today!',
     focusKeyword: 'under 400 calories',
     seoScore: 96,
     slug: 'cookbook',
@@ -262,9 +262,10 @@ export const initDb = () => {
           item.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
           updated = true;
         }
-        if (item.pageId === 'sales' && item.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
+        if (item.pageId === 'sales' && (item.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories' || item.metaDescription.includes('Money-back guarantee!'))) {
           item.seoTitle = 'High-Protein Recipes Cookbook - Get 50 Recipes for $11.99';
           item.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+          item.metaDescription = 'Get your copy of 50 High-Protein Recipes Under 400 Calories. Fuel your muscles, lose fat, and satisfy sweet cravings. Start cooking healthy today!';
           updated = true;
         }
         return item;
@@ -320,9 +321,10 @@ export const checkAndFixSeoConfigs = async () => {
       await db.saveSeoConfig(homeConfig);
     }
     
-    if (salesConfig && salesConfig.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
+    if (salesConfig && (salesConfig.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories' || salesConfig.metaDescription.includes('Money-back guarantee!'))) {
       salesConfig.seoTitle = 'High-Protein Recipes Cookbook - Get 50 Recipes for $11.99';
       salesConfig.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+      salesConfig.metaDescription = 'Get your copy of 50 High-Protein Recipes Under 400 Calories. Fuel your muscles, lose fat, and satisfy sweet cravings. Start cooking healthy today!';
       await db.saveSeoConfig(salesConfig);
     }
 

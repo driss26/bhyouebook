@@ -29,7 +29,7 @@ export const Terms: React.FC = () => {
         <section>
           <h2 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '12px', fontFamily: 'var(--font-heading)' }}>2. Cookbook Purchases & Access</h2>
           <p>
-            All cookbook sales are final digital products. We provide a **30-day money-back guarantee** on our premium cookbook ($11.99) if you are unsatisfied with the recipes. Contact us within 30 days of purchase to request a refund.
+            All cookbook sales are final digital products. Due to the immediate download nature of these products, we do not offer refunds or exchanges once purchase or download is completed.
           </p>
         </section>
 

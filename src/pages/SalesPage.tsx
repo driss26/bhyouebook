@@ -67,8 +67,8 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
       a: "While this version features 10 chicken meals and other lean meat recipes, it also includes 15 healthy desserts, breakfast options, and snacks that are vegetarian-friendly. We plan to release a fully plant-based edition soon!"
     },
     {
-      q: "How does the money-back guarantee work?",
-      a: "If you try the recipes and don't love them, simply reply to your receipt email within 30 days of purchase, and we will issue a full, no-questions-asked refund immediately."
+      q: "How can I contact support?",
+      a: "If you have any questions, feedback, or issues downloading your cookbook, simply email us at support@bhyou.com and we will get back to you within 24 hours."
     }
   ];
 

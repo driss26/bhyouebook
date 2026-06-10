@@ -342,7 +342,7 @@ function App() {
                       </div>
                       <h3>Buy Cookbook</h3>
                       <div className="promo-option-price">$11.99</div>
-                      <p>Instant digital PDF access. Save time, cook delicious meals, and enjoy a risk-free 30-day guarantee.</p>
+                      <p>Instant digital PDF access. Save time, cook delicious meals, and start cooking healthy today.</p>
                     </div>
                     <a 
                       href="https://bhyou.gumroad.com/l/pzebkb" 

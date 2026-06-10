@@ -165,7 +165,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
         <div className="container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'center', gap: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: 'var(--text-muted-dark)' }}>
             <ShieldCheck size={20} className="text-primary" style={{ color: 'var(--primary)' }} />
-            <span>30-Day Money-Back Guarantee</span>
+            <span>100% Secure Checkout</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600, color: 'var(--text-muted-dark)' }}>
             <span>⭐ ⭐ ⭐ ⭐ ⭐</span>

@@ -51,7 +51,6 @@ export const Privacy: React.FC = () => {
           </p>
           <ul style={{ paddingLeft: '20px', margin: '12px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <li><strong>Gumroad:</strong> Facilitates our paid cookbook purchases. Your payment detail transaction information is handled securely by Gumroad under their own privacy protocols.</li>
-            <li><strong>AdBlueMedia (Content Locker):</strong> Powers our "Unlock Free" option. If you choose to unlock the cookbook for free, you may interact with third-party offers or app installations managed by AdBlueMedia.</li>
           </ul>
         </section>
 

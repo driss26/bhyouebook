@@ -309,7 +309,7 @@ const KEYS = {
 
 const DEFAULT_ANNOUNCEMENT: AnnouncementSettings = {
   enabled: true,
-  text: '🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — or unlock it FREE by installing our featured app. Click here to learn more →',
+  text: '🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — Start cooking healthy today! Click here to buy →',
   bgGradientStart: '#453416',
   bgGradientEnd: '#c5a059',
   textColor: '#fefcf0',
@@ -384,10 +384,18 @@ export const initDb = () => {
   } else {
     try {
       const currentAnn = JSON.parse(localStorage.getItem(KEYS.ANNOUNCEMENT) || '{}');
+      let changed = false;
       if (currentAnn.bgGradientStart === '#064e3b') {
         currentAnn.bgGradientStart = '#453416';
         currentAnn.bgGradientEnd = '#c5a059';
         currentAnn.textColor = '#fefcf0';
+        changed = true;
+      }
+      if (currentAnn.text && (currentAnn.text.includes('FREE by installing our featured app') || currentAnn.text.includes('AdBlueMedia'))) {
+        currentAnn.text = '🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — Start cooking healthy today! Click here to buy →';
+        changed = true;
+      }
+      if (changed) {
         localStorage.setItem(KEYS.ANNOUNCEMENT, JSON.stringify(currentAnn));
       }
     } catch (e) {
@@ -419,12 +427,22 @@ export const checkAndFixSeoConfigs = async () => {
     }
 
     const announcementSettings = await db.getAnnouncementSettings();
-    if (announcementSettings && announcementSettings.bgGradientStart === '#064e3b') {
-      announcementSettings.bgGradientStart = '#453416';
-      announcementSettings.bgGradientEnd = '#c5a059';
-      announcementSettings.textColor = '#fefcf0';
-      await db.saveAnnouncementSettings(announcementSettings);
-      window.dispatchEvent(new Event('announcement_updated'));
+    let updatedAnn = false;
+    if (announcementSettings) {
+      if (announcementSettings.bgGradientStart === '#064e3b') {
+        announcementSettings.bgGradientStart = '#453416';
+        announcementSettings.bgGradientEnd = '#c5a059';
+        announcementSettings.textColor = '#fefcf0';
+        updatedAnn = true;
+      }
+      if (announcementSettings.text.includes('FREE by installing our featured app') || announcementSettings.text.includes('AdBlueMedia')) {
+        announcementSettings.text = '🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — Start cooking healthy today! Click here to buy →';
+        updatedAnn = true;
+      }
+      if (updatedAnn) {
+        await db.saveAnnouncementSettings(announcementSettings);
+        window.dispatchEvent(new Event('announcement_updated'));
+      }
     }
 
     // Verify and fix blog posts (seed new posts if missing)

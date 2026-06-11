@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, NavLink, useLocation } from 'react-router-dom';
 import { 
-  Shield, Lock, Menu, X, Send, Bell, Smartphone
+  Shield, Menu, X, Send, Bell, Star
 } from 'lucide-react';
 
 // Pages
@@ -43,7 +43,7 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [showPromoModal, setShowPromoModal] = useState(false);
-  const [announcementText, setAnnouncementText] = useState('🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — or unlock it FREE by installing our featured app. Click here to learn more →');
+  const [announcementText, setAnnouncementText] = useState('🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — Start cooking healthy today! Click here to buy →');
   const [announcementBgStart, setAnnouncementBgStart] = useState('#064e3b');
   const [announcementBgEnd, setAnnouncementBgEnd] = useState('#10b981');
   const [announcementTextColor, setAnnouncementTextColor] = useState('#ecfdf5');
@@ -109,41 +109,6 @@ function App() {
     }
   };
 
-  const triggerAdBlueMedia = () => {
-    // If xfLock is already defined, call it directly to open the locker
-    if (typeof (window as any).xfLock === 'function') {
-      (window as any).xfLock();
-      return;
-    }
-    if (typeof (window as any).CPABuildLock === 'function') {
-      (window as any).CPABuildLock();
-      return;
-    }
-
-    // Set configuration variables required by AdBlueMedia content locker
-    (window as any).yeRSN_Oee_mEOcmc = {"it": 4581127, "key": "4a524"};
-
-    // Inject AdBlueMedia Javascript file
-    const script = document.createElement('script');
-    script.src = "https://d19k1sh57v5k0g.cloudfront.net/e90b2eb.js";
-    script.async = true;
-    script.onload = () => {
-      // Once the script is loaded and executed, call xfLock() to open the content locker
-      setTimeout(() => {
-        if (typeof (window as any).xfLock === 'function') {
-          (window as any).xfLock();
-        } else if (typeof (window as any).CPABuildLock === 'function') {
-          (window as any).CPABuildLock();
-        }
-      }, 100);
-    };
-    script.onerror = () => {
-      showToast('Please disable AdBlocker and try again.', 'error');
-    };
-    document.body.appendChild(script);
-
-    showToast('Loading premium verification locker...', 'info');
-  };
 
   return (
     <Router>
@@ -339,67 +304,50 @@ function App() {
                 <X size={20} />
               </button>
               <div className="promo-modal-content">
-                <div className="promo-modal-header">
-                  <h2>Unlock the High-Protein Cookbook</h2>
-                  <p>Choose your preferred way to get the full 50-recipe cookbook.</p>
+                <div className="promo-modal-header" style={{ marginBottom: '24px' }}>
+                  <h2>Get the High-Protein Cookbook</h2>
+                  <p>Start your fat loss and fitness journey with 50 premium recipes under 400 calories.</p>
                 </div>
                 
-                <div className="promo-options-grid">
-                  {/* Option 1: Buy */}
-                  <div className="promo-option-card">
-                    <div>
-                      <div className="promo-option-icon">
-                        <Lock size={20} />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+                  {/* Ebook Mockup */}
+                  <div className="ebook-mockup" style={{ width: '180px', height: '252px', margin: '0 auto', boxShadow: 'var(--shadow-lg)' }}>
+                    <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook" className="ebook-cover-img" />
+                    <div className="ebook-spine"></div>
+                  </div>
+
+                  {/* Pricing and details */}
+                  <div style={{ textAlign: 'center', maxWidth: '450px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#fbbf24', marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', gap: '2px' }}>
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
                       </div>
-                      <h3>Buy Cookbook</h3>
-                      <div className="promo-option-price">$11.99</div>
-                      <p>Instant digital PDF access. Save time, cook delicious meals, and start cooking healthy today.</p>
+                      <span style={{ fontWeight: 600, color: 'var(--text-dark)' }}>4.9/5.0 Stars</span>
                     </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', margin: '12px 0' }}>
+                      <span style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-dark)' }}>$11.99</span>
+                      <span style={{ fontSize: '18px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$24.99</span>
+                      <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 700 }}>SAVE 52%</span>
+                    </div>
+
+                    <p style={{ color: 'var(--text-muted-dark)', fontSize: '14.5px', lineHeight: '1.6', marginBottom: '20px' }}>
+                      Get instant digital PDF access to all 50+ low-calorie, high-protein recipes, our structured 7-Day Meal Plan, grocery shopping lists, and kitchen cheat sheets.
+                    </p>
+
                     <a 
                       href="https://bhyou.gumroad.com/l/pzebkb" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="btn btn-primary btn-sm"
-                      style={{ width: '100%', textDecoration: 'none' }}
+                      className="btn btn-primary"
+                      style={{ width: '100%', textDecoration: 'none', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', padding: '14px 28px', fontSize: '16px' }}
                     >
                       Buy on Gumroad
                     </a>
-                  </div>
-                  
-                  {/* Option 2: Get Free */}
-                  <div className="promo-option-card highlight">
-                    <div className="promo-option-badge">Popular</div>
-                    <div>
-                      <div className="promo-option-icon">
-                        <Smartphone size={20} />
-                      </div>
-                      <h3>Unlock Free</h3>
-                      <div className="promo-option-price">
-                        <span className="old-price">$11.99</span>
-                        <span style={{ color: 'var(--primary)' }}>$0.00</span>
-                      </div>
-                      <p>Complete a quick sponsored verification to unlock the High-Protein Cookbook instantly!</p>
-                    </div>
-                    <div className="app-store-buttons">
-                      <button 
-                        className="app-store-btn"
-                        onClick={triggerAdBlueMedia}
-                      >
-                        Download for iOS
-                      </button>
-                      <button 
-                        className="app-store-btn"
-                        onClick={triggerAdBlueMedia}
-                      >
-                        Download for Android
-                      </button>
-                      <button 
-                        className="app-store-btn"
-                        onClick={triggerAdBlueMedia}
-                      >
-                        Download for Windows
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>

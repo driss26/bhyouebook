@@ -116,7 +116,7 @@ const DEFAULT_POSTS: BlogPost[] = [
       }
     ],
     createdAt: '2026-06-01T10:00:00Z',
-    author: 'Coach Sarah',
+    author: 'BHYou',
     readTime: '5 min read'
   },
   {
@@ -142,7 +142,7 @@ const DEFAULT_POSTS: BlogPost[] = [
       }
     ],
     createdAt: '2026-06-03T14:30:00Z',
-    author: 'Coach Dave',
+    author: 'BHYou',
     readTime: '3 min read'
   },
   {
@@ -168,7 +168,7 @@ const DEFAULT_POSTS: BlogPost[] = [
       }
     ],
     createdAt: '2026-06-05T08:00:00Z',
-    author: 'Coach Sarah',
+    author: 'BHYou',
     readTime: '6 min read'
   }
 ,
@@ -203,7 +203,7 @@ const DEFAULT_POSTS: BlogPost[] = [
       }
     ],
     createdAt: '2026-06-10T19:04:54.583Z',
-    author: 'Coach Sarah',
+    author: 'BHYou',
     readTime: '12 min read'
   }
 ,
@@ -238,7 +238,337 @@ const DEFAULT_POSTS: BlogPost[] = [
       }
     ],
     createdAt: '2026-06-10T19:12:36.524Z',
-    author: 'Coach Sarah',
+    author: 'BHYou',
+    readTime: '15 min read'
+  },
+  {
+    id: 'post-6',
+    title: 'Sugar-Free Protein Ice Cream: The Healthy Dessert Everyone Is Talking About',
+    slug: 'sugar-free-protein-ice-cream',
+    excerpt: 'Learn how to make creamy sugar-free protein ice cream at home. High in protein, low in calories, and perfect for healthy eating and weight loss goals.',
+    content: `<p>One of the most persistent hurdles in any fitness journey is managing cravings for sweet, high-calorie treats. We have all been there: you are following a structured nutrition plan, hitting your workouts, and suddenly a massive craving for a rich, creamy bowl of ice cream hits. In the past, the advice was simple but brutal—exercise willpower, eat a piece of fruit, or simply suffer. But restriction often leads to binging, and binging derails progress. Fortunately, in 2026, the landscape of healthy eating has evolved. Enter the era of <strong>sugar free protein ice cream</strong>, the ultimate macro-friendly recipe designed to satisfy your sweet tooth while keeping you on track with your fat loss and muscle-building goals.</p>
+
+<p>This comprehensive, highly detailed guide will show you how to create the ultimate premium sugar-free protein ice cream at home. We will dive into the food science behind texture, break down the benefits of swapping traditional ice cream for high-protein alternatives, analyze the key ingredients you need, and provide step-by-step instructions for the base recipe and chocolate variations. By the end of this article, you will have all the knowledge required to create a premium, under-300-calorie protein dessert that tastes like a cheat meal but works like a performance supplement.</p>
+
+<div class="blog-toc" style="background: var(--light-surface); border: 1px solid var(--light-border); padding: 24px; border-radius: 8px; margin: 28px 0;">
+  <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 20px; font-weight: 700; border-bottom: 2px solid var(--primary); padding-bottom: 8px;">Table of Contents</h3>
+  <ul style="list-style-type: none; padding-left: 0; margin-bottom: 0; display: flex; flex-direction: column; gap: 10px;">
+    <li><a href="#what-is-it" style="color: var(--primary); font-weight: 600; text-decoration: none;">1. What Is Sugar-Free Protein Ice Cream?</a></li>
+    <li><a href="#benefits" style="color: var(--primary); font-weight: 600; text-decoration: none;">2. Benefits of Sugar-Free Protein Ice Cream</a></li>
+    <li><a href="#why-traditional" style="color: var(--primary); font-weight: 600; text-decoration: none;">3. Why Traditional Ice Cream Contains So Much Sugar</a></li>
+    <li><a href="#best-ingredients" style="color: var(--primary); font-weight: 600; text-decoration: none;">4. Best Ingredients for Healthy Protein Ice Cream</a></li>
+    <li><a href="#recipe" style="color: var(--primary); font-weight: 600; text-decoration: none;">5. Sugar-Free Protein Ice Cream Recipe (Step-by-Step)</a></li>
+    <li><a href="#chocolate-variation" style="color: var(--primary); font-weight: 600; text-decoration: none;">6. Chocolate Protein Ice Cream Variation</a></li>
+    <li><a href="#creamier-tips" style="color: var(--primary); font-weight: 600; text-decoration: none;">7. How to Make Protein Ice Cream Creamier</a></li>
+    <li><a href="#mistakes" style="color: var(--primary); font-weight: 600; text-decoration: none;">8. Common Mistakes to Avoid</a></li>
+    <li><a href="#weight-loss" style="color: var(--primary); font-weight: 600; text-decoration: none;">9. Can Protein Ice Cream Help With Weight Loss?</a></li>
+    <li><a href="#toppings" style="color: var(--primary); font-weight: 600; text-decoration: none;">10. Best Toppings for Protein Ice Cream</a></li>
+    <li><a href="#faqs" style="color: var(--primary); font-weight: 600; text-decoration: none;">11. Frequently Asked Questions</a></li>
+    <li><a href="#final-thoughts" style="color: var(--primary); font-weight: 600; text-decoration: none;">12. Final Thoughts</a></li>
+  </ul>
+</div>
+
+<h2 id="what-is-it">What Is Sugar-Free Protein Ice Cream?</h2>
+<p>At its core, <strong>sugar free protein ice cream</strong> is a high-volume, low-calorie dessert designed to replicate the mouthfeel and flavor of traditional churned ice cream. Unlike commercial ice cream, which relies heavily on heavy cream, milk fat, and refined sucrose to achieve its structure, protein ice cream uses smart substitutions to slash calories and maximize nutritional density. By combining frozen fruits (like bananas), high-quality protein powder (whey, casein, or plant-based), and thickening agents (such as Greek yogurt or natural plant gums), we can whip up a dessert that boasts a thick, soft-serve texture with an outstanding macronutrient profile.</p>
+
+<p>The concept originally gained popularity in the online fitness community as "protein fluff." Early versions relied heavily on ice, protein powder, and massive amounts of xanthan gum, resulting in a volume-heavy but often airy and flavorless mousse. In 2026, the recipes have become significantly more sophisticated. By understanding the interaction between different types of protein powders and natural binders, we are now able to create a genuine, scoopable <strong>healthy ice cream recipe</strong> that satisfies both the physiological need for fuel and the psychological desire for indulgence.</p>
+
+<h2 id="benefits">Benefits of Sugar-Free Protein Ice Cream</h2>
+<p>Incorporating a premium <strong>protein dessert</strong> into your weekly routine offers several metabolic, physical, and psychological advantages. Let’s explore the primary reasons why fitness enthusiasts and health-conscious individuals are making it a staple of their diets:</p>
+
+<h3>1. Exceptionally High Protein Content</h3>
+<p>Standard ice cream is practically devoid of protein, containing only about 2 to 3 grams per serving. A single batch of our sugar-free protein ice cream, however, delivers between <strong>25 and 35 grams of high-quality protein</strong>. Protein is the most critical macronutrient for body recomposition—the process of simultaneously losing fat and building muscle. Consuming sufficient protein provides the essential amino acids (such as leucine, isoleucine, and valine) needed to trigger muscle protein synthesis (MPS) and rebuild muscle fibers damaged during resistance training.</p>
+
+<h3>2. Significantly Lower Calories (Under 300 Calories)</h3>
+<p>Traditional premium ice cream brands can easily pack 350 to 450 calories per tiny half-cup serving, which quickly adds up if you eat straight out of the tub. Our base recipe yields a generous, high-volume portion that is strictly a <strong>under 300 calorie dessert</strong> (approximately 280 calories for the entire batch). This concept of "volume eating"—consuming foods that have a high volume but low calorie density—is a highly effective tool for weight management, as it physically fills your stomach and triggers stretch receptors that signal fullness to your brain.</p>
+
+<h3>3. No Added Sugars or Blood Glucose Spikes</h3>
+<p>Commercial desserts are loaded with refined sugars, which cause rapid spikes in blood glucose levels. This sudden surge is followed by an equally dramatic crash, leaving you feeling fatigued, irritable, and craving even more sweet foods. By eliminating added sugars and utilizing the natural sweetness of frozen bananas combined with zero-calorie sweeteners, our <strong>no sugar ice cream</strong> provides a stable, slow-release energy source. This prevents insulin spikes and helps keep your energy levels consistent throughout the day.</p>
+
+<h3>4. Supports Muscle Recovery and Maintenance</h3>
+<p>For active individuals, muscle recovery is an ongoing process that doesn't stop when you leave the gym. Consuming a protein-rich snack—especially one containing a blend of fast-digesting whey and slow-digesting casein protein from Greek yogurt—before bed provides your body with a steady stream of amino acids throughout the night. This sustained release aids in muscle repair, reduces muscle soreness, and helps prevent muscle breakdown (catabolism) during overnight fasting.</p>
+
+<h3>5. Helps Reduce Cravings and Promotes Diet Adherence</h3>
+<p>Dietary restriction is the number one reason why weight loss attempts fail. When you declare certain foods completely off-limits, your brain naturally focuses on them, creating intense psychological cravings. By satisfying your sweet tooth with a delicious, creamy <strong>weight loss dessert</strong>, you eliminate the feeling of deprivation. This makes it significantly easier to adhere to your caloric deficit in the long run, turning healthy eating into a sustainable lifestyle rather than a temporary, restrictive chore.</p>
+
+<h2 id="why-traditional">Why Traditional Ice Cream Contains So Much Sugar</h2>
+<p>To understand why commercial ice cream is a caloric minefield, we have to look at the food chemistry of traditional frozen desserts. Sugar in commercial ice cream doesn’t just serve as a sweetener; it plays a critical functional role in the freezing process. In chemistry, this is known as <strong>freezing-point depression</strong>.</p>
+
+<p>When water freezes, it forms hard, crystalline ice structures. If you were to freeze plain milk or cream, you would end up with a solid, icy block that is impossible to scoop or chew. Sugar dissolves in the water content of the cream, lowering the freezing point of the mixture. This prevents the water from freezing into solid ice crystals, keeping the ice cream soft, pliable, and scoopable at standard freezer temperatures. Additionally, commercial manufacturers add high amounts of saturated dairy fats to coat the tongue and create a velvety mouthfeel. While this creates a delicious product, it results in a calorie-dense food that is highly palatable, incredibly easy to overeat, and lacking in beneficial nutrients.</p>
+
+<p>To bypass this chemical requirement without adding hundreds of empty sugar calories, we use a combination of natural fruit pectins (found in bananas), protein structures (which trap air), and dietary fibers or binders (like xanthan gum) to suspend the water molecules and prevent ice crystal formation, resulting in a creamy texture without the sugar overload.</p>
+
+<h2 id="best-ingredients">Best Ingredients for Healthy Protein Ice Cream</h2>
+<p>To make a premium, restaurant-quality <strong>high protein ice cream</strong> at home, you need to select high-quality ingredients that serve both nutritional and structural purposes. Here is a look at the key components of our recipe:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 15px; border: 1px solid var(--light-border);">
+  <thead>
+    <tr style="background-color: var(--light-surface); text-align: left;">
+      <th style="padding: 12px; border-bottom: 2px solid var(--light-border);">Ingredient</th>
+      <th style="padding: 12px; border-bottom: 2px solid var(--light-border);">Functional Role</th>
+      <th style="padding: 12px; border-bottom: 2px solid var(--light-border);">Nutritional Highlight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);"><strong>Frozen Bananas</strong></td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Acts as the creamy, thick base; contains natural starches and pectins that mimic the mouthfeel of dairy fat.</td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Rich in potassium, dietary fiber, and vitamin B6.</td>
+    </tr>
+    <tr style="background-color: var(--light-surface);">
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);"><strong>Greek Yogurt (0% Fat)</strong></td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Adds tanginess, structure, and creaminess while binding the liquid ingredients.</td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Packed with slow-digesting casein protein, calcium, and gut-healthy probiotics.</td>
+    </tr>
+    <tr>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);"><strong>Protein Powder (Whey/Casein Blend)</strong></td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Thickens the mixture and traps micro-air bubbles during high-speed blending to create volume.</td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Provides a concentrated source of highly bioavailable essential amino acids.</td>
+    </tr>
+    <tr style="background-color: var(--light-surface);">
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);"><strong>Unsweetened Almond Milk</strong></td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Provides just enough liquid to allow the blender blades to spin without diluting the creaminess.</td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Extremely low in calories (only 30 kcal per cup) and completely sugar-free.</td>
+    </tr>
+    <tr>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);"><strong>Cocoa Powder (Unsweetened)</strong></td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Used in variations to create a rich, dark chocolate flavor.</td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">High in polyphenols, antioxidants, and dietary fiber.</td>
+    </tr>
+    <tr style="background-color: var(--light-surface);">
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);"><strong>Vanilla Extract</strong></td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Enhances the natural sweetness of the banana and rounds out the protein flavor.</td>
+      <td style="padding: 12px; border-bottom: 1px solid var(--light-border);">Natural flavor enhancer with zero calories.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="recipe">Sugar-Free Protein Ice Cream Recipe</h2>
+<p>Here is our signature, step-by-step <strong>healthy ice cream recipe</strong>. It requires minimal equipment—just a high-powered blender or food processor—and is ready in under 10 minutes.</p>
+
+<h3>Ingredients:</h3>
+<ul>
+  <li><strong>2 medium bananas:</strong> Peeled, chopped into coins, and frozen solid (minimum 6 hours of freezing).</li>
+  <li><strong>1 scoop (30g) vanilla protein powder:</strong> A whey-casein blend works best, but whey isolate or a premium plant-based blend will also work.</li>
+  <li><strong>1/2 cup (120g) plain non-fat Greek yogurt:</strong> Greek yogurt adds body and a smooth texture.</li>
+  <li><strong>2 tablespoons (30ml) unsweetened almond milk:</strong> Adjust slightly depending on your blender's strength.</li>
+  <li><strong>1 teaspoon pure vanilla extract:</strong> For that classic, warm vanilla bean flavor.</li>
+  <li><strong>Optional:</strong> A tiny pinch of xanthan gum (1/4 teaspoon) to maximize thickness and prevent separation.</li>
+</ul>
+
+<h3>Step-by-Step Instructions:</h3>
+<ol style="line-height: 1.6; padding-left: 20px;">
+  <li style="margin-bottom: 12px;"><strong>Prep your bananas:</strong> Ensure your bananas are fully ripe (with some brown spots for natural sweetness) before freezing. Chop them into 1-inch coins and freeze them in a single layer on a parchment-lined baking sheet. Once frozen, store them in a zip-lock bag.</li>
+  <li style="margin-bottom: 12px;"><strong>Layer the ingredients:</strong> Add the frozen banana coins, plain Greek yogurt, vanilla protein powder, vanilla extract, and the optional xanthan gum to your blender. Pour the almond milk over the top. Always place the liquid nearest the blades to help them catch.</li>
+  <li style="margin-bottom: 12px;"><strong>The initial blend:</strong> Start blending on low speed. The mixture will look crumbly and icy at first. Use a tamper (if using a Vitamix) or pause the blender to scrape down the sides with a spatula. Do not be tempted to add more milk immediately! Patience is key to achieving a thick texture.</li>
+  <li style="margin-bottom: 12px;"><strong>Whip and aerate:</strong> Once the ingredients begin to merge, increase the blender speed to high. Blend for 1 to 2 minutes. The protein and banana starch will begin to aerate, causing the mixture to expand in volume and transform into a glossy, thick soft-serve consistency.</li>
+  <li style="margin-bottom: 12px;"><strong>Serve:</strong> Scoop the ice cream immediately into a chilled bowl. The texture will be similar to premium soft-serve. If you prefer a firmer, scoopable ice cream, transfer the mixture to an airtight container and freeze for an additional 30 to 45 minutes before serving.</li>
+</ol>
+
+<div style="background: var(--light-surface); border-left: 4px solid var(--primary); padding: 20px; border-radius: 6px; margin: 24px 0;">
+  <h4 style="margin-top: 0; margin-bottom: 8px; font-weight: 700;">Nutritional Information (Per Batch):</h4>
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-weight: 600; text-align: center;">
+    <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid var(--light-border);">
+      <span style="display: block; font-size: 12px; color: var(--text-muted-dark);">Calories</span>
+      <span style="font-size: 18px; color: var(--text-dark);">280 kcal</span>
+    </div>
+    <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid var(--light-border);">
+      <span style="display: block; font-size: 12px; color: var(--text-muted-dark);">Protein</span>
+      <span style="font-size: 18px; color: var(--primary);">32g</span>
+    </div>
+    <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid var(--light-border);">
+      <span style="display: block; font-size: 12px; color: var(--text-muted-dark);">Carbohydrates</span>
+      <span style="font-size: 18px; color: var(--text-dark);">35g</span>
+    </div>
+    <div style="background: white; padding: 10px; border-radius: 4px; border: 1px solid var(--light-border);">
+      <span style="display: block; font-size: 12px; color: var(--text-muted-dark);">Dietary Fat</span>
+      <span style="font-size: 18px; color: var(--text-dark);">2g</span>
+    </div>
+  </div>
+</div>
+
+<h2 id="chocolate-variation">Chocolate Protein Ice Cream Variation</h2>
+<p>If you are a chocolate lover, you can easily adapt the base recipe into a rich, decadent chocolate protein ice cream that tastes like a gourmet fudge bar.</p>
+
+<h3>Ingredients:</h3>
+<ul>
+  <li><strong>2 frozen medium bananas</strong> (chopped into coins)</li>
+  <li><strong>1 scoop (30g) chocolate protein powder</strong> (whey-casein or chocolate plant blend)</li>
+  <li><strong>1.5 tablespoons unsweetened cocoa powder</strong> (Dutch-processed cocoa works best for a deeper flavor)</li>
+  <li><strong>1/2 cup plain Greek yogurt</strong></li>
+  <li><strong>3 tablespoons unsweetened almond milk</strong> (an extra tablespoon helps offset the dryness of the cocoa powder)</li>
+  <li><strong>1 teaspoon vanilla extract</strong></li>
+  <li><strong>1 tablespoon zero-calorie sweetener</strong> (such as erythritol or stevia drops, optional to balance the cocoa's bitterness)</li>
+</ul>
+
+<h3>Instructions:</h3>
+<ol>
+  <li>Add all ingredients to the blender, placing the almond milk and Greek yogurt at the bottom.</li>
+  <li>Blend on low, scraping down the sides as needed, until the banana pieces are fully broken down.</li>
+  <li>Turn the speed to high and whip for 2 minutes to create a fluffy, airy chocolate mousse texture.</li>
+  <li>Top with a few dark chocolate chips and serve immediately, or freeze for 30 minutes for a firmer scoop.</li>
+</ol>
+
+<h2 id="creamier-tips">How to Make Protein Ice Cream Creamier</h2>
+<p>One of the primary challenges of making low-fat, sugar-free desserts is achieving that signature velvety, commercial ice cream mouthfeel. When you remove fat and sugar, water molecules tend to bind together and form hard ice crystals. Fortunately, several simple cooking hacks can make your <strong>protein powder dessert</strong> incredibly creamy:</p>
+
+<h3>1. Use a Whey-Casein Protein Blend</h3>
+<p>Whey protein isolate is fantastic for post-workout shakes because it dissolves quickly, but it behaves poorly when blended into ice cream. Whey tends to become thin, airy, and icy when frozen. Casein protein, on the other hand, is highly hydrophobic—it absorbs large amounts of liquid and expands, creating a thick, pudding-like consistency. By using a blend of whey and casein, you get the best of both worlds: the smooth flavor of whey and the incredible thickening power of casein.</p>
+
+<h3>2. Incorporate Xanthan Gum or Guar Gum</h3>
+<p>Xanthan gum and guar gum are natural, plant-based soluble fibers commonly used as thickeners and stabilizers. A tiny amount—just 1/4 teaspoon per batch—acts as an emulsifier. It binds the water molecules, prevents separation, and traps the air bubbles created during blending. This gives the ice cream a stretchy, commercial soft-serve texture rather than a crumbly, icy texture.</p>
+
+<h3>3. Use Fully Frozen, Ripe Bananas</h3>
+<p>Bananas that are yellow with brown spots contain high levels of natural pectin and simple sugars. As they ripen, their starches break down into soluble sugars, which act as natural anti-freezing agents. Freezing them solid before blending ensures that they break down into a smooth emulsion rather than a runny liquid.</p>
+
+<h3>4. Keep Liquid to a Minimum</h3>
+<p>It is incredibly tempting to add extra almond milk when your blender starts struggling. However, adding too much liquid turns your ice cream into a protein shake. Use a tamper to push the ingredients into the blades, or blend in short pulses. The thicker the mixture starts, the creamier it will finish.</p>
+
+<h2 id="mistakes">Common Mistakes to Avoid</h2>
+<p>To ensure your recipe turns out perfect on the first try, watch out for these common pitfalls:</p>
+<ul>
+  <li><strong>Using unripened bananas:</strong> Green or pale yellow bananas contain high amounts of resistant starch, which tastes chalky and lacks the natural sweetness and pectin required for a creamy texture.</li>
+  <li><strong>Adding protein powder first:</strong> If you add the protein powder to the bottom of the blender before the wet ingredients, it will form a sticky paste that gets trapped under the blades, resulting in uneven blending and motor strain.</li>
+  <li><strong>Blending for too long:</strong> Blending on high speed for more than 3 to 4 minutes generates heat from the motor. This heat will melt the frozen banana base, turning your thick ice cream into a warm smoothie. Keep your blend time under 2 minutes once the ingredients are incorporated.</li>
+  <li><strong>Freezing for too long after blending:</strong> Because this recipe contains very little fat and zero refined sugar, if you leave it in the freezer for more than 2 hours, it will freeze into a solid, rock-hard block. If you do freeze it overnight, let it sit on the counter for 15 to 20 minutes to thaw slightly before scooping.</li>
+</ul>
+
+<h2 id="weight-loss">Can Protein Ice Cream Help With Weight Loss?</h2>
+<p>Yes, absolutely. In fact, many registered dietitians and fitness coaches recommend incorporating high-protein, high-volume desserts into weight loss plans. Here is the scientific rationale behind how a <strong>weight loss dessert</strong> supports fat loss:</p>
+
+<p>Firstly, protein has a high <strong>Satiety Index</strong>. When you eat protein, it stimulates the release of peptide YY (PYY) and GLP-1, hormones that signal to your brain that you are full. At the same time, it suppresses ghrelin, the hormone responsible for triggering hunger. This hormonal response prevents the late-night hunger pangs that lead to overeating.</p>
+
+<p>Secondly, protein has a high <strong>Thermic Effect of Food (TEF)</strong>. Your body must expend energy simply to digest, absorb, and process nutrients. While fats and carbohydrates require only 0-15% of their energy to be digested, protein requires 20-30% of its total caloric value to be broken down. This means that if you consume 100 calories of protein, your body actually burns 20 to 30 of those calories just to process the amino acids.</p>
+
+<p>Finally, there is a strong psychological component to dieting. Successful weight loss is built on consistency. When you restrict yourself from enjoying sweet treats, you deplete your willpower, eventually leading to a diet failure. Replacing high-calorie junk food with a satisfying <strong>under 300 calorie dessert</strong> satisfies the brain's reward pathways, making it easy to maintain a caloric deficit for weeks and months at a time.</p>
+
+<h2 id="toppings">Best Toppings for Protein Ice Cream</h2>
+<p>To take your sugar-free protein ice cream to the next level, you can add healthy toppings that provide texture, flavor, and additional nutrients. Here are our top recommendations:</p>
+<ul>
+  <li><strong>Fresh Berries:</strong> Blueberries, raspberries, and sliced strawberries are excellent choices. They are low in calories, high in dietary fiber, and packed with health-promoting antioxidants.</li>
+  <li><strong>Dark Chocolate Chips:</strong> Look for chips that contain 80% or more cocoa, or sugar-free chocolate chips sweetened with stevia. They add a satisfying crunch and a rich chocolate flavor.</li>
+  <li><strong>Natural Peanut Butter or Almond Butter:</strong> Drizzling a teaspoon of warm peanut butter over your ice cream adds healthy monounsaturated fats and a rich, creamy contrast to the cold dessert.</li>
+  <li><strong>Chopped Nuts:</strong> A sprinkle of crushed almonds, walnuts, or pecans adds a rustic crunch and provides healthy fats, magnesium, and vitamin E.</li>
+</ul>
+
+<h2 id="faqs">Frequently Asked Questions</h2>
+<p><strong>1. Can I make sugar free protein ice cream without bananas?</strong><br/>
+Yes. If you want a lower-carb option, you can replace the frozen bananas with 1.5 cups of frozen cauliflower rice or frozen zucchini chunks, combined with a healthy fat source like 1 tablespoon of peanut butter and a zero-calorie sweetener. The texture remains surprisingly creamy, and the strong cocoa or vanilla flavor easily masks the vegetable taste.</p>
+
+<p><strong>2. What is the best protein powder to use for healthy desserts?</strong><br/>
+A premium whey-casein blend is the absolute best choice. Casein protein absorbs more liquid than whey isolate, which helps create a thick, creamy texture that mimics commercial soft-serve. If you use plant-based protein, look for a pea and brown rice blend, as pea protein also has excellent thickening properties.</p>
+
+<p><strong>3. How does protein powder ice cream compare to Ninja Creami recipes?</strong><br/>
+The Ninja Creami works by shaving a solid, frozen block of liquid into a creamy texture, allowing you to make ice cream from plain milk and protein powder. This blender-based recipe, however, relies on the starch structure of frozen bananas and Greek yogurt to create immediate creaminess without needing a specialized machine or a 24-hour freeze time.</p>
+
+<p><strong>4. Can I eat protein desserts every night?</strong><br/>
+Yes, as long as the ingredients fit within your daily caloric and macronutrient targets. Because our recipe is made from whole foods like bananas, Greek yogurt, and high-quality protein, it is a highly nutritious snack that provides essential vitamins, calcium, and amino acids.</p>
+
+<p><strong>5. Is Greek yogurt necessary for this recipe?</strong><br/>
+While you can make it without Greek yogurt by using a bit more almond milk, we highly recommend keeping it. Greek yogurt adds a rich, creamy body and contains natural casein proteins that prevent the ice cream from melting too quickly. It also adds a pleasant, subtle tang that complements the sweet bananas.</p>
+
+<p><strong>6. Can I make this recipe dairy-free?</strong><br/>
+Yes. To make a dairy-free version, swap the Greek yogurt for a thick coconut milk yogurt or dairy-free almond yogurt, and use a premium vegan protein powder (such as pea, hemp, or soy protein) instead of whey-casein.</p>
+
+<p><strong>7. How long can I store this in the freezer?</strong><br/>
+Because this recipe contains no preservatives, heavy fats, or refined sugars, it will freeze solid if left in the freezer for more than 2 hours. It is best enjoyed immediately. If you do have leftovers, freeze them in a shallow container and let them thaw on the counter for 15 to 20 minutes before consuming.</p>
+
+<p><strong>8. Is xanthan gum safe to eat?</strong><br/>
+Yes, xanthan gum is a natural, soluble fiber produced by the fermentation of simple sugars. It is completely safe in the small quantities used in cooking (1/4 teaspoon). However, if you have a highly sensitive digestive system, you can omit it or replace it with ground chia seeds or flaxseeds.</p>
+
+<p><strong>9. How do I prevent my blender from getting stuck?</strong><br/>
+Always place your liquid (almond milk) and soft ingredients (Greek yogurt) into the blender first, followed by the protein powder, and finally the hard frozen banana coins. This allows the blades to create a vortex and pull the frozen fruit down, preventing the motor from stalling.</p>
+
+<p><strong>10. Can kids eat protein powder desserts?</strong><br/>
+Yes, protein powder is simply a concentrated source of dairy or plant protein. However, if you are making this for young children, you can reduce the protein powder by half and increase the Greek yogurt to ensure they receive a balanced, child-friendly portion of protein.</p>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>Creating a healthy, sustainable diet is all about making smart substitutions. You do not have to choose between reaching your fitness goals and enjoying the foods you love. By swapping out sugar-dense commercial treats for our signature <strong>sugar free protein ice cream</strong>, you satisfy your cravings, fuel your muscles with high-quality protein, and keep your calorie intake under 300 calories.</p>
+
+<p>Give this simple recipe a try tonight, and discover how delicious and easy healthy living can be!</p>
+
+<hr />
+<div class="blog-links" style="margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--light-border);">
+  <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Explore More Healthy Recipes:</h4>
+  <ul style="list-style-type: none; padding-left: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+    <li>Craving more guilt-free sweet treats? Browse our complete collection of <a href="#/blog/healthy-desserts-under-400-calories" style="color: var(--primary); text-decoration: none; font-weight: 600;">Healthy Desserts Under 400 Calories</a>.</li>
+    <li>Fuel your workouts with these delicious, quick-prep <a href="#/blog/high-protein-chicken-recipes" style="color: var(--primary); text-decoration: none; font-weight: 600;">High Protein Chicken Recipes</a>.</li>
+    <li>Keep your metabolism firing throughout the day with our ultimate <a href="#/" style="color: var(--primary); text-decoration: none; font-weight: 600;">Protein Snacks Guide</a>.</li>
+    <li>Master the art of meal prepping on a budget with our comprehensive <a href="#/cookbook" style="color: var(--primary); text-decoration: none; font-weight: 600;">Meal Prep Ebook Guide</a>.</li>
+    <li>Start your morning strong with these high-volume, energizing <a href="#/" style="color: var(--primary); text-decoration: none; font-weight: 600;">Healthy Breakfast Recipes</a>.</li>
+  </ul>
+
+  <h4 style="font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 12px; color: var(--text-dark);">External Authority Resources:</h4>
+  <ul style="list-style-type: none; padding-left: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+    <li>USDA National Nutrient Database: <a href="https://fdc.nal.usda.gov/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">Nutritional Breakdown of Raw Bananas and Plain Greek Yogurt</a>.</li>
+    <li>National Institutes of Health (NIH): <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4258944/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">Clinical Study on the Satiety Index and Thermic Effect of Dietary Protein</a>.</li>
+  </ul>
+</div>`,
+    featuredImage: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=800&q=80',
+    pinterestImage: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&h=900&q=80',
+    category: 'Healthy Desserts',
+    tags: [
+      'sugar free protein ice cream',
+      'high protein ice cream',
+      'healthy ice cream recipe',
+      'protein dessert',
+      'low calorie dessert',
+      'healthy desserts',
+      'no sugar ice cream',
+      'weight loss dessert',
+      'under 300 calorie dessert',
+      'fitness recipes'
+    ],
+    status: 'published',
+    seoTitle: 'Sugar-Free Protein Ice Cream (High Protein & Under 300 Calories)',
+    metaDescription: 'Learn how to make creamy sugar-free protein ice cream at home. High in protein, low in calories, and perfect for healthy eating and weight loss goals.',
+    focusKeyword: 'sugar free protein ice cream',
+    seoScore: 99,
+    canonicalUrl: 'https://bhyou.com/blog/sugar-free-protein-ice-cream',
+    faqSchema: [
+      {
+        question: 'Can I make sugar free protein ice cream without bananas?',
+        answer: 'Yes. You can replace the frozen bananas with 1.5 cups of frozen cauliflower rice or frozen zucchini chunks combined with peanut butter and sweetener for a lower-carb option.'
+      },
+      {
+        question: 'What is the best protein powder to use for healthy desserts?',
+        answer: 'A premium whey-casein blend is best. Casein protein absorbs more liquid, which helps create a thick, creamy texture that mimics commercial soft-serve.'
+      },
+      {
+        question: 'How does protein powder ice cream compare to Ninja Creami recipes?',
+        answer: 'Ninja Creami requires freezing a block of liquid for 24 hours. This recipe uses frozen bananas and yogurt to create immediate soft-serve texture in a standard blender.'
+      },
+      {
+        question: 'Can I eat protein desserts every night?',
+        answer: 'Yes, as long as it fits your daily macronutrient targets. It is made from whole foods like bananas, yogurt, and protein, making it highly nutritious.'
+      },
+      {
+        question: 'Is Greek yogurt necessary for this recipe?',
+        answer: 'Greek yogurt adds creaminess and casein proteins to prevent melting, but you can swap it for almond or coconut yogurt for a dairy-free version.'
+      },
+      {
+        question: 'Can I make this recipe dairy-free?',
+        answer: 'Yes, use dairy-free yogurt (like coconut or almond yogurt) and a premium vegan protein powder (such as pea or rice protein) instead of whey-casein.'
+      },
+      {
+        question: 'How long can I store this in the freezer?',
+        answer: 'It is best enjoyed immediately. It will freeze solid after 2 hours because it lacks heavy fats and sugars, but you can thaw it on the counter for 15 minutes before serving.'
+      },
+      {
+        question: 'Is xanthan gum safe to eat?',
+        answer: 'Yes, xanthan gum is a natural soluble fiber that acts as an emulsifier. Use only 1/4 teaspoon per batch to create a smooth, commercial-like soft-serve.'
+      },
+      {
+        question: 'How do I prevent my blender from getting stuck?',
+        answer: 'Add liquid and soft ingredients first, then protein powder, and frozen bananas last so the blades can form a vortex and pull ingredients down.'
+      },
+      {
+        question: 'Can kids eat protein powder desserts?',
+        answer: 'Yes, protein powder is safe for children, but you can reduce the powder by half and increase Greek yogurt to make a more balanced child-friendly serving.'
+      }
+    ],
+    createdAt: '2026-06-12T02:08:41.000Z',
+    author: 'BHYou',
     readTime: '15 min read'
   }
 ];
@@ -321,7 +651,18 @@ export const initDb = () => {
     localStorage.setItem(KEYS.POSTS, JSON.stringify(DEFAULT_POSTS));
   } else {
     try {
-      const currentPosts = JSON.parse(localStorage.getItem(KEYS.POSTS) || '[]');
+      let currentPosts = JSON.parse(localStorage.getItem(KEYS.POSTS) || '[]');
+      let updatedLocal = false;
+      currentPosts = currentPosts.map((p: any) => {
+        if (p.author === 'Coach Sarah' || p.author === 'Coach Dave') {
+          p.author = 'BHYou';
+          updatedLocal = true;
+        }
+        return p;
+      });
+      if (updatedLocal) {
+        localStorage.setItem(KEYS.POSTS, JSON.stringify(currentPosts));
+      }
       if (!currentPosts.some((p: any) => p.slug === 'high-protein-chicken-recipes')) {
         const newPostItem = DEFAULT_POSTS.find(p => p.slug === 'high-protein-chicken-recipes');
         if (newPostItem) {
@@ -331,6 +672,13 @@ export const initDb = () => {
       }
       if (!currentPosts.some((p: any) => p.slug === 'healthy-desserts-under-400-calories')) {
         const newPostItem = DEFAULT_POSTS.find(p => p.slug === 'healthy-desserts-under-400-calories');
+        if (newPostItem) {
+          currentPosts.push(newPostItem);
+          localStorage.setItem(KEYS.POSTS, JSON.stringify(currentPosts));
+        }
+      }
+      if (!currentPosts.some((p: any) => p.slug === 'sugar-free-protein-ice-cream')) {
+        const newPostItem = DEFAULT_POSTS.find(p => p.slug === 'sugar-free-protein-ice-cream');
         if (newPostItem) {
           currentPosts.push(newPostItem);
           localStorage.setItem(KEYS.POSTS, JSON.stringify(currentPosts));
@@ -445,9 +793,19 @@ export const checkAndFixSeoConfigs = async () => {
       }
     }
 
-    // Verify and fix blog posts (seed new posts if missing)
+    // Verify and fix blog posts (seed new posts if missing, correct authors to BHYou)
     try {
       const posts = await db.getPosts();
+      
+      // Update any posts in the database that still have 'Coach Sarah' or 'Coach Dave'
+      for (const post of posts) {
+        if (post.author === 'Coach Sarah' || post.author === 'Coach Dave') {
+          post.author = 'BHYou';
+          await db.savePost(post);
+          console.log(`Updated author to BHYou for post: ${post.title}`);
+        }
+      }
+
       const hasChickenRecipes = posts.some(p => p.slug === 'high-protein-chicken-recipes');
       if (!hasChickenRecipes) {
         const chickenRecipesPost = DEFAULT_POSTS.find(p => p.slug === 'high-protein-chicken-recipes');
@@ -462,6 +820,14 @@ export const checkAndFixSeoConfigs = async () => {
         if (dessertsPost) {
           await db.savePost(dessertsPost);
           console.log("Seeded 'healthy-desserts-under-400-calories' into database!");
+        }
+      }
+      const hasIceCream = posts.some(p => p.slug === 'sugar-free-protein-ice-cream');
+      if (!hasIceCream) {
+        const iceCreamPost = DEFAULT_POSTS.find(p => p.slug === 'sugar-free-protein-ice-cream');
+        if (iceCreamPost) {
+          await db.savePost(iceCreamPost);
+          console.log("Seeded 'sugar-free-protein-ice-cream' into database!");
         }
       }
     } catch (e) {

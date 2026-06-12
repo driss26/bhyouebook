@@ -192,7 +192,7 @@ ${pages.map(p => `  <url>
       canonicalUrl: '',
       faqSchema: [],
       createdAt: new Date().toISOString(),
-      author: 'Coach Sarah',
+      author: 'BHYou',
       readTime: '4 min read'
     };
     setEditingPost(newPost);
@@ -522,7 +522,7 @@ ${pages.map(p => `  <url>
         </div>
         
         <div style={{ padding: '0 16px', fontSize: '12px', color: 'var(--text-muted-light)' }}>
-          <p>Logged in as: <strong>Admin Sarah</strong></p>
+          <p>Logged in as: <strong>BHYou</strong></p>
           <p style={{ marginTop: '4px' }}>System Version 2026.1</p>
         </div>
       </aside>

@@ -49,6 +49,13 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
     }, 800);
   };
 
+  const scrollToBuySection = () => {
+    const el = document.getElementById('final-cta-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const faqs = [
     {
       q: "What format does the cookbook come in?",
@@ -118,7 +125,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
 
               {/* Mobile-only eBook cover mockup */}
               <div className="mobile-only-mockup">
-                <div className="ebook-mockup">
+                <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
                   <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook Cover" className="ebook-cover-img" />
                   <div className="ebook-spine"></div>
                   <div className="mockup-badge">
@@ -196,7 +203,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
             </div>
 
             <div className="mockup-container">
-              <div className="ebook-mockup" style={{ width: '300px', height: '420px' }}>
+              <div className="ebook-mockup" onClick={scrollToBuySection} style={{ width: '300px', height: '420px', cursor: 'pointer' }}>
                 <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook" className="ebook-cover-img" />
                 <div className="ebook-spine"></div>
               </div>
@@ -427,7 +434,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
       </section>
 
       {/* Final Call to Action */}
-      <section className="section-padding" style={{ textAlign: 'center' }}>
+      <section id="final-cta-section" className="section-padding" style={{ textAlign: 'center' }}>
         <div className="container" style={{ maxWidth: '800px' }}>
           <h2 style={{ fontSize: '40px', marginBottom: '24px' }}>Ready to Fuel Your Body Correctly?</h2>
           <p style={{ color: 'var(--text-muted-dark)', fontSize: '16px', marginBottom: '40px' }}>

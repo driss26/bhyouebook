@@ -39,6 +39,13 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
     }, 800);
   };
 
+  const scrollToBuySection = () => {
+    const el = document.getElementById('promo-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div>
       {/* Hero Section */}
@@ -90,7 +97,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
 
             {/* Mobile-only eBook cover mockup */}
             <div className="mobile-only-mockup">
-              <div className="ebook-mockup">
+              <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
                 <img 
                   src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" 
                   alt="High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories Cookbook Cover" 
@@ -144,7 +151,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
           </div>
 
           <div className="mockup-container">
-            <div className="ebook-mockup">
+            <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
               <img 
                 src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" 
                 alt="50 High-Protein Recipes Under 400 Calories Cookbook Cover" 
@@ -223,7 +230,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
       </section>
 
       {/* Quick Promotion Banner */}
-      <section style={{ backgroundColor: 'var(--dark)', color: 'white', padding: '80px 0', position: 'relative', overflow: 'hidden' }}>
+      <section id="promo-section" style={{ backgroundColor: 'var(--dark)', color: 'white', padding: '80px 0', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, opacity: 0.05, background: 'radial-gradient(var(--primary) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
         <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
           <span style={{ color: 'var(--primary)', fontWeight: 700, textTransform: 'uppercase', fontSize: '14px', letterSpacing: '0.1em', display: 'block', marginBottom: '16px' }}>Limited Time Launch Offer</span>

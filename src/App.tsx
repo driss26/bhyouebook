@@ -187,15 +187,10 @@ function App() {
 
           {/* Mobile Dropdown Panel */}
           {mobileMenuOpen && (
-            <div style={{ 
-              position: 'absolute', top: '80px', left: 0, right: 0, 
-              backgroundColor: 'white', borderBottom: '1px solid var(--light-border)',
-              padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px',
-              boxShadow: 'var(--shadow-lg)', zIndex: 99
-            }}>
-              <Link to="/" onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: 600 }}>Home</Link>
-              <Link to="/cookbook" onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: 600 }}>Ebook</Link>
-              <Link to="/blog" onClick={() => setMobileMenuOpen(false)} style={{ fontWeight: 600 }}>Blogs</Link>
+            <div className="mobile-nav-dropdown">
+              <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+              <Link to="/cookbook" onClick={() => setMobileMenuOpen(false)}>Ebook</Link>
+              <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blogs</Link>
             </div>
           )}
         </nav>

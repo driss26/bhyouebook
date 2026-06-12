@@ -87,22 +87,9 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
           <div className="preview-grid">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <span className="badge badge-primary">Premium Digital Cookbook</span>
-              <h1 style={{ fontSize: '42px', letterSpacing: '-0.02em', marginBottom: '8px' }}>
+              <h1 className="sales-hero-title">
                 {seoConfig?.ogTitle || 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories'}
               </h1>
-
-              {/* Shopify-style Review rating */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-muted-dark)', marginBottom: '8px' }}>
-                <div style={{ color: '#fbbf24', display: 'flex', gap: '2px' }}>
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                </div>
-                <span style={{ fontWeight: 600, color: 'var(--text-dark)' }}>4.9/5.0</span>
-                <span>(142 verified reviews)</span>
-              </div>
 
               {/* Shopify-style Price block */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '8px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)', padding: '12px 0' }}>
@@ -123,14 +110,28 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
                 </div>
               </div>
 
-              {/* Mobile-only eBook cover mockup */}
+              {/* Mobile-only eBook cover mockup with rating block below it */}
               <div className="mobile-only-mockup">
-                <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
-                  <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook Cover" className="ebook-cover-img" />
-                  <div className="ebook-spine"></div>
-                  <div className="mockup-badge">
-                    ONLY
-                    <span>$11.99</span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
+                    <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook Cover" className="ebook-cover-img" />
+                    <div className="ebook-spine"></div>
+                    <div className="mockup-badge">
+                      ONLY
+                      <span>$11.99</span>
+                    </div>
+                  </div>
+                  {/* Rating under the image (Mobile) */}
+                  <div className="rating-under-mockup">
+                    <div className="stars">
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    </div>
+                    <span className="rating-val">4.9/5.0</span>
+                    <span>(142 verified reviews)</span>
                   </div>
                 </div>
               </div>
@@ -147,7 +148,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
                 </p>
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', margin: '20px 0' }}>
+              <div className="sales-features-mini-grid">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Flame size={20} style={{ color: 'var(--primary)' }} />
                   <div>
@@ -192,7 +193,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+              <div className="sales-buy-block">
                 <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '16px 36px', fontSize: '18px' }}>
                   Buy Now - $11.99
                 </button>
@@ -202,10 +203,25 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
               </div>
             </div>
 
+            {/* Desktop eBook mockup with rating block below it */}
             <div className="mockup-container">
-              <div className="ebook-mockup" onClick={scrollToBuySection} style={{ width: '300px', height: '420px', cursor: 'pointer' }}>
-                <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook" className="ebook-cover-img" />
-                <div className="ebook-spine"></div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="ebook-mockup" onClick={scrollToBuySection} style={{ width: '300px', height: '420px', cursor: 'pointer' }}>
+                  <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook" className="ebook-cover-img" />
+                  <div className="ebook-spine"></div>
+                </div>
+                {/* Rating under the image (Desktop) */}
+                <div className="rating-under-mockup">
+                  <div className="stars">
+                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                  </div>
+                  <span className="rating-val">4.9/5.0</span>
+                  <span>(142 reviews)</span>
+                </div>
               </div>
             </div>
           </div>
@@ -436,12 +452,12 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
       {/* Final Call to Action */}
       <section id="final-cta-section" className="section-padding" style={{ textAlign: 'center' }}>
         <div className="container" style={{ maxWidth: '800px' }}>
-          <h2 style={{ fontSize: '40px', marginBottom: '24px' }}>Ready to Fuel Your Body Correctly?</h2>
+          <h2 className="sales-final-cta-title">Ready to Fuel Your Body Correctly?</h2>
           <p style={{ color: 'var(--text-muted-dark)', fontSize: '16px', marginBottom: '40px' }}>
             Join over 5,000 readers who are enjoying waffles, brownies, chicken quesadillas, and creamy pastas every single day while meeting their weight goals.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-            <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '18px 48px', fontSize: '18px' }}>
+            <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '18px 48px', fontSize: '18px', width: '100%', maxWidth: '420px' }}>
               Claim Your Ebook Copy Now - $11.99
             </button>
             <span style={{ fontSize: '13px', color: 'var(--text-muted-dark)' }}>💳 Secure encrypted checkout powered by Gumroad</span>

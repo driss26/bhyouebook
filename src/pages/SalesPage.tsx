@@ -114,7 +114,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
               {/* Shopify-style Format selector */}
               <div style={{ margin: '8px 0 16px 0' }}>
                 <span style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted-dark)', display: 'block', marginBottom: '8px' }}>Format</span>
-                <div style={{ border: '2px solid var(--primary)', backgroundColor: 'var(--primary-glow)', padding: '10px 16px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '12px', cursor: 'default' }}>
+                <div onClick={handleBuyClick} style={{ border: '2px solid var(--primary)', backgroundColor: 'var(--primary-glow)', padding: '10px 16px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
                   <BookOpen size={18} style={{ color: 'var(--primary)' }} />
                   <div>
                     <strong style={{ fontSize: '14px', display: 'block', color: 'var(--text-dark)' }}>Digital PDF</strong>

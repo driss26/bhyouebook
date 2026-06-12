@@ -58,24 +58,24 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
 
   const faqs = [
     {
-      q: "What format does the cookbook come in?",
-      a: "The cookbook is delivered instantly as an optimized, high-resolution PDF. You can read it on your iPhone, Android, tablet, laptop, or print it out to keep in your kitchen."
+      q: "What is included in the ebook?",
+      a: "You get 50 premium high-protein recipes (strictly under 400 calories), our structured 7-Day Meal Plan, grocery shopping lists, and kitchen cheat sheets."
     },
     {
-      q: "Do I need special protein powders or rare ingredients?",
-      a: "Absolutely not! Every recipe relies on standard, budget-friendly ingredients available at any local supermarket. All protein powder options are standard whey/casein, and we provide non-protein-powder alternatives too."
+      q: "Is this beginner friendly?",
+      a: "Yes! Every recipe includes simple, step-by-step instructions and uses budget-friendly ingredients available at any local grocery store."
     },
     {
-      q: "Are the macro counts accurate?",
-      a: "Yes! Every single recipe has been calculated, weighed, and verified using raw ingredient databases. We provide the exact weight, serving size, calories, protein, carbs, and fat breakdown for each dish."
+      q: "How will I receive my ebook?",
+      a: "It is delivered instantly as a high-resolution, mobile-optimized digital PDF to your email inbox immediately after purchase."
     },
     {
-      q: "Is there a vegetarian version?",
-      a: "While this version features 10 chicken meals and other lean meat recipes, it also includes 15 healthy desserts, breakfast options, and snacks that are vegetarian-friendly. We plan to release a fully plant-based edition soon!"
+      q: "Are calories and protein included?",
+      a: "Yes, every single recipe features accurate, verified calorie counts and complete macronutrient breakdowns (protein, carbs, fats)."
     },
     {
-      q: "How can I contact support?",
-      a: "If you have any questions, feedback, or issues downloading your cookbook, simply email us at support@bhyou.com and we will get back to you within 24 hours."
+      q: "Can I use these recipes for meal prep?",
+      a: "Absolutely! Many of the recipes (like our 10 chicken meal preps) are specifically designed to be cooked in advance and stored in the fridge."
     }
   ];
 
@@ -88,7 +88,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <span className="badge badge-primary">Premium Digital Cookbook</span>
               <h1 className="sales-hero-title">
-                {seoConfig?.ogTitle || 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories'}
+                {seoConfig?.ogTitle || 'Get Lean & Stay Full: 50 High-Protein Healthy Recipes Under 400 Calories'}
               </h1>
 
               {/* Shopify-style Price block */}
@@ -195,10 +195,11 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
 
               <div className="sales-buy-block">
                 <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '16px 36px', fontSize: '18px' }}>
-                  Buy Now - $11.99
+                  Get My Recipe Ebook
                 </button>
-                <div style={{ fontSize: '14px', color: 'var(--text-muted-dark)', fontWeight: 500 }}>
-                  ⚡ Instant PDF Download
+                <div className="sales-trust-notes">
+                  <span>⚡ Instant PDF Download • Mobile Friendly Checkout</span>
+                  <span>🔒 Secure Payments Powered by Gumroad • Join 2,600+ healthy recipe lovers</span>
                 </div>
               </div>
             </div>
@@ -458,9 +459,9 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
             <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '18px 48px', fontSize: '18px', width: '100%', maxWidth: '420px' }}>
-              Claim Your Ebook Copy Now - $11.99
+              Get My Recipe Ebook
             </button>
-            <span style={{ fontSize: '13px', color: 'var(--text-muted-dark)' }}>💳 Secure encrypted checkout powered by Gumroad</span>
+            <span style={{ fontSize: '13.5px', color: 'var(--text-muted-dark)' }}>💳 Secure checkout powered by Gumroad • Instant PDF Access</span>
           </div>
         </div>
       </section>

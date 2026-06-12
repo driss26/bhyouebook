@@ -2443,4 +2443,22 @@ input:checked + .slider-round:before {
   }
 }
 
+.sales-trust-notes {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-muted-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+  .sales-trust-notes {
+    align-items: center;
+    width: 100%;
+  }
+}
+
+
 

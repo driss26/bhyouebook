@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Sparkles, Flame, CheckCircle, ArrowRight, ShieldCheck, Heart, Star } from 'lucide-react';
+import { BookOpen, Sparkles, Flame, CheckCircle, ArrowRight, ShieldCheck, Star, Plus, Minus } from 'lucide-react';
 import { firePageView, firePixel, db } from '../db';
 import type { PageSeo } from '../db';
 
@@ -10,6 +10,38 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onToast }) => {
   const [seoConfig, setSeoConfig] = useState<PageSeo | null>(null);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  const toggleFaq = (index: number) => {
+    if (activeFaq === index) {
+      setActiveFaq(null);
+    } else {
+      setActiveFaq(index);
+    }
+  };
+
+  const faqs = [
+    {
+      q: "What is included in the ebook?",
+      a: "You get 50 premium high-protein recipes (strictly under 400 calories), our structured 7-Day Meal Plan, grocery shopping lists, and kitchen cheat sheets."
+    },
+    {
+      q: "Is this beginner friendly?",
+      a: "Yes! Every recipe includes simple, step-by-step instructions and uses budget-friendly ingredients available at any local grocery store."
+    },
+    {
+      q: "How will I receive my ebook?",
+      a: "It is delivered instantly as a high-resolution, mobile-optimized digital PDF to your email inbox immediately after purchase."
+    },
+    {
+      q: "Are calories and protein included?",
+      a: "Yes, every single recipe features accurate, verified calorie counts and complete macronutrient breakdowns (protein, carbs, fats)."
+    },
+    {
+      q: "Can I use these recipes for meal prep?",
+      a: "Absolutely! Many of the recipes (like our 10 chicken meal preps) are specifically designed to be cooked in advance and stored in the fridge."
+    }
+  ];
 
   useEffect(() => {
     firePageView('/');
@@ -70,7 +102,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                 </>
               ) : (
                 <>
-                  High-Protein Recipes: <span>50 Guilt-Free Healthy Recipes Under 400 Calories</span>
+                  Get Lean & Stay Full: <span>50 High-Protein Recipes Under 400 Calories</span>
                 </>
               )}
             </h1>
@@ -113,41 +145,45 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
             </div>
 
             <p className="hero-subheadline">
-              {seoConfig?.ogDescription || seoConfig?.metaDescription || `"High-Protein Recipes Under 400 Calories" is a premium digital recipe ebook featuring 50+ delicious, beginner-friendly meals designed for fat loss, muscle support, and everyday healthy eating.`}
+              {seoConfig?.ogDescription || seoConfig?.metaDescription || `Stop starving yourself. Enjoy 50 delicious, easy-to-prep, macro-friendly recipes designed to support muscle growth and burn fat. Instant digital PDF download.`}
             </p>
             
             <div className="hero-bullet-list">
               <div className="hero-bullet">
-                <Flame size={16} />
-                <span>Section 1: Breakfasts — 10 Recipes</span>
+                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
+                <span>50 High-Protein Recipes (Under 400 kcal)</span>
               </div>
               <div className="hero-bullet">
-                <Sparkles size={16} />
-                <span>Section 2: Healthy Desserts — 15 Recipes</span>
+                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
+                <span>15 Guilt-Free Healthy Desserts</span>
               </div>
               <div className="hero-bullet">
-                <Flame size={16} />
-                <span>Section 3: Chicken Meals — 10 Recipes</span>
+                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
+                <span>10 Easy Chicken Meal Preps</span>
               </div>
               <div className="hero-bullet">
-                <BookOpen size={16} />
-                <span>Section 4: Lunch & Dinner — 10 Recipes</span>
+                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
+                <span>7-Day Structured Meal Plan</span>
               </div>
               <div className="hero-bullet">
-                <Heart size={16} />
-                <span>Section 5: Smoothies & Drinks — 5 Recipes</span>
+                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
+                <span>Calories & Macro Counts on Every Page</span>
               </div>
               <div className="hero-bullet">
-                <CheckCircle size={16} />
-                <span>Section 6: 7-Day Structured Meal Plan</span>
+                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
+                <span>Instant Digital Access Anywhere</span>
               </div>
             </div>
 
-            <div className="hero-actions">
-              <button onClick={handleBuyClick} className="btn btn-primary">
-                Get The Cookbook - $11.99
+            <div className="hero-actions" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '8px' }}>
+              <button onClick={handleBuyClick} className="btn btn-primary" style={{ width: '100%' }}>
+                Get My Recipe Ebook
                 <ArrowRight size={18} />
               </button>
+              <div style={{ marginTop: '4px', fontSize: '13px', color: 'var(--text-muted-dark)', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', textAlign: 'center' }}>
+                <span>⚡ Instant Access After Purchase • Mobile Friendly Checkout</span>
+                <span>🔒 Secure Payments Powered by Gumroad • Join 2,600+ healthy recipe lovers</span>
+              </div>
             </div>
           </div>
 
@@ -258,6 +294,33 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
             <button onClick={handleBuyClick} className="btn btn-primary">
               Buy Cookbook ($11.99)
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--light-surface)', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
+        <div className="container">
+          <div className="section-title-wrapper" style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <span className="section-subtitle">Got Questions?</span>
+            <h2 className="section-title">Frequently Asked Questions</h2>
+            <p style={{ color: 'var(--text-muted-dark)' }}>Everything you need to know about the ebook purchase and contents.</p>
+          </div>
+
+          <div className="faq-max-width" style={{ maxWidth: '800px', margin: '0 auto' }}>
+            {faqs.map((faq, index) => (
+              <div className="faq-item" key={index}>
+                <button className="faq-question-btn" onClick={() => toggleFaq(index)}>
+                  <h3>{faq.q}</h3>
+                  {activeFaq === index ? <Minus size={18} /> : <Plus size={18} />}
+                </button>
+                {activeFaq === index && (
+                  <div className="faq-answer">
+                    <p>{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>

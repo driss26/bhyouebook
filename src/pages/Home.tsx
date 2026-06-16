@@ -281,6 +281,80 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
         </div>
       </section>
 
+      {/* Ebook Page-by-Page Outline */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--light-surface)', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
+        <div className="container">
+          <div className="section-title-wrapper" style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <span className="section-subtitle">What's Inside</span>
+            <h2 className="section-title">Ebook Page-by-Page Outline</h2>
+            <p style={{ color: 'var(--text-muted-dark)' }}>Here is exactly what you will find on every page of the 60-page digital cookbook.</p>
+          </div>
+
+          <div style={{ maxWidth: '900px', margin: '0 auto', backgroundColor: 'white', borderRadius: 'var(--border-radius)', border: '1px solid var(--light-border)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="admin-table-wrapper" style={{ margin: 0 }}>
+              <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ backgroundColor: 'var(--light-surface)' }}>
+                    <th style={{ padding: '16px', fontWeight: 600, width: '120px', color: 'var(--text-dark)' }}>Page(s)</th>
+                    <th style={{ padding: '16px', fontWeight: 600, width: '200px', color: 'var(--text-dark)' }}>Page Type</th>
+                    <th style={{ padding: '16px', fontWeight: 600, color: 'var(--text-dark)' }}>Content Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { page: "1", type: "Cover", desc: "High-Protein Recipes eBook — Cover Page" },
+                    { page: "2", type: "Welcome", desc: "Welcome + How to Use This Book" },
+                    { page: "3", type: "Intro", desc: "Nutrition Basics (Simplified)" },
+                    { page: "4", type: "Table of Contents", desc: "Full Table of Contents" },
+                    { page: "4", type: "Section Divider", desc: "SECTION 1: HIGH-PROTEIN BREAKFASTS", highlight: true },
+                    { page: "5-12", type: "Recipes (Breakfasts)", desc: "Breakfast Recipes #1 to #10 (High Protein)" },
+                    { page: "12", type: "Section Divider", desc: "SECTION 2: HEALTHY DESSERTS", highlight: true },
+                    { page: "13-26", type: "Recipes (Desserts)", desc: "Dessert Recipes #1 to #15" },
+                    { page: "27", type: "Section Divider", desc: "SECTION 3: CHICKEN MEALS", highlight: true },
+                    { page: "27-35", type: "Recipes (Chicken)", desc: "Chicken Meal Recipes #1 to #10" },
+                    { page: "35", type: "Section Divider", desc: "SECTION 4: LUNCH & DINNER", highlight: true },
+                    { page: "35-44", type: "Recipes (Lunch & Dinner)", desc: "Lunch & Dinner Recipes #1 to #10" },
+                    { page: "44", type: "Section Divider", desc: "SECTION 5: SMOOTHIES & DRINKS", highlight: true },
+                    { page: "44-48", type: "Recipes (Smoothies)", desc: "Smoothie & Drink Recipes #1 to #5" },
+                    { page: "49", type: "Section Divider", desc: "SECTION 6: 7-DAY MEAL PLAN", highlight: true },
+                    { page: "49-51", type: "Meal Plan", desc: "7-Day High-Protein Meal Plan (Day 1 to Day 7)" },
+                    { page: "51-52", type: "Bonus", desc: "Bonus: Protein Sources Guide" },
+                    { page: "53", type: "Bonus", desc: "Bonus: Grocery Shopping List" },
+                    { page: "54-55", type: "Bonus", desc: "Bonus: Kitchen Essentials" },
+                    { page: "56", type: "Bonus", desc: "Bonus: High-Protein Cheat Sheet" },
+                    { page: "57", type: "Snack Ideas + Closing", desc: "Closing Page + Call to Action" },
+                    { page: "58", type: "Quote Page", desc: "Inspirational Quote Page" },
+                    { page: "59", type: "Outline Page", desc: "Full Page-by-Page Outline" },
+                    { page: "60", type: "Thank You Page", desc: "Thank You + Social Media Links" }
+                  ].map((row, idx) => (
+                    <tr key={idx} style={{ 
+                      borderBottom: '1px solid var(--light-border)',
+                      backgroundColor: row.highlight ? 'var(--primary-glow)' : 'transparent',
+                      fontWeight: row.highlight ? 600 : 'normal'
+                    }}>
+                      <td style={{ padding: '14px 16px', color: 'var(--primary)', fontWeight: 700 }}>{row.page}</td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span style={{ 
+                          backgroundColor: row.highlight ? 'var(--primary)' : 'var(--light-surface)', 
+                          color: row.highlight ? 'white' : 'var(--text-dark)',
+                          padding: '4px 10px', 
+                          borderRadius: '4px',
+                          fontSize: '12px',
+                          fontWeight: 600
+                        }}>
+                          {row.type}
+                        </span>
+                      </td>
+                      <td style={{ padding: '14px 16px', color: row.highlight ? 'var(--primary)' : 'var(--text-dark)' }}>{row.desc}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Quick Promotion Banner */}
       <section id="promo-section" className="home-promo-section">
         <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, opacity: 0.05, background: 'radial-gradient(var(--primary) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>

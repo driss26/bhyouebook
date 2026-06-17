@@ -50,6 +50,58 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Structured Data (JSON-LD) for eBook Product -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "High-Protein Recipes Under 400 Calories",
+      "description": "50+ quick healthy recipes under 400 calories. High-protein meals for fat loss and lean muscle. Ready in 30 minutes or less.",
+      "image": "https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg",
+      "brand": {
+        "@type": "Brand",
+        "name": "BHYou"
+      },
+      "url": "https://www.bhyou.com",
+      "offers": {
+        "@type": "Offer",
+        "price": "11.99",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "US",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "US"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "value": 0,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "value": 0,
+              "unitCode": "DAY"
+            }
+          }
+        }
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

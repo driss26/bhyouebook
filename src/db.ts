@@ -1061,6 +1061,187 @@ Yes, protein powder is simply a concentrated source of dairy or plant protein. H
     createdAt: '2026-06-17T12:00:00.000Z',
     author: 'BHYou',
     readTime: '8 min read'
+  },
+  {
+    id: "post-8",
+    title: "20 Easy High-Protein Dinners Under 400 Calories (Ready in 30 Min)",
+    slug: "high-protein-dinners-under-400-calories",
+    excerpt: "Tired of choosing between eating healthy and eating something that actually tastes good? These 20 high-protein dinners are all under 400 calories, ready in 30 minutes or less, and filling enough to keep you satisfied all evening.",
+    content: `<p class="intro">Tired of choosing between eating healthy and eating something that actually tastes good? These 20 high-protein dinners are all under 400 calories, ready in 30 minutes or less, and filling enough to keep you satisfied all evening.</p>
+</div>
+<div class="stats-row"><div class="stat-box"><div class="num">20</div><div class="lbl">Quick recipes</div></div><div class="stat-box"><div class="num">&lt;400</div><div class="lbl">Calories each</div></div><div class="stat-box"><div class="num">30g+</div><div class="lbl">Protein per meal</div></div></div>
+<div class="toc"><div class="toc-title">📋 Jump to a recipe</div><ol><li><a href="#r1">Garlic Chicken Rice Bowl</a></li><li><a href="#r2">Spicy Shrimp Stir Fry</a></li><li><a href="#r3">Creamy Cottage Cheese Pasta</a></li><li><a href="#r4">Turkey Burger Bowl</a></li><li><a href="#r5">Honey Sesame Salmon Bowl</a></li></ol></div>
+<h2>The 5 Best High-Protein Dinners Under 400 Calories</h2>
+<div class="recipe-card" id="r1"><div class="recipe-title">1. Garlic Chicken Rice Bowl</div><div class="recipe-badges"><span class="rbadge rb-cal">390 cal</span><span class="rbadge rb-pro">40g protein</span><span class="rbadge rb-time">⏱ 20 min</span></div><p class="recipe-desc">Juicy garlicky chicken over fluffy rice with a simple soy-sesame sauce. A weeknight staple ready in 20 minutes.</p><div class="ingredients-title">Ingredients</div><ul class="ingredients-list"><li>150g chicken breast</li><li>½ cup cooked white rice</li><li>4 garlic cloves, minced</li><li>1 tbsp olive oil</li><li>1 tbsp low-sodium soy sauce</li><li>1 tsp sesame oil</li><li>¼ tsp chili flakes</li><li>Green onion + sesame seeds</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Heat olive oil in pan over medium-high. Add garlic, cook 1 minute.</li><li>Add chicken. Cook 5–6 min per side until golden.</li><li>Pour soy sauce and sesame oil over. Toss. Cook 1 more minute.</li><li>Serve over rice. Top with green onion and sesame seeds.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Add bok choy or spinach in the last 2 minutes for extra greens.</div></div>
+<div class="recipe-card" id="r2"><div class="recipe-title">2. Spicy Shrimp Stir Fry</div><div class="recipe-badges"><span class="rbadge rb-cal">340 cal</span><span class="rbadge rb-pro">38g protein</span><span class="rbadge rb-time">⏱ 15 min</span></div><p class="recipe-desc">Crispy garlicky shrimp with colorful vegetables in a sriracha-soy sauce. Ready in 15 minutes — better than takeout.</p><ul class="ingredients-list"><li>150g shrimp, peeled</li><li>1 cup mixed stir fry veg</li><li>½ cup brown rice</li><li>1 tbsp soy sauce</li><li>1 tsp sriracha</li><li>1 tsp sesame oil</li><li>2 garlic cloves, minced</li><li>½ tsp fresh ginger</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Pat shrimp dry, season with salt and pepper.</li><li>Heat sesame oil in wok over high. Add garlic and ginger, 30 seconds.</li><li>Add shrimp, cook 2 min per side until pink.</li><li>Add vegetables and sauce. Stir fry 3 minutes.</li><li>Serve over brown rice immediately.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Use frozen shrimp — thaw in cold water for 10 minutes. Just as good as fresh.</div></div>
+<div class="recipe-card" id="r3"><div class="recipe-title">3. Creamy Cottage Cheese Pasta</div><div class="recipe-badges"><span class="rbadge rb-cal">380 cal</span><span class="rbadge rb-pro">36g protein</span><span class="rbadge rb-time">⏱ 20 min</span></div><p class="recipe-desc">Silky protein-packed pasta sauce from blended cottage cheese — creamy without the heavy cream, nobody guesses it's healthy.</p><ul class="ingredients-list"><li>80g whole-grain pasta</li><li>½ cup low-fat cottage cheese</li><li>2 garlic cloves</li><li>2 tbsp grated Parmesan</li><li>¼ cup pasta water</li><li>Salt, pepper, chili flakes</li><li>Fresh basil</li><li>Cherry tomatoes (optional)</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Cook pasta. Reserve ¼ cup water before draining.</li><li>Blend cottage cheese, garlic, Parmesan, salt, pepper until smooth.</li><li>Toss hot pasta with sauce. Add pasta water until creamy.</li><li>Top with chili flakes, basil, and tomatoes.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Add 100g grilled chicken on top to push protein to 55g.</div></div>
+<div class="recipe-card" id="r4"><div class="recipe-title">4. Turkey Burger Bowl</div><div class="recipe-badges"><span class="rbadge rb-cal">380 cal</span><span class="rbadge rb-pro">40g protein</span><span class="rbadge rb-time">⏱ 20 min</span></div><p class="recipe-desc">All the satisfaction of a burger in bowl form — no bun needed. Seasoned turkey, crisp romaine, avocado, and tangy yogurt sauce.</p><ul class="ingredients-list"><li>150g lean ground turkey</li><li>1 cup romaine lettuce</li><li>½ cup cherry tomatoes</li><li>¼ avocado, sliced</li><li>1 tbsp plain Greek yogurt</li><li>1 tsp Worcestershire sauce</li><li>Garlic powder, salt, pepper</li><li>1 tbsp mustard</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Mix turkey with Worcestershire, garlic powder, salt, pepper.</li><li>Cook in pan over medium-high 4–5 min per side (165°F).</li><li>Build bowl: romaine, tomatoes, avocado, turkey.</li><li>Drizzle Greek yogurt mixed with mustard on top.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Cook as crumbles instead of a patty — faster and easier to eat in a bowl.</div></div>
+<div class="recipe-card" id="r5"><div class="recipe-title">5. Honey Sesame Salmon Bowl</div><div class="recipe-badges"><span class="rbadge rb-cal">395 cal</span><span class="rbadge rb-pro">38g protein</span><span class="rbadge rb-time">⏱ 20 min</span></div><p class="recipe-desc">Flaky caramelized salmon with honey-soy glaze over brown rice with avocado and edamame. Restaurant quality in 20 minutes.</p><ul class="ingredients-list"><li>150g salmon fillet</li><li>½ cup brown rice</li><li>¼ avocado, sliced</li><li>¼ cup edamame</li><li>1 tbsp honey</li><li>1 tbsp soy sauce</li><li>1 tsp sesame oil</li><li>Sesame seeds + green onion</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Mix honey, soy sauce, sesame oil into glaze.</li><li>Brush salmon with glaze. Pan-sear 3–4 min per side.</li><li>Flake salmon into large pieces.</li><li>Build bowl: rice, edamame, avocado, salmon. Drizzle remaining glaze.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Bake at 400°F for 12 minutes for a hands-off version.</div></div>
+<h2>Frequently Asked Questions</h2>
+<div class="faq-item"><div class="faq-q">Can I really lose weight eating dinners under 400 calories?</div><div class="faq-a">Yes — as long as your total daily calories are in a deficit. A 400-calorie high-protein dinner combined with a 300-calorie breakfast and 400-calorie lunch keeps most people around 1,200–1,500 calories per day, creating healthy fat loss of 0.5–1 lb per week.</div></div>
+<div class="faq-item"><div class="faq-q">How much protein should I aim for at dinner?</div><div class="faq-a">Aim for at least 25–40g of protein per dinner. All 5 recipes in this list hit that range while staying under 400 calories.</div></div>
+<div class="faq-item"><div class="faq-q">Are these meals good for meal prep?</div><div class="faq-a">Most of them yes. The chicken bowls, turkey burger bowl, and stir fries all store well in the fridge for 3–4 days.</div></div>
+<div class="cta-box"><h3>Want 50 more recipes like these?</h3><p>Get the full BHYou cookbook — 50 high-protein recipes under 400 calories, a 7-day meal plan, and a complete grocery guide.</p><a href="https://bhyou.com" class="cta-btn">Get the BHYou Cookbook →</a></div>`,
+    featuredImage: "/recipe_preview.png",
+    pinterestImage: "/recipe_preview.png",
+    category: "Chicken Meals",
+    tags: ["dinner","high protein","low calorie","weight loss"],
+    status: "published",
+    seoTitle: "20 Easy High-Protein Dinners Under 400 Calories (Ready in 30 Min) | BHYou",
+    metaDescription: "Discover 20 easy high-protein dinners under 400 calories. Quick 30-minute meals that are filling, delicious, and perfect for weight loss.",
+    focusKeyword: "high protein dinners under 400 calories",
+    seoScore: 98,
+    canonicalUrl: "https://bhyou.com/blog/high-protein-dinners-under-400-calories",
+    faqSchema: [
+      {
+            "question": "Can I really lose weight eating dinners under 400 calories?",
+            "answer": "Yes — as long as your total daily calories are in a deficit. A 400-calorie high-protein dinner combined with a 300-calorie breakfast and 400-calorie lunch keeps most people around 1,200–1,500 calories per day, creating healthy fat loss of 0.5–1 lb per week."
+      },
+      {
+            "question": "How much protein should I aim for at dinner?",
+            "answer": "Aim for at least 25–40g of protein per dinner. All 5 recipes in this list hit that range while staying under 400 calories."
+      },
+      {
+            "question": "Are these meals good for meal prep?",
+            "answer": "Most of them yes. The chicken bowls, turkey burger bowl, and stir fries all store well in the fridge for 3–4 days."
+      }
+],
+    createdAt: "2026-06-20T10:00:00Z",
+    author: "BHYou",
+    readTime: "12 min read"
+  },
+  {
+    id: "post-9",
+    title: "12 Guilt-Free Desserts Under 200 Calories That Taste Like the Real Thing",
+    slug: "guilt-free-desserts-under-200-calories",
+    excerpt: "You don't have to choose between enjoying dessert and reaching your health goals. These 12 guilt-free desserts are all under 200 calories, high in protein, and genuinely delicious.",
+    content: `<p class="intro">You don't have to choose between enjoying dessert and reaching your health goals. These 12 guilt-free desserts are all under 200 calories, high in protein, and genuinely delicious — because nobody should have to eat cardboard to stay on track.</p>
+</div>
+<div class="stats-row"><div class="stat-box"><div class="num">12</div><div class="lbl">Dessert recipes</div></div><div class="stat-box"><div class="num">&lt;200</div><div class="lbl">Calories each</div></div><div class="stat-box"><div class="num">15g+</div><div class="lbl">Protein in most</div></div></div>
+<div class="toc"><div class="toc-title">🍫 Jump to a recipe</div><ol><li><a href="#d1">Chocolate Protein Ice Cream</a></li><li><a href="#d2">Protein Mug Cake (90 seconds)</a></li><li><a href="#d3">Frozen Yogurt Bark</a></li><li><a href="#d4">Peanut Butter Protein Bites</a></li><li><a href="#d5">Strawberry Protein Parfait</a></li><li><a href="#d6">Chocolate Protein Mousse</a></li></ol></div>
+<h2>The 12 Best Guilt-Free Desserts Under 200 Calories</h2>
+<div class="recipe-card" id="d1"><div class="recipe-title">1. Chocolate Protein Ice Cream</div><div class="recipe-badges"><span class="rbadge rb-cal">110 cal</span><span class="rbadge rb-pro">12g protein</span><span class="rbadge rb-nb">No machine needed</span></div><p class="recipe-desc">Rich creamy scoopable chocolate ice cream from frozen bananas and protein powder. Made in 5 minutes.</p><ul class="ingredients-list"><li>1 frozen banana</li><li>1 scoop chocolate protein</li><li>1 tbsp cocoa powder</li><li>2 tbsp almond milk</li><li>1 tsp vanilla extract</li><li>Pinch of salt</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Break frozen banana into chunks and blend.</li><li>Add all remaining ingredients. Blend until smooth and creamy.</li><li>Eat as soft-serve or freeze 2–3 hours for scoopable texture.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Blend in 1 tbsp peanut butter for a chocolate-PB version — still under 200 calories.</div></div>
+<div class="recipe-card" id="d2"><div class="recipe-title">2. Protein Mug Cake (90 Seconds)</div><div class="recipe-badges"><span class="rbadge rb-cal">180 cal</span><span class="rbadge rb-pro">22g protein</span><span class="rbadge rb-time">⏱ 2 min total</span></div><p class="recipe-desc">A warm gooey chocolate cake ready in 90 seconds. The guilt-free dessert for when you need something sweet right now.</p><ul class="ingredients-list"><li>1 scoop chocolate protein</li><li>2 tbsp cocoa powder</li><li>1 egg white</li><li>3 tbsp unsweetened applesauce</li><li>1 tbsp almond milk</li><li>½ tsp baking powder</li><li>1 tsp honey</li><li>Pinch of salt</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>In a microwave-safe mug, mix all ingredients until smooth.</li><li>Microwave on high for 60–90 seconds.</li><li>Let sit 30 seconds before eating.</li><li>Top with a spoonful of Greek yogurt if desired.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Push a square of dark chocolate into center before microwaving for a molten lava effect.</div></div>
+<div class="recipe-card" id="d3"><div class="recipe-title">3. Frozen Yogurt Bark</div><div class="recipe-badges"><span class="rbadge rb-cal">150 cal</span><span class="rbadge rb-pro">18g protein</span><span class="rbadge rb-time">⏱ 5 min prep</span></div><p class="recipe-desc">A refreshing colorful frozen bark that takes 5 minutes to make — perfect for any time you want something cold and sweet.</p><ul class="ingredients-list"><li>1 cup plain Greek yogurt</li><li>½ scoop vanilla protein</li><li>1 tbsp honey</li><li>¼ cup mixed berries</li><li>1 tbsp dark chocolate chips</li><li>1 tbsp granola</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Mix yogurt, protein powder, and honey until smooth.</li><li>Spread onto parchment-lined tray ½ inch thick.</li><li>Scatter berries, chocolate chips, and granola on top.</li><li>Freeze at least 3 hours or overnight.</li><li>Break into pieces. Store in freezer bag.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Let sit 2 minutes at room temperature before eating.</div></div>
+<div class="recipe-card" id="d4"><div class="recipe-title">4. Peanut Butter Protein Bites</div><div class="recipe-badges"><span class="rbadge rb-cal">120 cal each</span><span class="rbadge rb-pro">7g each</span><span class="rbadge rb-nb">No bake</span></div><p class="recipe-desc">Chewy chocolatey peanut buttery bites that satisfy any craving. Make a batch Sunday — lasts all week.</p><ul class="ingredients-list"><li>1 cup rolled oats</li><li>½ cup natural peanut butter</li><li>2 scoops vanilla protein</li><li>3 tbsp honey</li><li>1 tsp vanilla extract</li><li>2 tbsp dark chocolate chips</li><li>1 tbsp chia seeds</li><li>Pinch of salt</li></ul><div class="steps-title">Instructions (makes 12)</div><ol class="steps-list"><li>Mix all ingredients until a dough forms.</li><li>Roll into 12 equal balls.</li><li>Refrigerate 30 minutes until firm.</li><li>Store in airtight container in fridge up to 1 week.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Roll in cocoa powder or shredded coconut for a different look.</div></div>
+<div class="recipe-card" id="d5"><div class="recipe-title">5. Strawberry Protein Parfait</div><div class="recipe-badges"><span class="rbadge rb-cal">180 cal</span><span class="rbadge rb-pro">22g protein</span><span class="rbadge rb-time">⏱ 5 min</span></div><p class="recipe-desc">A layered parfait with creamy vanilla yogurt and fresh strawberry sauce — elegant enough for guests, simple for every day.</p><ul class="ingredients-list"><li>1 cup plain Greek yogurt</li><li>1 scoop vanilla protein</li><li>1 cup fresh strawberries</li><li>1 tbsp honey</li><li>1 tsp lemon juice</li><li>¼ tsp vanilla extract</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Blend half the strawberries with honey and lemon until smooth.</li><li>Mix yogurt, protein powder, and vanilla until smooth.</li><li>Layer yogurt, strawberry sauce, then sliced berries in a glass.</li><li>Serve immediately or refrigerate up to 4 hours.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Use frozen strawberries when fresh are out of season — thaw and drain first.</div></div>
+<div class="recipe-card" id="d6"><div class="recipe-title">6. Chocolate Protein Mousse</div><div class="recipe-badges"><span class="rbadge rb-cal">200 cal</span><span class="rbadge rb-pro">24g protein</span><span class="rbadge rb-time">⏱ 5 min</span></div><p class="recipe-desc">Silky airy intensely chocolatey mousse from Greek yogurt — rich enough to feel like real indulgence but light enough for every night.</p><ul class="ingredients-list"><li>1 cup plain Greek yogurt</li><li>1 scoop chocolate protein</li><li>2 tbsp cocoa powder</li><li>2 tbsp honey</li><li>1 tsp vanilla extract</li><li>Pinch of salt</li></ul><div class="steps-title">Instructions</div><ol class="steps-list"><li>Whisk all ingredients together vigorously until smooth and airy.</li><li>Taste and adjust sweetness.</li><li>Refrigerate 20–30 minutes until thickened.</li><li>Serve in small glasses with dark chocolate shavings.</li></ol><div class="tip-box"><strong>Pro tip:</strong> Use a hand mixer for an even fluffier texture — takes 2 minutes.</div></div>
+<h2>Frequently Asked Questions</h2>
+<div class="faq-item"><div class="faq-q">Can I eat these desserts every day and still lose weight?</div><div class="faq-a">Yes, as long as your total daily calories are in a deficit. A 150–200 calorie dessert fits easily into any healthy eating plan. Allowing yourself a satisfying daily treat is one of the most effective strategies for long-term consistency.</div></div>
+<div class="faq-item"><div class="faq-q">What protein powder works best for these recipes?</div><div class="faq-a">Whey protein blends best in cold recipes. Casein creates a thicker creamier texture — excellent for mousse and ice cream. Plant-based protein can be substituted in all recipes.</div></div>
+<div class="faq-item"><div class="faq-q">How do I store these desserts?</div><div class="faq-a">Protein bites, mousse, and parfait store in the fridge 3–5 days. Frozen bark and ice cream keep in the freezer up to 1 month. The mug cake is best eaten immediately.</div></div>
+<div class="cta-box"><h3>Want 15 more guilt-free dessert recipes?</h3><p>The BHYou cookbook includes 15 healthy desserts plus 35 more high-protein meals and a full 7-day meal plan.</p><a href="https://bhyou.com" class="cta-btn">Get the BHYou Cookbook →</a></div>`,
+    featuredImage: "/healthy_desserts.png",
+    pinterestImage: "/healthy_desserts.png",
+    category: "Healthy Desserts",
+    tags: ["dessert","high protein","low calorie","sugar free"],
+    status: "published",
+    seoTitle: "12 Guilt-Free Desserts Under 200 Calories That Taste Like the Real Thing | BHYou",
+    metaDescription: "12 guilt-free desserts under 200 calories that actually satisfy your sweet tooth. High-protein, naturally sweetened, and ready in minutes.",
+    focusKeyword: "guilt free desserts under 200 calories",
+    seoScore: 97,
+    canonicalUrl: "https://bhyou.com/blog/guilt-free-desserts-under-200-calories",
+    faqSchema: [
+      {
+            "question": "Can I eat these desserts every day and still lose weight?",
+            "answer": "Yes, as long as your total daily calories are in a deficit. A 150–200 calorie dessert fits easily into any healthy eating plan. Allowing yourself a satisfying daily treat is one of the most effective strategies for long-term consistency."
+      },
+      {
+            "question": "What protein powder works best for these recipes?",
+            "answer": "Whey protein blends best in cold recipes. Casein creates a thicker creamier texture — excellent for mousse and ice cream. Plant-based protein can be substituted in all recipes."
+      },
+      {
+            "question": "How do I store these desserts?",
+            "answer": "Protein bites, mousse, and parfait store in the fridge 3–5 days. Frozen bark and ice cream keep in the freezer up to 1 month. The mug cake is best eaten immediately."
+      }
+],
+    createdAt: "2026-06-21T10:00:00Z",
+    author: "BHYou",
+    readTime: "10 min read"
+  },
+  {
+    id: "post-10",
+    title: "7-Day High-Protein Meal Prep Under 30 Minutes",
+    slug: "healthy-meal-prep-under-30-minutes",
+    excerpt: "Two hours on Sunday. Seven days of healthy high-protein meals — all under 400 calories and ready in under 30 minutes each. This is the meal prep system that actually works in 2026.",
+    content: `<p class="intro">Two hours on Sunday. Seven days of healthy high-protein meals — all under 400 calories and ready in under 30 minutes each. This is the meal prep system that actually works in 2026, whether you're losing fat, building muscle, or just tired of deciding what to eat every day.</p>
+</div>
+<div class="stats-row"><div class="stat-box"><div class="num">7</div><div class="lbl">Days covered</div></div><div class="stat-box"><div class="num">&lt;400</div><div class="lbl">Cal per meal</div></div><div class="stat-box"><div class="num">30g+</div><div class="lbl">Protein daily</div></div><div class="stat-box"><div class="num">2hrs</div><div class="lbl">Total prep</div></div></div>
+<div class="toc"><div class="toc-title">📋 What's inside</div><ol><li><a href="#why">Why high-protein meal prep works in 2026</a></li><li><a href="#sunday">The Sunday prep routine</a></li><li><a href="#7days">Your 7-day meal plan</a></li><li><a href="#grocery">Full grocery list</a></li><li><a href="#airfryer">Air fryer hacks (trending 2026)</a></li><li><a href="#tips">Pro tips to stay consistent</a></li></ol></div>
+<h2 id="why">Why High-Protein Meal Prep Is the #1 Fat Loss Strategy in 2026</h2>
+<p>In 2026, the biggest nutrition trend in the USA isn't a new diet — it's <strong>consistency through preparation</strong>. Over 83% of people who successfully maintain a healthy diet use some form of meal prep. When healthy food is already made, you eat it. When it's not, you order something else.</p>
+<p>High-protein meal prep specifically works because protein keeps you full longer, preserves muscle while losing fat, reduces late-night cravings by up to 60%, and delivers faster results. People eating 120g+ protein per day lose fat 2x faster than low-protein dieters.</p>
+<div class="highlight-box"><p>🔥 <strong>2026 trend alert:</strong> "High-protein comfort food" is the #1 food trend in the USA right now. People want food that feels indulgent AND supports their goals. That's exactly what this meal plan delivers.</p></div>
+<h2 id="sunday">The Sunday Prep Routine (2 Hours, Everything Done)</h2>
+<div class="prep-card">
+<h3>⏱ Your Sunday Prep Order</h3>
+<div class="prep-step"><div class="prep-num">1</div><div class="prep-text"><strong>Start rice first (20 min, hands-off):</strong> Cook 3 cups dry rice. While it cooks, do everything else.</div></div>
+<div class="prep-step"><div class="prep-num">2</div><div class="prep-text"><strong>Cook all proteins (25 min):</strong> 600g chicken breast + 400g ground turkey simultaneously. Oven at 400°F for chicken. Turkey in pan with cumin and onion powder.</div></div>
+<div class="prep-step"><div class="prep-num">3</div><div class="prep-text"><strong>Air fryer vegetables (15 min):</strong> Broccoli + bell peppers + zucchini — toss in olive oil + salt, air fry at 380°F for 12 minutes. <span class="trend-badge">Trending 2026</span></div></div>
+<div class="prep-step"><div class="prep-num">4</div><div class="prep-text"><strong>Hard boil 8 eggs (12 min):</strong> Perfect grab-and-go protein for snacks and breakfast bowls.</div></div>
+<div class="prep-step"><div class="prep-num">5</div><div class="prep-text"><strong>Portion and store:</strong> Divide into containers by ingredient — not by meal. This lets you mix and match all week.</div></div>
+</div>
+<div class="tip-box"><strong>Pro tip:</strong> Label every container with the date and macros. It takes 5 minutes and removes all decision-making during the week.</div>
+<h2 id="7days">Your 7-Day High-Protein Meal Plan</h2>
+<p>Every day under 1,500 calories with 120g+ protein. Adjust portions based on your personal goals.</p>
+<div class="day-card"><div class="day-header"><div class="day-title">Monday — Fresh Start</div><div class="day-cal">~1,220 cal · 126g protein</div></div><div class="meal-grid"><div class="meal-label">Breakfast</div><div class="meal-name">Greek Yogurt Bowl with berries + chia seeds</div><div class="meal-macro">310 cal · 30g</div><div class="divider"></div><div class="meal-label">Lunch</div><div class="meal-name">Tuna & avocado on rice cakes with cucumber</div><div class="meal-macro">290 cal · 40g</div><div class="divider"></div><div class="meal-label">Dinner</div><div class="meal-name">Garlic chicken + brown rice + air fryer broccoli</div><div class="meal-macro">380 cal · 42g</div><div class="divider"></div><div class="meal-label">Snack</div><div class="meal-name">2 hard-boiled eggs + apple</div><div class="meal-macro">240 cal · 14g</div></div></div>
+<div class="day-card"><div class="day-header"><div class="day-title">Tuesday — Power Day</div><div class="day-cal">~1,310 cal · 128g protein</div></div><div class="meal-grid"><div class="meal-label">Breakfast</div><div class="meal-name">Chocolate protein oats with banana slices</div><div class="meal-macro">350 cal · 30g</div><div class="divider"></div><div class="meal-label">Lunch</div><div class="meal-name">Turkey wrap with hummus, spinach + tomato</div><div class="meal-macro">340 cal · 35g</div><div class="divider"></div><div class="meal-label">Dinner</div><div class="meal-name">Honey sesame salmon + brown rice + edamame</div><div class="meal-macro">395 cal · 38g</div><div class="divider"></div><div class="meal-label">Snack</div><div class="meal-name">Cottage cheese + berries</div><div class="meal-macro">225 cal · 25g</div></div></div>
+<div class="day-card"><div class="day-header"><div class="day-title">Wednesday — Midweek Reset</div><div class="day-cal">~1,190 cal · 118g protein</div></div><div class="meal-grid"><div class="meal-label">Breakfast</div><div class="meal-name">Egg white wrap with black beans + salsa + avocado</div><div class="meal-macro">280 cal · 32g</div><div class="divider"></div><div class="meal-label">Lunch</div><div class="meal-name">Chicken Caesar wrap with light dressing</div><div class="meal-macro">355 cal · 40g</div><div class="divider"></div><div class="meal-label">Dinner</div><div class="meal-name">Creamy cottage cheese pasta with cherry tomatoes</div><div class="meal-macro">380 cal · 36g</div><div class="divider"></div><div class="meal-label">Snack</div><div class="meal-name">Protein shake + handful of almonds</div><div class="meal-macro">175 cal · 10g</div></div></div>
+<div class="day-card"><div class="day-header"><div class="day-title">Thursday — Fuel Up</div><div class="day-cal">~1,265 cal · 124g protein</div></div><div class="meal-grid"><div class="meal-label">Breakfast</div><div class="meal-name">Banana oat pancakes with Greek yogurt + honey</div><div class="meal-macro">310 cal · 24g</div><div class="divider"></div><div class="meal-label">Lunch</div><div class="meal-name">Spicy chicken salad with lemon-olive oil dressing</div><div class="meal-macro">330 cal · 40g</div><div class="divider"></div><div class="meal-label">Dinner</div><div class="meal-name">Turkey burger bowl with avocado + tomato + yogurt sauce</div><div class="meal-macro">380 cal · 40g</div><div class="divider"></div><div class="meal-label">Snack</div><div class="meal-name">Peanut butter protein bites x2</div><div class="meal-macro">245 cal · 20g</div></div></div>
+<div class="day-card"><div class="day-header"><div class="day-title">Friday — Treat Yourself Right</div><div class="day-cal">~1,285 cal · 131g protein</div></div><div class="meal-grid"><div class="meal-label">Breakfast</div><div class="meal-name">Protein French toast with berries</div><div class="meal-macro">320 cal · 28g</div><div class="divider"></div><div class="meal-label">Lunch</div><div class="meal-name">Beef burrito bowl — rice, beans, salsa, avocado</div><div class="meal-macro">395 cal · 38g</div><div class="divider"></div><div class="meal-label">Dinner</div><div class="meal-name">Air fryer chicken + sweet potato + vegetables</div><div class="meal-macro">370 cal · 40g</div><div class="divider"></div><div class="meal-label">Dessert</div><div class="meal-name">Protein mug cake (90 seconds)</div><div class="meal-macro">200 cal · 25g</div></div></div>
+<div class="day-card"><div class="day-header"><div class="day-title">Saturday — Weekend Comfort</div><div class="day-cal">~1,230 cal · 118g protein</div></div><div class="meal-grid"><div class="meal-label">Breakfast</div><div class="meal-name">Cottage cheese pancakes with fresh fruit</div><div class="meal-macro">300 cal · 26g</div><div class="divider"></div><div class="meal-label">Lunch</div><div class="meal-name">Healthy pizza — whole wheat base, chicken, mozzarella</div><div class="meal-macro">370 cal · 38g</div><div class="divider"></div><div class="meal-label">Dinner</div><div class="meal-name">Shrimp rice bowl with sriracha-soy sauce + edamame</div><div class="meal-macro">340 cal · 38g</div><div class="divider"></div><div class="meal-label">Dessert</div><div class="meal-name">Frozen yogurt bark with berries + dark chocolate</div><div class="meal-macro">220 cal · 16g</div></div></div>
+<div class="day-card"><div class="day-header"><div class="day-title">Sunday — Recharge & Prep Again</div><div class="day-cal">~1,380 cal · 130g protein</div></div><div class="meal-grid"><div class="meal-label">Breakfast</div><div class="meal-name">Peanut butter protein bowl — yogurt, PB, banana, granola</div><div class="meal-macro">360 cal · 30g</div><div class="divider"></div><div class="meal-label">Lunch</div><div class="meal-name">Mediterranean chicken bowl with couscous + tzatziki</div><div class="meal-macro">375 cal · 40g</div><div class="divider"></div><div class="meal-label">Dinner</div><div class="meal-name">Egg fried rice with extra egg whites + peas + carrots</div><div class="meal-macro">370 cal · 30g</div><div class="divider"></div><div class="meal-label">Smoothie</div><div class="meal-name">Chocolate protein shake with almond milk + frozen banana</div><div class="meal-macro">275 cal · 30g</div></div></div>
+<h2 id="grocery">Full Weekly Grocery List</h2>
+<div class="grocery-grid">
+<div class="grocery-col"><h4>Proteins</h4><ul><li>Chicken breast (600g)</li><li>Ground turkey lean (400g)</li><li>Salmon fillet (150g)</li><li>Shrimp frozen (150g)</li><li>Lean ground beef 93% (120g)</li><li>Canned tuna x2</li><li>Eggs (12 pack)</li><li>Deli turkey slices</li><li>Greek yogurt non-fat (large)</li><li>Cottage cheese low-fat</li><li>Protein powder vanilla + chocolate</li></ul><h4 style="margin-top:16px">Grains</h4><ul><li>Brown rice (1 bag)</li><li>White rice</li><li>Rolled oats (large)</li><li>Whole-wheat pasta (250g)</li><li>Whole-wheat tortillas</li><li>Couscous</li><li>Rice cakes</li></ul></div>
+<div class="grocery-col"><h4>Produce</h4><ul><li>Broccoli florets</li><li>Bell peppers</li><li>Zucchini</li><li>Romaine lettuce</li><li>Spinach</li><li>Cherry tomatoes</li><li>Avocados</li><li>Bananas</li><li>Berries</li><li>Apples</li><li>Edamame</li><li>Peas & carrots</li></ul><h4 style="margin-top:16px">Pantry & Misc</h4><ul><li>Almonds</li><li>Black beans</li><li>Chia seeds</li><li>Hummus</li><li>Salsa</li><li>Low-sodium soy sauce</li><li>Sriracha</li><li>Sesame oil</li><li>Honey</li><li>Plain Greek yogurt (large)</li></ul></div>
+</div>
+<h2 id="airfryer">Air Fryer Hacks (Trending 2026)</h2>
+<p>If you aren't using an air fryer for your meal prep in 2026, you are making life much harder than it needs to be. The air fryer is the ultimate tool for quick, hands-off cooking that keeps food crispy without the extra oil.</p>
+<ul>
+<li><strong>The Double-Decker Method:</strong> Cook your chicken breast on the bottom tray and toss your vegetables (like broccoli or bell peppers) on an elevated rack above them. They cook simultaneously in half the time.</li>
+<li><strong>Instant Frozen Veggies:</strong> Don't thaw your vegetables. Toss frozen broccoli or zucchini straight into the air fryer basket with a quick spray of olive oil and salt. Air fry at 380°F for 10–12 minutes for perfect char.</li>
+<li><strong>Crispy Reheating:</strong> Skip the microwave for leftovers. Reheat your meal-prepped chicken or turkey in the air fryer at 350°F for 3–4 minutes. It restores the texture to day-one quality.</li>
+</ul>
+<h2 id="tips">Pro Tips to Stay Consistent</h2>
+<p>Consistency is the difference between achieving your fitness goals and staying in a cycle of starting over. Here are the simple rules to make meal prep a lifestyle:</p>
+<ul>
+<li><strong>Use the Mix-and-Match Method:</strong> Instead of portioning out complete meals on Sunday, store your proteins, carbs, and veggies in separate large containers. This allows you to combine them in different ways (bowls, wraps, scrambles) so you never get bored.</li>
+<li><strong>Keep Sauces Separate:</strong> Never dress your salads or add sauces to your containers before storing. Keep dressings, hummus, and tzatziki in separate small cups and add them right before eating. This prevents sogginess.</li>
+<li><strong>Schedule It Like a Meeting:</strong> Block out two hours every Sunday afternoon or Monday evening. Put it in your calendar. If you prepare, you succeed. If you don't, you are at the mercy of takeout apps.</li>
+</ul>
+<h2>Frequently Asked Questions</h2>
+<div class="faq-item"><div class="faq-q">Is it safe to store meal prep for 7 days?</div><div class="faq-a">Most cooked proteins and vegetables stay fresh in the fridge for 3 to 4 days. For a 7-day plan, we recommend keeping meals for Monday through Wednesday in the fridge, and freezing the rest. Transfer frozen meals to the fridge the night before you plan to eat them.</div></div>
+<div class="faq-item"><div class="faq-q">Can I swap days or meals in this plan?</div><div class="faq-a">Yes, absolutely! The daily structure is highly flexible. As long as you hit your total calorie and protein goals, you can swap Monday's dinner with Wednesday's, or eat dinner leftovers for lunch.</div></div>
+<div class="faq-item"><div class="faq-q">What if I need more or fewer calories?</div><div class="faq-a">You can easily adjust the calories by increasing or decreasing the portion sizes of the carbohydrates (like brown rice and oats) and fats (like avocado and olive oil), while keeping your protein sources high.</div></div>
+<div class="cta-box"><h3>Want the complete meal prep guide?</h3><p>Get the full BHYou cookbook — 50 high-protein recipes under 400 calories, structured meal plans, and complete shopping lists.</p><a href="https://bhyou.com" class="cta-btn">Get the BHYou Cookbook →</a></div>`,
+    featuredImage: "/chicken_meal_prep.png",
+    pinterestImage: "/chicken_meal_prep.png",
+    category: "Meal Prep",
+    tags: ["meal prep","high protein","low calorie","air fryer"],
+    status: "published",
+    seoTitle: "7-Day High-Protein Meal Prep Under 30 Minutes (2026 Guide) | BHYou",
+    metaDescription: "The ultimate 7-day high-protein meal prep guide — all recipes under 30 minutes and 400 calories. Save time, lose fat, and never eat boring food again.",
+    focusKeyword: "high protein meal prep",
+    seoScore: 99,
+    canonicalUrl: "https://bhyou.com/blog/healthy-meal-prep-under-30-minutes",
+    faqSchema: [
+      {
+            "question": "Is it safe to store meal prep for 7 days?",
+            "answer": "Most cooked proteins and vegetables stay fresh in the fridge for 3 to 4 days. For a 7-day plan, we recommend keeping meals for Monday through Wednesday in the fridge, and freezing the rest. Transfer frozen meals to the fridge the night before you plan to eat them."
+      },
+      {
+            "question": "Can I swap days or meals in this plan?",
+            "answer": "Yes, absolutely! The daily structure is highly flexible. As long as you hit your total calorie and protein goals, you can swap Monday's dinner with Wednesday's, or eat dinner leftovers for lunch."
+      },
+      {
+            "question": "What if I need more or fewer calories?",
+            "answer": "You can easily adjust the calories by increasing or decreasing the portion sizes of the carbohydrates (like brown rice and oats) and fats (like avocado and olive oil), while keeping your protein sources high."
+      }
+],
+    createdAt: "2026-06-22T10:00:00Z",
+    author: "BHYou",
+    readTime: "14 min read"
   }
 ];
 
@@ -1182,6 +1363,18 @@ export const initDb = () => {
           localStorage.setItem(KEYS.POSTS, JSON.stringify(currentPosts));
         }
       }
+      const checkAndSeedLocal = (slug: string) => {
+        if (!currentPosts.some((p: any) => p.slug === slug)) {
+          const newPostItem = DEFAULT_POSTS.find(p => p.slug === slug);
+          if (newPostItem) {
+            currentPosts.push(newPostItem);
+            localStorage.setItem(KEYS.POSTS, JSON.stringify(currentPosts));
+          }
+        }
+      };
+      checkAndSeedLocal('high-protein-dinners-under-400-calories');
+      checkAndSeedLocal('guilt-free-desserts-under-200-calories');
+      checkAndSeedLocal('healthy-meal-prep-under-30-minutes');
     } catch (e) {
       console.error(e);
     }
@@ -1336,6 +1529,19 @@ export const checkAndFixSeoConfigs = async () => {
           console.log("Seeded '7-day-high-protein-meal-plan-for-fat-loss' into database!");
         }
       }
+      const seedIfMissing = async (slug: string) => {
+        const hasPost = posts.some(p => p.slug === slug);
+        if (!hasPost) {
+          const postToSeed = DEFAULT_POSTS.find(p => p.slug === slug);
+          if (postToSeed) {
+            await db.savePost(postToSeed);
+            console.log(`Seeded '${slug}' into database!\n`);
+          }
+        }
+      };
+      await seedIfMissing('high-protein-dinners-under-400-calories');
+      await seedIfMissing('guilt-free-desserts-under-200-calories');
+      await seedIfMissing('healthy-meal-prep-under-30-minutes');
     } catch (e) {
       console.error("Failed to seed new blog post in database:", e);
     }

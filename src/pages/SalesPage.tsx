@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Flame, BookOpen, Clock, Heart, Award, Star, Plus, Minus } from 'lucide-react';
 import { firePageView, firePixel, db } from '../db';
 import type { PageSeo } from '../db';
@@ -421,6 +422,54 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
         </div>
       </section>
 
+
+      {/* Free Guides Section */}
+      <section className="section-padding" style={{ borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
+        <div className="container">
+          <div className="section-title-wrapper" style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <span className="section-subtitle">Free Guides</span>
+            <h2 className="section-title">More High-Protein Nutrition Tips</h2>
+            <p style={{ color: 'var(--text-muted-dark)', maxWidth: '600px', margin: '0 auto' }}>
+              Explore our free, science-backed recipe guides and meal plans to kickstart your healthy eating journey.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px', marginTop: '32px' }}>
+            <div style={{ background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid var(--light-border)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <span className="badge badge-primary" style={{ alignSelf: 'flex-start' }}>Recipes</span>
+              <h3 style={{ fontSize: '18px', color: 'var(--text-dark)' }}>High-Protein Chicken Recipes</h3>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted-dark)', flexGrow: 1 }}>
+                Easy, macro-friendly chicken recipes designed to hit your daily protein goals without eating bland food.
+              </p>
+              <Link to="/blog/high-protein-chicken-recipes" style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Read Guide →
+              </Link>
+            </div>
+
+            <div style={{ background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid var(--light-border)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <span className="badge badge-primary" style={{ alignSelf: 'flex-start' }}>Meal Prep</span>
+              <h3 style={{ fontSize: '18px', color: 'var(--text-dark)' }}>7-Day High-Protein Meal Plan</h3>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted-dark)', flexGrow: 1 }}>
+                A structured 7-day fat loss meal plan showing you exactly how to prep breakfasts, lunches, and dinners.
+              </p>
+              <Link to="/blog/7-day-high-protein-meal-plan-for-fat-loss" style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Read Guide →
+              </Link>
+            </div>
+
+            <div style={{ background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid var(--light-border)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <span className="badge badge-primary" style={{ alignSelf: 'flex-start' }}>Desserts</span>
+              <h3 style={{ fontSize: '18px', color: 'var(--text-dark)' }}>Healthy Chocolate Lava Cake</h3>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted-dark)', flexGrow: 1 }}>
+                Enjoy dessert guilt-free with our recipe for a moist chocolate mug cake packed with protein under 250 calories.
+              </p>
+              <Link to="/blog/healthy-chocolate-lava-cake" style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                Read Guide →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
 
       {/* FAQ Section */}

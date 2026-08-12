@@ -6,6 +6,16 @@
       "permanent": true
     },
     {
+      "source": "/dessert-cookbook",
+      "destination": "/#/dessert-cookbook",
+      "permanent": true
+    },
+    {
+      "source": "/ebooks/high-protein-dessert-cookbook",
+      "destination": "/#/dessert-cookbook",
+      "permanent": true
+    },
+    {
       "source": "/privacy",
       "destination": "/#/privacy",
       "permanent": true

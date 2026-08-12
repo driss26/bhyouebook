@@ -237,6 +237,116 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
         </div>
       </section>
 
+      {/* BHYou Ebook Collection Grid (Both Products) */}
+      <section id="collection" className="section-padding" style={{ borderBottom: '1px solid var(--light-border)' }}>
+        <div className="container">
+          <div className="section-title-wrapper" style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <span className="section-subtitle">Complete Collection</span>
+            <h2 className="section-title">Explore the BHYou Cookbook Collection</h2>
+            <p style={{ color: 'var(--text-muted-dark)', maxWidth: '650px', margin: '0 auto' }}>
+              Choose your goal: master full high-protein meals and weekly meal prep, or indulge in guilt-free gourmet desserts under 400 calories.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', maxWidth: '1050px', margin: '0 auto' }}>
+            
+            {/* Product 1 Card */}
+            <div style={{ background: 'white', borderRadius: '16px', border: '1px solid var(--light-border)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ background: 'var(--light-surface)', padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid var(--light-border)', position: 'relative' }}>
+                <span className="badge badge-primary" style={{ position: 'absolute', top: '16px', left: '16px' }}>Flagship Ebook</span>
+                <Link to="/cookbook">
+                  <div className="ebook-mockup" style={{ width: '180px', height: '245px', cursor: 'pointer' }}>
+                    <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="50 High-Protein Recipes Cookbook Cover" className="ebook-cover-img" />
+                    <div className="ebook-spine"></div>
+                  </div>
+                </Link>
+              </div>
+
+              <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '14px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    <span style={{ fontWeight: 700, fontSize: '14px' }}>4.9/5.0</span>
+                    <span style={{ fontSize: '12px', color: 'var(--text-muted-dark)' }}>(142 reviews)</span>
+                  </div>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted-dark)' }}>60 Pages • 50 Recipes</span>
+                </div>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-dark)' }}>50 High-Protein Recipes Under 400 Calories</h3>
+                <p style={{ color: 'var(--text-muted-dark)', fontSize: '14px', lineHeight: 1.6, flexGrow: 1 }}>
+                  50 delicious, macro-friendly meals designed for fat loss, muscle building, and meal prep. Includes breakfasts, chicken preps, dinners, and our 7-Day Meal Plan.
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
+                  <span style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>$11.99</span>
+                  <span style={{ fontSize: '15px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$24.99</span>
+                  <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '3px 8px', borderRadius: '4px', fontSize: '11.5px', fontWeight: 700 }}>SAVE 52%</span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  <Link to="/cookbook" className="btn btn-primary" style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}>
+                    View 50-Recipe Ebook
+                  </Link>
+                  <button onClick={handleBuyClick} className="btn btn-secondary" style={{ padding: '12px 18px', fontSize: '14px' }}>
+                    Buy ($11.99)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Product 2 Card */}
+            <div style={{ background: 'white', borderRadius: '16px', border: '2px solid var(--primary)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+              <div style={{ background: 'var(--primary-glow)', padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid var(--light-border)', position: 'relative' }}>
+                <span className="badge" style={{ position: 'absolute', top: '16px', left: '16px', backgroundColor: 'var(--primary)', color: 'white' }}>
+                  New Release
+                </span>
+                <span className="badge" style={{ position: 'absolute', top: '16px', right: '16px', backgroundColor: '#fef3c7', color: '#b45309' }}>
+                  70 Recipes
+                </span>
+                <Link to="/dessert-cookbook">
+                  <div className="ebook-mockup" style={{ width: '180px', height: '245px', cursor: 'pointer' }}>
+                    <img src="/dessert_cookbook_cover.png" alt="The High-Protein Dessert Cookbook Cover" className="ebook-cover-img" />
+                    <div className="ebook-spine"></div>
+                  </div>
+                </Link>
+              </div>
+
+              <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '14px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    <span style={{ fontWeight: 700, fontSize: '14px' }}>5.0/5.0</span>
+                    <span style={{ fontSize: '12px', color: 'var(--text-muted-dark)' }}>(88 reviews)</span>
+                  </div>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary)' }}>181 Pages • 9 Categories</span>
+                </div>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-dark)' }}>The High-Protein Dessert Cookbook</h3>
+                <p style={{ color: 'var(--text-muted-dark)', fontSize: '14px', lineHeight: 1.6, flexGrow: 1 }}>
+                  70 delicious high-protein desserts under 400 calories. Satisfy sweet cravings with protein lava cakes, brownies, ice creams, mousses, and cheesecakes.
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
+                  <span style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>$19.99</span>
+                  <span style={{ fontSize: '15px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$39.99</span>
+                  <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '3px 8px', borderRadius: '4px', fontSize: '11.5px', fontWeight: 700 }}>SAVE 50%</span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  <Link to="/dessert-cookbook" className="btn btn-primary" style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}>
+                    Get the Cookbook
+                  </Link>
+                  <a href="https://bhyou.gumroad.com/l/dessert-cookbook" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '12px 18px', fontSize: '14px', textDecoration: 'none' }}>
+                    Buy ($19.99)
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* Features Overview */}
       <section className="section-padding">
         <div className="container">

@@ -7,6 +7,7 @@ import {
 // Pages
 import { Home } from './pages/Home';
 import { SalesPage } from './pages/SalesPage';
+import { DessertSalesPage } from './pages/DessertSalesPage';
 import { Blog } from './pages/Blog';
 import { BlogPost } from './pages/BlogPost';
 import { AdminDashboard } from './pages/AdminDashboard';
@@ -163,7 +164,12 @@ function App() {
               </li>
               <li>
                 <NavLink to="/cookbook" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                  Ebook
+                  50 Recipes ($11.99)
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dessert-cookbook" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                  Dessert Cookbook ($19.99)
                 </NavLink>
               </li>
               <li>
@@ -175,6 +181,9 @@ function App() {
 
             {/* CTA buttons */}
             <div className="nav-cta">
+              <Link to="/dessert-cookbook" className="btn btn-primary btn-sm nav-cta-desktop" style={{ textDecoration: 'none' }}>
+                New Dessert Book
+              </Link>
               <button 
                 className="mobile-menu-toggle" 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -189,7 +198,8 @@ function App() {
           {mobileMenuOpen && (
             <div className="mobile-nav-dropdown">
               <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-              <Link to="/cookbook" onClick={() => setMobileMenuOpen(false)}>Ebook</Link>
+              <Link to="/cookbook" onClick={() => setMobileMenuOpen(false)}>50 High-Protein Recipes ($11.99)</Link>
+              <Link to="/dessert-cookbook" onClick={() => setMobileMenuOpen(false)}>High-Protein Dessert Cookbook ($19.99)</Link>
               <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blogs</Link>
             </div>
           )}
@@ -200,6 +210,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home onToast={showToast} />} />
             <Route path="/cookbook" element={<SalesPage onToast={showToast} />} />
+            <Route path="/dessert-cookbook" element={<DessertSalesPage onToast={showToast} />} />
+            <Route path="/ebooks/high-protein-dessert-cookbook" element={<DessertSalesPage onToast={showToast} />} />
             <Route path="/blog" element={<Blog onToast={showToast} />} />
             <Route path="/blog/:slug" element={<BlogPost onToast={showToast} />} />
             <Route path="/admin" element={<AdminDashboard onToast={showToast} />} />
@@ -228,13 +240,13 @@ function App() {
                 </div>
               </div>
 
-              {/* Quick links Col */}
+              {/* Cookbooks Col */}
               <div className="footer-column">
-                <h4>Healthy Recipes</h4>
+                <h4>BHYou Ebooks</h4>
                 <ul className="footer-links">
-                  <li><Link to="/blog" className="footer-link">Recipes Blog</Link></li>
-                  <li><Link to="/blog" className="footer-link">High Protein Chicken</Link></li>
-                  <li><Link to="/blog" className="footer-link">Healthy Desserts</Link></li>
+                  <li><Link to="/cookbook" className="footer-link">50 High-Protein Recipes ($11.99)</Link></li>
+                  <li><Link to="/dessert-cookbook" className="footer-link">Dessert Cookbook: 70 Recipes ($19.99)</Link></li>
+                  <li><Link to="/blog" className="footer-link">Nutrition & Recipe Blog</Link></li>
                 </ul>
               </div>
 

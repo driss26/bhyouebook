@@ -139,6 +139,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
     const pages = [
       { url: 'https://bhyou.com/', priority: '1.0' },
       { url: 'https://bhyou.com/cookbook', priority: '0.9' },
+      { url: 'https://bhyou.com/dessert-cookbook', priority: '0.9' },
     ];
 
     posts.forEach(p => {

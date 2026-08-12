@@ -1838,6 +1838,10 @@ input:checked + .slider-round:before {
   .nav-links {
     display: none; /* In a real project, we'd add a mobile drawer, but here we can keep header compact */
   }
+
+  .nav-cta-desktop {
+    display: none !important;
+  }
   
   .mobile-menu-toggle {
     display: block;

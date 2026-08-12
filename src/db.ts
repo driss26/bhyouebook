@@ -1271,8 +1271,99 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
     ogTitle: 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories',
     ogDescription: 'Ready to burn fat without giving up desserts? Purchase our premium cookbook today for only $11.99!',
     ogImage: 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'
+  },
+  {
+    pageId: 'dessert-sales',
+    pageName: 'High-Protein Dessert Cookbook',
+    seoTitle: 'High-Protein Dessert Cookbook | 70 Healthy Recipes Under 400 Calories',
+    metaDescription: 'Discover 70 delicious high-protein dessert recipes under 400 calories, with full macros, easy ingredients, meal prep tips, and beginner-friendly instructions.',
+    focusKeyword: 'high-protein dessert cookbook',
+    seoScore: 98,
+    slug: 'dessert-cookbook',
+    canonicalUrl: 'https://bhyou.com/dessert-cookbook',
+    ogTitle: 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories',
+    ogDescription: 'Love desserts but still want to hit your protein goals? 70 delicious high-protein dessert recipes under 400 calories. Instant digital download!',
+    ogImage: '/dessert_cookbook_cover.png'
   }
 ];
+
+export interface EbookProduct {
+  id: string;
+  title: string;
+  fullTitle: string;
+  shortTitle: string;
+  subtitle: string;
+  price: number;
+  originalPrice: number;
+  productType: string;
+  format: string;
+  pages: number;
+  recipes: number;
+  calories: string;
+  protein: string;
+  access: string;
+  level: string;
+  categoriesCount?: number;
+  coverImage: string;
+  route: string;
+  gumroadUrl: string;
+  downloadUrl: string;
+  rating: number;
+  reviewsCount: number;
+  description: string;
+}
+
+export const PRODUCTS: Record<string, EbookProduct> = {
+  'bhyou-50-recipes': {
+    id: 'bhyou-50-recipes',
+    title: '50 High-Protein Recipes',
+    fullTitle: 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories',
+    shortTitle: '50 High-Protein Recipes',
+    subtitle: '50 Guilt-Free Healthy Recipes Under 400 Calories',
+    price: 11.99,
+    originalPrice: 24.99,
+    productType: 'Digital Cookbook',
+    format: 'Instant Digital Download (PDF)',
+    pages: 60,
+    recipes: 50,
+    calories: 'Under 400 Calories',
+    protein: '30g+ Protein / Meal',
+    access: 'Lifetime Access',
+    level: 'Beginner-Friendly',
+    coverImage: 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg',
+    route: '/cookbook',
+    gumroadUrl: 'https://bhyou.gumroad.com/l/pzebkb',
+    downloadUrl: '/downloads/bhyou-50-recipes.pdf',
+    rating: 4.9,
+    reviewsCount: 142,
+    description: 'Stop starving yourself. Enjoy 50 delicious, easy-to-prep, macro-friendly recipes designed to support muscle growth and burn fat. Instant digital PDF download.'
+  },
+  'high-protein-dessert-cookbook-70': {
+    id: 'high-protein-dessert-cookbook-70',
+    title: 'The High-Protein Dessert Cookbook',
+    fullTitle: 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories',
+    shortTitle: 'High-Protein Dessert Cookbook',
+    subtitle: '70 Healthy Recipes Under 400 Calories',
+    price: 19.99,
+    originalPrice: 39.99,
+    productType: 'Digital Cookbook',
+    format: 'Instant Digital Download (PDF)',
+    pages: 181,
+    recipes: 70,
+    calories: 'Under 400 Calories',
+    protein: 'High-Protein',
+    access: 'Lifetime Access',
+    level: 'Beginner-Friendly',
+    categoriesCount: 9,
+    coverImage: '/dessert_cookbook_cover.png',
+    route: '/dessert-cookbook',
+    gumroadUrl: 'https://bhyou.gumroad.com/l/dessert-cookbook',
+    downloadUrl: '/downloads/high-protein-dessert-cookbook.pdf',
+    rating: 5.0,
+    reviewsCount: 88,
+    description: 'Love desserts but still want to hit your protein goals? This premium cookbook features 70 delicious high-protein dessert recipes, each carefully crafted to satisfy your sweet cravings while keeping calories under control.'
+  }
+};
 
 const DEFAULT_TRACKING: TrackingSettings = {
   ga4Enabled: true,
@@ -1399,6 +1490,13 @@ export const initDb = () => {
         }
         return item;
       });
+      if (!currentSeo.some((item: any) => item.pageId === 'dessert-sales')) {
+        const dessertItem = DEFAULT_SEO_CONFIGS.find(c => c.pageId === 'dessert-sales');
+        if (dessertItem) {
+          currentSeo.push(dessertItem);
+          updated = true;
+        }
+      }
       if (updated) {
         localStorage.setItem(KEYS.SEO, JSON.stringify(newSeo));
       }
@@ -1451,6 +1549,7 @@ export const checkAndFixSeoConfigs = async () => {
     const configs = await db.getSeoConfigs();
     const homeConfig = configs.find(c => c.pageId === 'home');
     const salesConfig = configs.find(c => c.pageId === 'sales');
+    const dessertConfig = configs.find(c => c.pageId === 'dessert-sales');
     
     if (homeConfig && homeConfig.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
       homeConfig.seoTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
@@ -1463,6 +1562,13 @@ export const checkAndFixSeoConfigs = async () => {
       salesConfig.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
       salesConfig.metaDescription = 'Get your copy of 50 High-Protein Recipes Under 400 Calories. Fuel your muscles, lose fat, and satisfy sweet cravings. Start cooking healthy today!';
       await db.saveSeoConfig(salesConfig);
+    }
+
+    if (!dessertConfig) {
+      const defaultDessert = DEFAULT_SEO_CONFIGS.find(c => c.pageId === 'dessert-sales');
+      if (defaultDessert) {
+        await db.saveSeoConfig(defaultDessert);
+      }
     }
 
     const announcementSettings = await db.getAnnouncementSettings();

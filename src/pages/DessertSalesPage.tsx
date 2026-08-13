@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   BookOpen, Star, Plus, Minus, 
-  CheckCircle, ShieldCheck, Gift, Check, ShoppingBag
+  CheckCircle, ShieldCheck, Gift, Check, ShoppingBag, ArrowRight
 } from 'lucide-react';
 import { firePageView, firePixel, db, PRODUCTS } from '../db';
-import type { PageSeo } from '../db';
+import type { PageSeo, EbookProduct } from '../db';
 
 interface DessertSalesPageProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
@@ -14,10 +14,22 @@ interface DessertSalesPageProps {
 export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) => {
   const [seoConfig, setSeoConfig] = useState<PageSeo | null>(null);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [product, setProduct] = useState<EbookProduct>(PRODUCTS['high-protein-dessert-cookbook-70']);
 
-  const product = PRODUCTS['high-protein-dessert-cookbook-70'];
+  const loadProductData = async () => {
+    try {
+      const p = await db.getProduct('high-protein-dessert-cookbook-70');
+      if (p) {
+        setProduct(p);
+      }
+    } catch (err) {
+      console.error("Error loading dessert cookbook product:", err);
+    }
+  };
 
   useEffect(() => {
+    loadProductData();
     firePageView('/dessert-cookbook');
     firePixel('Google Analytics 4', 'view_item', {
       item_id: product.id,
@@ -25,6 +37,11 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
       price: product.price,
       currency: 'USD'
     });
+
+    const handleProductsUpdated = () => {
+      loadProductData();
+    };
+    window.addEventListener('products_updated', handleProductsUpdated);
 
     db.getSeoConfigs().then(configs => {
       const dessertConfig = configs.find(c => c.pageId === 'dessert-sales');
@@ -41,6 +58,20 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
     }).catch(err => {
       console.error("Error loading dessert sales page SEO config:", err);
     });
+
+    const handleScroll = () => {
+      if (window.scrollY > 420) {
+        setShowStickyBar(true);
+      } else {
+        setShowStickyBar(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('products_updated', handleProductsUpdated);
+    };
   }, []);
 
   const toggleFaq = (index: number) => {
@@ -52,37 +83,31 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
   };
 
   const handleBuyClick = () => {
-    firePixel('Google Ads', 'click_buy_dessert_cookbook_1999', { 
-      price: 19.99, 
-      product_id: 'high-protein-dessert-cookbook-70' 
-    });
-    firePixel('Meta Pixel', 'InitiateCheckout', { 
-      content_name: 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories', 
-      content_ids: ['high-protein-dessert-cookbook-70'], 
-      value: 19.99, 
-      currency: 'USD' 
-    });
-    firePixel('Pinterest Tag', 'checkout_click', { 
-      product_id: 'high-protein-dessert-cookbook-70', 
-      value: 19.99 
-    });
-    firePixel('TikTok Pixel', 'InitiateCheckout', { 
-      content_id: 'high-protein-dessert-cookbook-70', 
-      value: 19.99, 
-      currency: 'USD' 
-    });
+    try {
+      firePixel('Google Ads', 'click_buy_dessert_cookbook_1999', { 
+        price: product.price || 19.99, 
+        product_id: 'high-protein-dessert-cookbook-70' 
+      });
+      firePixel('Meta Pixel', 'InitiateCheckout', { 
+        content_name: product.fullTitle || product.title, 
+        content_ids: ['high-protein-dessert-cookbook-70'], 
+        value: product.price || 19.99, 
+        currency: 'USD' 
+      });
+      firePixel('Pinterest Tag', 'checkout_click', { 
+        product_id: 'high-protein-dessert-cookbook-70', 
+        value: product.price || 19.99 
+      });
+      firePixel('TikTok Pixel', 'InitiateCheckout', { 
+        content_id: 'high-protein-dessert-cookbook-70', 
+        value: product.price || 19.99, 
+        currency: 'USD' 
+      });
+    } catch (err) {
+      console.error("Pixel tracking error:", err);
+    }
 
     onToast('Opening Gumroad Secure Checkout...', 'success');
-    setTimeout(() => {
-      window.open(product.gumroadUrl, '_blank');
-    }, 800);
-  };
-
-  const scrollToBuySection = () => {
-    const el = document.getElementById('final-cta-section');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
   const categories = [
@@ -166,9 +191,9 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
           
           {/* Breadcrumb & Collection Switcher */}
           <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-muted-dark)', flexWrap: 'wrap' }}>
-            <Link to="/" style={{ color: 'var(--primary)', fontWeight: 600 }}>Home</Link>
+            <Link to="/" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>Home</Link>
             <span>/</span>
-            <Link to="/#collection" style={{ color: 'var(--text-muted-dark)' }}>Cookbook Collection</Link>
+            <Link to="/#collection" style={{ color: 'var(--text-muted-dark)', textDecoration: 'none' }}>Cookbook Collection</Link>
             <span>/</span>
             <span style={{ color: 'var(--text-dark)', fontWeight: 600 }}>The High-Protein Dessert Cookbook</span>
           </div>
@@ -202,34 +227,66 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
 
               {/* Price block */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px', margin: '8px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)', padding: '12px 0' }}>
-                <span style={{ fontSize: '32px', fontWeight: 800, color: 'var(--text-dark)' }}>$19.99</span>
-                <span style={{ fontSize: '20px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$39.99</span>
-                <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '4px 10px', borderRadius: '4px', fontSize: '13px', fontWeight: 700 }}>SAVE 50%</span>
+                <span style={{ fontSize: '32px', fontWeight: 800, color: 'var(--text-dark)' }}>${product.price}</span>
+                {product.originalPrice && (
+                  <span style={{ fontSize: '20px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>${product.originalPrice}</span>
+                )}
+                {product.originalPrice && (
+                  <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '4px 10px', borderRadius: '4px', fontSize: '13px', fontWeight: 700 }}>
+                    SAVE {Math.round((1 - product.price / product.originalPrice) * 100)}%
+                  </span>
+                )}
               </div>
 
-              {/* Format selector */}
+              {/* Format selector link */}
               <div style={{ margin: '4px 0 12px 0' }}>
                 <span style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted-dark)', display: 'block', marginBottom: '8px' }}>Format</span>
-                <div onClick={handleBuyClick} style={{ border: '2px solid var(--primary)', backgroundColor: 'var(--primary-glow)', padding: '12px 18px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
-                  <BookOpen size={20} style={{ color: 'var(--primary)' }} />
+                <a 
+                  href="https://bhyou.gumroad.com/l/bhyou"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleBuyClick}
+                  style={{ 
+                    border: '2px solid var(--primary)', 
+                    backgroundColor: 'var(--primary-glow)', 
+                    padding: '12px 18px', 
+                    borderRadius: '8px', 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '12px', 
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                  }}
+                >
+                  <BookOpen size={20} style={{ color: 'var(--primary)', flexShrink: 0 }} />
                   <div>
                     <strong style={{ fontSize: '15px', display: 'block', color: 'var(--text-dark)' }}>Instant Digital PDF Edition</strong>
-                    <span style={{ fontSize: '12.5px', color: 'var(--text-muted-dark)' }}>181 High-Res Pages • Instant email delivery • Lifetime access</span>
+                    <span style={{ fontSize: '12.5px', color: 'var(--text-muted-dark)' }}>{product.pages} High-Res Pages • Instant email delivery • {product.access || 'Lifetime access'}</span>
                   </div>
-                </div>
+                </a>
               </div>
 
               {/* Mobile Mockup */}
               <div className="mobile-only-mockup">
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer', width: '220px', height: '290px' }}>
-                    <img src="/dessert_cookbook_cover.png" alt="The High-Protein Dessert Cookbook Cover" className="ebook-cover-img" />
+                  <a 
+                    href="https://bhyou.gumroad.com/l/bhyou"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleBuyClick}
+                    className="ebook-mockup" 
+                    style={{ cursor: 'pointer', width: '220px', height: '290px', display: 'block', textDecoration: 'none' }} 
+                    title="Click to view purchase details"
+                  >
+                    <img src={product.coverImage || '/dessert_cookbook_cover.png'} alt={product.title} className="ebook-cover-img" />
                     <div className="ebook-spine"></div>
                     <div className="mockup-badge">
                       NEW
-                      <span>$19.99</span>
+                      <span>${product.price}</span>
                     </div>
-                  </div>
+                  </a>
                   <div className="rating-under-mockup">
                     <div className="stars">
                       <Star size={16} fill="#fbbf24" color="#fbbf24" />
@@ -238,8 +295,8 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                       <Star size={16} fill="#fbbf24" color="#fbbf24" />
                       <Star size={16} fill="#fbbf24" color="#fbbf24" />
                     </div>
-                    <span className="rating-val">5.0/5.0</span>
-                    <span>(88 verified reviews)</span>
+                    <span className="rating-val">{product.rating ? `${product.rating}.0/5.0` : '5.0/5.0'}</span>
+                    <span>({product.reviewsCount || 88} verified reviews)</span>
                   </div>
                 </div>
               </div>
@@ -247,13 +304,13 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
               {/* Description Body */}
               <div style={{ color: 'var(--text-muted-dark)', fontSize: '16px', lineHeight: 1.7, display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <p style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-dark)' }}>
-                  High-Protein Desserts Under 400 Calories
+                  {product.subtitle || 'High-Protein Desserts Under 400 Calories'}
                 </p>
                 <p>
                   Love desserts but still want to hit your protein goals?
                 </p>
                 <p>
-                  This premium cookbook features <strong>70 delicious high-protein dessert recipes</strong>, each carefully crafted to satisfy your sweet cravings while keeping calories strictly under control.
+                  This premium cookbook features <strong>{product.recipes} delicious high-protein dessert recipes</strong>, each carefully crafted to satisfy your sweet cravings while keeping calories strictly under control.
                 </p>
                 <p>
                   Whether you're building muscle, losing weight, or simply looking for healthier treats, this collection makes it easy to enjoy dessert every single day without the guilt.
@@ -263,11 +320,11 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
               {/* Fast Highlights Badges */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', marginTop: '8px' }}>
                 <div style={{ background: 'var(--light-surface)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--light-border)', textAlign: 'center' }}>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)' }}>70</div>
+                  <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)' }}>{product.recipes}</div>
                   <div style={{ fontSize: '12px', color: 'var(--text-muted-dark)', fontWeight: 600 }}>Dessert Recipes</div>
                 </div>
                 <div style={{ background: 'var(--light-surface)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--light-border)', textAlign: 'center' }}>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)' }}>181</div>
+                  <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)' }}>{product.pages}</div>
                   <div style={{ fontSize: '12px', color: 'var(--text-muted-dark)', fontWeight: 600 }}>Full Pages</div>
                 </div>
                 <div style={{ background: 'var(--light-surface)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--light-border)', textAlign: 'center' }}>
@@ -275,17 +332,33 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                   <div style={{ fontSize: '12px', color: 'var(--text-muted-dark)', fontWeight: 600 }}>Calories/Serving</div>
                 </div>
                 <div style={{ background: 'var(--light-surface)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--light-border)', textAlign: 'center' }}>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)' }}>9</div>
+                  <div style={{ fontSize: '20px', fontWeight: 800, color: 'var(--primary)' }}>{product.categoriesCount || 9}</div>
                   <div style={{ fontSize: '12px', color: 'var(--text-muted-dark)', fontWeight: 600 }}>Categories</div>
                 </div>
               </div>
 
-              {/* Buy Block */}
+              {/* Main Hero Buy Block */}
               <div className="sales-buy-block" style={{ marginTop: '16px' }}>
-                <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '18px 36px', fontSize: '18px', width: '100%' }}>
+                <a 
+                  href="https://bhyou.gumroad.com/l/bhyou"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleBuyClick}
+                  className="btn btn-primary"
+                  style={{ 
+                    padding: '18px 36px', 
+                    fontSize: '18px', 
+                    width: '100%', 
+                    textDecoration: 'none', 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    gap: '10px' 
+                  }}
+                >
                   <ShoppingBag size={20} />
-                  Get the Cookbook — $19.99
-                </button>
+                  Get the Cookbook — ${product.price}
+                </a>
                 <div className="sales-trust-notes">
                   <span>⚡ Instant Digital Access After Purchase • Lifetime Updates</span>
                   <span>🔒 Secure Payments Powered by Gumroad • 100% Satisfaction</span>
@@ -296,14 +369,22 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
             {/* Desktop Mockup */}
             <div className="mockup-container">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div className="ebook-mockup" onClick={scrollToBuySection} style={{ width: '320px', height: '420px', cursor: 'pointer', boxShadow: 'var(--shadow-xl)' }}>
-                  <img src="/dessert_cookbook_cover.png" alt="The High-Protein Dessert Cookbook Cover" className="ebook-cover-img" />
+                <a 
+                  href="https://bhyou.gumroad.com/l/bhyou"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleBuyClick}
+                  className="ebook-mockup" 
+                  style={{ width: '320px', height: '420px', cursor: 'pointer', boxShadow: 'var(--shadow-xl)', display: 'block', textDecoration: 'none' }} 
+                  title="Click to view purchase details"
+                >
+                  <img src={product.coverImage || '/dessert_cookbook_cover.png'} alt={product.title} className="ebook-cover-img" />
                   <div className="ebook-spine"></div>
                   <div className="mockup-badge">
                     NEW
-                    <span>$19.99</span>
+                    <span>${product.price}</span>
                   </div>
-                </div>
+                </a>
                 <div className="rating-under-mockup">
                   <div className="stars">
                     <Star size={16} fill="#fbbf24" color="#fbbf24" />
@@ -312,8 +393,8 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                     <Star size={16} fill="#fbbf24" color="#fbbf24" />
                     <Star size={16} fill="#fbbf24" color="#fbbf24" />
                   </div>
-                  <span className="rating-val">5.0/5.0 Stars</span>
-                  <span>(88 verified reviews)</span>
+                  <span className="rating-val">{product.rating ? `${product.rating}.0/5.0` : '5.0/5.0'} Stars</span>
+                  <span>({product.reviewsCount || 88} verified reviews)</span>
                 </div>
               </div>
             </div>
@@ -347,7 +428,7 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
             <span className="section-subtitle">Recipe Collection</span>
             <h2 className="section-title">What's Inside This Cookbook?</h2>
             <p style={{ color: 'var(--text-muted-dark)', maxWidth: '650px', margin: '0 auto' }}>
-              Discover 70 easy-to-make recipes across 9 delicious categories, all under 400 calories and packed with protein:
+              Discover {product.recipes} easy-to-make recipes across {product.categoriesCount || 9} delicious categories, all under 400 calories and packed with protein:
             </p>
           </div>
 
@@ -376,6 +457,27 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                 </p>
               </div>
             ))}
+          </div>
+
+          <div style={{ marginTop: '36px', textAlign: 'center' }}>
+            <a 
+              href="https://bhyou.gumroad.com/l/bhyou"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleBuyClick}
+              className="btn btn-primary"
+              style={{ 
+                padding: '16px 36px', 
+                fontSize: '17px', 
+                textDecoration: 'none', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '8px' 
+              }}
+            >
+              <ShoppingBag size={18} />
+              Get All {product.recipes} Recipes Now — ${product.price}
+            </a>
           </div>
         </div>
       </section>
@@ -468,16 +570,16 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
               <tbody>
                 {[
-                  { label: "Product Name", val: "The High-Protein Dessert Cookbook" },
-                  { label: "Pages", val: "181 pages" },
-                  { label: "Recipes", val: "70 high-protein desserts" },
-                  { label: "Calories", val: "Under 400 Calories" },
+                  { label: "Product Name", val: product.title },
+                  { label: "Pages", val: `${product.pages} pages` },
+                  { label: "Recipes", val: `${product.recipes} high-protein desserts` },
+                  { label: "Calories", val: product.calories || "Under 400 Calories" },
                   { label: "Nutrition", val: "Full Macros Included (Protein, Carbs, Fats)" },
-                  { label: "Format", val: "Instant Digital Download (PDF)" },
-                  { label: "Access", val: "Lifetime Access" },
-                  { label: "Categories", val: "9 Dessert Categories" },
-                  { label: "Level", val: "Beginner-Friendly" },
-                  { label: "Price", val: "$19.99 (One-time payment)" }
+                  { label: "Format", val: product.format || "Instant Digital Download (PDF)" },
+                  { label: "Access", val: product.access || "Lifetime Access" },
+                  { label: "Categories", val: `${product.categoriesCount || 9} Dessert Categories` },
+                  { label: "Level", val: product.level || "Beginner-Friendly" },
+                  { label: "Price", val: `$${product.price} (One-time payment)` }
                 ].map((row, idx) => (
                   <tr key={idx} style={{ borderBottom: '1px solid var(--light-border)', backgroundColor: idx % 2 === 0 ? 'var(--light-surface)' : 'white' }}>
                     <td style={{ padding: '16px 20px', fontWeight: 700, width: '220px', color: 'var(--text-dark)', fontSize: '15px' }}>{row.label}</td>
@@ -492,6 +594,27 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div style={{ marginTop: '30px', textAlign: 'center' }}>
+            <a 
+              href="https://bhyou.gumroad.com/l/bhyou"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleBuyClick}
+              className="btn btn-primary"
+              style={{ 
+                padding: '16px 36px', 
+                fontSize: '17px', 
+                textDecoration: 'none', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '8px' 
+              }}
+            >
+              <ShoppingBag size={18} />
+              Instant PDF Download — ${product.price}
+            </a>
           </div>
         </div>
       </section>
@@ -511,8 +634,8 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', textAlign: 'left', marginBottom: '40px' }}>
             {[
-              "70 High-Protein Dessert Recipes",
-              "181 Beautifully Designed Pages",
+              `${product.recipes} High-Protein Dessert Recipes`,
+              `${product.pages} Beautifully Designed Pages`,
               "Premium Cookbook Layout",
               "Lifetime Access & Free Updates",
               "Instant Digital Download (PDF)"
@@ -524,10 +647,25 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
             ))}
           </div>
 
-          <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '18px 42px', fontSize: '18px' }}>
+          <a 
+            href="https://bhyou.gumroad.com/l/bhyou"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleBuyClick}
+            className="btn btn-primary"
+            style={{ 
+              padding: '18px 42px', 
+              fontSize: '18px', 
+              textDecoration: 'none', 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '10px' 
+            }}
+          >
             <ShoppingBag size={20} />
-            Get the Cookbook ($19.99)
-          </button>
+            Get the Cookbook (${product.price})
+          </a>
         </div>
       </section>
 
@@ -543,7 +681,12 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
           <div className="faq-max-width" style={{ maxWidth: '800px', margin: '0 auto' }}>
             {faqs.map((faq, index) => (
               <div className="faq-item" key={index}>
-                <button className="faq-question-btn" onClick={() => toggleFaq(index)}>
+                <button 
+                  type="button"
+                  className="faq-question-btn" 
+                  onClick={() => toggleFaq(index)}
+                  aria-expanded={activeFaq === index}
+                >
                   <h3>{faq.q}</h3>
                   {activeFaq === index ? <Minus size={18} /> : <Plus size={18} />}
                 </button>
@@ -571,8 +714,8 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
               <p style={{ color: 'var(--text-muted-dark)', fontSize: '14.5px', marginBottom: '16px', lineHeight: 1.6 }}>
                 Looking for breakfast, chicken meal preps, lunches, and 7-day meal plans? Check out our flagship 50-recipe cookbook available for only $11.99.
               </p>
-              <Link to="/cookbook" className="btn btn-secondary btn-sm" style={{ textDecoration: 'none' }}>
-                View 50-Recipe Ebook ($11.99) →
+              <Link to="/cookbook" className="btn btn-secondary btn-sm" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                View 50-Recipe Ebook ($11.99) <ArrowRight size={16} />
               </Link>
             </div>
           </div>
@@ -587,14 +730,73 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
             Join thousands of health-conscious cooks making delicious brownies, ice creams, mousses, and cheesecakes without derailing their fitness goals.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-            <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '18px 48px', fontSize: '18px', width: '100%', maxWidth: '420px' }}>
+            <a 
+              href="https://bhyou.gumroad.com/l/bhyou"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleBuyClick}
+              className="btn btn-primary" 
+              style={{ 
+                padding: '18px 48px', 
+                fontSize: '18px', 
+                width: '100%', 
+                maxWidth: '420px',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px'
+              }}
+            >
               <ShoppingBag size={20} />
-              Get the Cookbook ($19.99)
-            </button>
+              Get the Cookbook (${product.price})
+            </a>
             <span style={{ fontSize: '13.5px', color: 'var(--text-muted-dark)' }}>💳 Secure checkout powered by Gumroad • Instant Digital PDF Download</span>
           </div>
         </div>
       </section>
+
+      {/* Sticky Bottom Bar on Scroll */}
+      <div className={`dessert-sticky-bar ${showStickyBar ? 'visible' : ''}`}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <img src={product.coverImage || '/dessert_cookbook_cover.png'} alt={product.title} style={{ width: '38px', height: '48px', objectFit: 'cover', borderRadius: '4px', boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }} />
+            <div>
+              <div className="sticky-title" style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-dark)' }}>{product.title}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '16px' }}>${product.price}</span>
+                {product.originalPrice && (
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>${product.originalPrice}</span>
+                )}
+                {product.originalPrice && (
+                  <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '1px 6px', borderRadius: '3px', fontSize: '11px', fontWeight: 700 }}>
+                    {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+          <a 
+            href="https://bhyou.gumroad.com/l/bhyou"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleBuyClick}
+            className="btn btn-primary"
+            style={{ 
+              padding: '10px 22px', 
+              fontSize: '14.5px', 
+              textDecoration: 'none', 
+              whiteSpace: 'nowrap', 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '8px' 
+            }}
+          >
+            <ShoppingBag size={16} />
+            I Want This — ${product.price}
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

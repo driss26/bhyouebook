@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Flame, BookOpen, Clock, Heart, Award, Star, Plus, Minus } from 'lucide-react';
-import { firePageView, firePixel, db } from '../db';
-import type { PageSeo } from '../db';
+import { firePageView, firePixel, db, PRODUCTS } from '../db';
+import type { PageSeo, EbookProduct } from '../db';
 
 interface SalesPageProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
@@ -10,9 +10,26 @@ interface SalesPageProps {
 
 export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
   const [seoConfig, setSeoConfig] = useState<PageSeo | null>(null);
+  const [product, setProduct] = useState<EbookProduct>(PRODUCTS['bhyou-50-recipes']);
+
+  const loadProductData = async () => {
+    try {
+      const p = await db.getProduct('bhyou-50-recipes');
+      if (p) setProduct(p);
+    } catch (err) {
+      console.error("Error loading flagship product in SalesPage:", err);
+    }
+  };
 
   useEffect(() => {
     firePageView('/cookbook');
+    loadProductData();
+
+    const handleProductsUpdated = () => {
+      loadProductData();
+    };
+    window.addEventListener('products_updated', handleProductsUpdated);
+
     db.getSeoConfigs().then(configs => {
       const salesConfig = configs.find(c => c.pageId === 'sales');
       if (salesConfig) {
@@ -28,6 +45,10 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
     }).catch(err => {
       console.error("Error loading sales page SEO config:", err);
     });
+
+    return () => {
+      window.removeEventListener('products_updated', handleProductsUpdated);
+    };
   }, []);
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -41,13 +62,11 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
   };
 
   const handleBuyClick = () => {
-    firePixel('Google Ads', 'click_buy_cookbook_1199', { price: 11.99 });
-    firePixel('Meta Pixel', 'InitiateCheckout', { content_name: '50 High-Protein Recipes Under 400 Calories', value: 11.99, currency: 'USD' });
-    firePixel('Pinterest Tag', 'checkout_click', { value: 11.99 });
+    firePixel('Google Ads', 'click_buy_cookbook_1199', { price: product.price });
+    firePixel('Meta Pixel', 'InitiateCheckout', { content_name: product.fullTitle || product.title, value: product.price, currency: 'USD' });
+    firePixel('Pinterest Tag', 'checkout_click', { value: product.price });
     onToast('Opening Gumroad Secure Checkout...', 'success');
-    setTimeout(() => {
-      window.open('https://bhyou.gumroad.com/l/pzebkb', '_blank');
-    }, 800);
+    window.open(product.gumroadUrl || 'https://bhyou.gumroad.com/l/pzebkb', '_blank');
   };
 
   const scrollToBuySection = () => {
@@ -115,11 +134,11 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
               <div className="mobile-only-mockup">
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
-                    <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook Cover" className="ebook-cover-img" />
+                    <img src={product.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} alt={product.title} className="ebook-cover-img" />
                     <div className="ebook-spine"></div>
                     <div className="mockup-badge">
                       ONLY
-                      <span>$11.99</span>
+                      <span>${product.price}</span>
                     </div>
                   </div>
                   {/* Rating under the image (Mobile) */}
@@ -131,8 +150,8 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
                       <Star size={16} fill="#fbbf24" color="#fbbf24" />
                       <Star size={16} fill="#fbbf24" color="#fbbf24" />
                     </div>
-                    <span className="rating-val">4.9/5.0</span>
-                    <span>(142 verified reviews)</span>
+                    <span className="rating-val">{product.rating ? `${product.rating}.0/5.0` : '4.9/5.0'}</span>
+                    <span>({product.reviewsCount || 142} verified reviews)</span>
                   </div>
                 </div>
               </div>
@@ -196,7 +215,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
 
               <div className="sales-buy-block">
                 <button onClick={handleBuyClick} className="btn btn-primary" style={{ padding: '16px 36px', fontSize: '18px' }}>
-                  Get My Recipe Ebook
+                  Get My Recipe Ebook — ${product.price}
                 </button>
                 <div className="sales-trust-notes">
                   <span>⚡ Instant PDF Download • Mobile Friendly Checkout</span>
@@ -209,7 +228,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
             <div className="mockup-container">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div className="ebook-mockup" onClick={scrollToBuySection} style={{ width: '300px', height: '420px', cursor: 'pointer' }}>
-                  <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook" className="ebook-cover-img" />
+                  <img src={product.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} alt={product.title} className="ebook-cover-img" />
                   <div className="ebook-spine"></div>
                 </div>
                 {/* Rating under the image (Desktop) */}

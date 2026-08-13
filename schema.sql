@@ -84,6 +84,44 @@ CREATE TABLE IF NOT EXISTS "messages" (
   "createdAt" TEXT NOT NULL
 );
 
+-- 7. Ebook Products Table
+CREATE TABLE IF NOT EXISTS "products" (
+  "id" TEXT PRIMARY KEY,
+  "title" TEXT NOT NULL,
+  "fullTitle" TEXT,
+  "shortTitle" TEXT,
+  "subtitle" TEXT,
+  "price" NUMERIC(10,2) NOT NULL,
+  "originalPrice" NUMERIC(10,2),
+  "productType" TEXT,
+  "format" TEXT,
+  "pages" INTEGER,
+  "recipes" INTEGER,
+  "calories" TEXT,
+  "protein" TEXT,
+  "access" TEXT,
+  "level" TEXT,
+  "categoriesCount" INTEGER,
+  "coverImage" TEXT NOT NULL,
+  "route" TEXT NOT NULL,
+  "gumroadUrl" TEXT NOT NULL,
+  "downloadUrl" TEXT,
+  "rating" NUMERIC(3,1),
+  "reviewsCount" INTEGER,
+  "description" TEXT
+);
+
+-- Seed Products
+INSERT INTO "products" ("id", "title", "fullTitle", "shortTitle", "subtitle", "price", "originalPrice", "productType", "format", "pages", "recipes", "calories", "protein", "access", "level", "categoriesCount", "coverImage", "route", "gumroadUrl", "downloadUrl", "rating", "reviewsCount", "description")
+VALUES
+('bhyou-50-recipes', '50 High-Protein Recipes', 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories', '50 High-Protein Recipes', '50 Guilt-Free Healthy Recipes Under 400 Calories', 11.99, 24.99, 'Digital Cookbook', 'Instant Digital Download (PDF)', 60, 50, 'Under 400 Calories', '30g+ Protein / Meal', 'Lifetime Access', 'Beginner-Friendly', NULL, 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg', '/cookbook', 'https://bhyou.gumroad.com/l/pzebkb', '/downloads/bhyou-50-recipes.pdf', 4.9, 142, 'Stop starving yourself. Enjoy 50 delicious, easy-to-prep, macro-friendly recipes designed to support muscle growth and burn fat. Instant digital PDF download.'),
+('high-protein-dessert-cookbook-70', 'The High-Protein Dessert Cookbook', 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories', 'High-Protein Dessert Cookbook', '70 Healthy Recipes Under 400 Calories', 19.99, 39.99, 'Digital Cookbook', 'Instant Digital Download (PDF)', 181, 70, 'Under 400 Calories', 'High-Protein', 'Lifetime Access', 'Beginner-Friendly', 9, '/dessert_cookbook_cover.png', '/dessert-cookbook', 'https://bhyou.gumroad.com/l/bhyou', '/downloads/high-protein-dessert-cookbook.pdf', 5.0, 88, 'Love desserts but still want to hit your protein goals? This premium cookbook features 70 delicious high-protein dessert recipes, each carefully crafted to satisfy your sweet cravings while keeping calories under control.')
+ON CONFLICT ("id") DO UPDATE SET
+  "title" = EXCLUDED."title",
+  "coverImage" = EXCLUDED."coverImage",
+  "gumroadUrl" = EXCLUDED."gumroadUrl",
+  "price" = EXCLUDED."price";
+
 
 -- Seed Data
 

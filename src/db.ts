@@ -1357,7 +1357,7 @@ export const PRODUCTS: Record<string, EbookProduct> = {
     categoriesCount: 9,
     coverImage: '/dessert_cookbook_cover.png',
     route: '/dessert-cookbook',
-    gumroadUrl: 'https://bhyou.gumroad.com/l/dessert-cookbook',
+    gumroadUrl: 'https://bhyou.gumroad.com/l/bhyou',
     downloadUrl: '/downloads/high-protein-dessert-cookbook.pdf',
     rating: 5.0,
     reviewsCount: 88,
@@ -1398,6 +1398,7 @@ const KEYS = {
   ROBOTS: 'bhyou_robots',
   ANNOUNCEMENT: 'bhyou_announcement',
   MEDIA: 'bhyou_media',
+  PRODUCTS: 'bhyou_products',
 };
 
 const DEFAULT_ANNOUNCEMENT: AnnouncementSettings = {
@@ -1541,6 +1542,47 @@ export const initDb = () => {
   }
   if (!localStorage.getItem(KEYS.MEDIA)) {
     localStorage.setItem(KEYS.MEDIA, JSON.stringify([]));
+  }
+  if (!localStorage.getItem(KEYS.PRODUCTS)) {
+    localStorage.setItem(KEYS.PRODUCTS, JSON.stringify(PRODUCTS));
+  } else {
+    try {
+      const stored = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || '{}');
+      let changed = false;
+      for (const [key, defaultProd] of Object.entries(PRODUCTS)) {
+        if (!stored[key]) {
+          stored[key] = defaultProd;
+          changed = true;
+        } else {
+          for (const [pKey, pVal] of Object.entries(defaultProd)) {
+            if (stored[key][pKey] === undefined) {
+              stored[key][pKey] = pVal;
+              changed = true;
+            }
+          }
+        }
+      }
+      // Force heal incorrect or obsolete Gumroad URLs
+      if (stored['high-protein-dessert-cookbook-70']) {
+        const dessertProd = stored['high-protein-dessert-cookbook-70'];
+        if (!dessertProd.gumroadUrl || dessertProd.gumroadUrl.includes('dessert-cookbook') || dessertProd.gumroadUrl === 'https://bhyou.gumroad.com') {
+          dessertProd.gumroadUrl = 'https://bhyou.gumroad.com/l/bhyou';
+          changed = true;
+        }
+      }
+      if (stored['bhyou-50-recipes']) {
+        const flagshipProd = stored['bhyou-50-recipes'];
+        if (!flagshipProd.gumroadUrl || flagshipProd.gumroadUrl === 'https://bhyou.gumroad.com') {
+          flagshipProd.gumroadUrl = 'https://bhyou.gumroad.com/l/pzebkb';
+          changed = true;
+        }
+      }
+      if (changed) {
+        localStorage.setItem(KEYS.PRODUCTS, JSON.stringify(stored));
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 };
 
@@ -1984,6 +2026,89 @@ export const db = {
     const media: MediaItem[] = JSON.parse(localStorage.getItem(KEYS.MEDIA) || '[]');
     const filtered = media.filter(m => m.id !== id);
     localStorage.setItem(KEYS.MEDIA, JSON.stringify(filtered));
+  },
+
+  // Products / Ebooks
+  getProducts: async (): Promise<Record<string, EbookProduct>> => {
+    initDb();
+    const sanitize = (res: Record<string, EbookProduct>): Record<string, EbookProduct> => {
+      const sanitized: Record<string, EbookProduct> = { ...res };
+      if (sanitized['high-protein-dessert-cookbook-70']) {
+        const d = sanitized['high-protein-dessert-cookbook-70'];
+        if (!d.gumroadUrl || d.gumroadUrl.includes('dessert-cookbook') || d.gumroadUrl === 'https://bhyou.gumroad.com') {
+          sanitized['high-protein-dessert-cookbook-70'] = { ...d, gumroadUrl: 'https://bhyou.gumroad.com/l/bhyou' };
+        }
+      }
+      return sanitized;
+    };
+
+    if (hasSupabase) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*');
+      if (!error && data && data.length > 0) {
+        const map: Record<string, EbookProduct> = {};
+        data.forEach((p: any) => {
+          map[p.id] = p as EbookProduct;
+        });
+        return sanitize({ ...PRODUCTS, ...map });
+      }
+      if (error && error.code !== 'PGRST116' && error.code !== '42P01') {
+        console.warn("Supabase getProducts error, falling back to localStorage:", error);
+      }
+    }
+    try {
+      const stored = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || '{}');
+      return sanitize({ ...PRODUCTS, ...stored });
+    } catch (e) {
+      return PRODUCTS;
+    }
+  },
+
+  getProduct: async (id: string): Promise<EbookProduct | null> => {
+    initDb();
+    const sanitizeOne = (p: EbookProduct | null): EbookProduct | null => {
+      if (!p) return null;
+      if (p.id === 'high-protein-dessert-cookbook-70') {
+        if (!p.gumroadUrl || p.gumroadUrl.includes('dessert-cookbook') || p.gumroadUrl === 'https://bhyou.gumroad.com') {
+          return { ...p, gumroadUrl: 'https://bhyou.gumroad.com/l/bhyou' };
+        }
+      }
+      return p;
+    };
+
+    if (hasSupabase) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (!error && data) return sanitizeOne(data as EbookProduct);
+      if (error && error.code !== 'PGRST116' && error.code !== '42P01') {
+        console.warn("Supabase getProduct error, falling back to localStorage:", error);
+      }
+    }
+    try {
+      const stored = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || '{}');
+      return sanitizeOne(stored[id] || PRODUCTS[id] || null);
+    } catch (e) {
+      return sanitizeOne(PRODUCTS[id] || null);
+    }
+  },
+
+  saveProduct: async (product: EbookProduct): Promise<void> => {
+    if (hasSupabase) {
+      const { error } = await supabase
+        .from('products')
+        .upsert(product);
+      if (error) {
+        console.warn("Supabase saveProduct error, falling back to localStorage:", error);
+      }
+    }
+    const stored = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || JSON.stringify(PRODUCTS));
+    stored[product.id] = product;
+    localStorage.setItem(KEYS.PRODUCTS, JSON.stringify(stored));
+    window.dispatchEvent(new CustomEvent('products_updated', { detail: product }));
   },
 };
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Settings, FileText, BarChart2, Mail, Plus, Edit, Trash2, 
-  Save, RefreshCw, Code, Lock, Megaphone, Image, Copy, UploadCloud, ExternalLink, Check
+  Save, RefreshCw, Code, Lock, Megaphone, Image, Copy, UploadCloud, ExternalLink, Check, BookOpen
 } from 'lucide-react';
-import { firePageView, db } from '../db';
+import { firePageView, db, PRODUCTS } from '../db';
 import { supabase } from '../supabaseClient';
-import type { BlogPost, PageSeo, Lead, ContactMessage, TrackingSettings, AnnouncementSettings, MediaItem } from '../db';
+import type { BlogPost, PageSeo, Lead, ContactMessage, TrackingSettings, AnnouncementSettings, MediaItem, EbookProduct } from '../db';
 
 const hasSupabase = !!import.meta.env.VITE_SUPABASE_URL && !!import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -22,7 +22,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
     }
   }, []);
 
-  const [activeTab, setActiveTab] = useState<'blog' | 'announcement' | 'media' | 'seo' | 'leads' | 'analytics'>('blog');
+  const [activeTab, setActiveTab] = useState<'ebooks' | 'blog' | 'announcement' | 'media' | 'seo' | 'leads' | 'analytics'>('ebooks');
   
   // States for Database values
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -32,6 +32,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
   const [tracking, setTracking] = useState<TrackingSettings>({} as TrackingSettings);
   const [robotsTxt, setRobotsTxt] = useState('');
   const [pixelLogs, setPixelLogs] = useState<any[]>([]);
+
+  // Products / Ebooks states
+  const [products, setProducts] = useState<Record<string, EbookProduct>>(PRODUCTS);
+  const [selectedProductId, setSelectedProductId] = useState<string>('high-protein-dessert-cookbook-70');
+  const [editingProduct, setEditingProduct] = useState<EbookProduct | null>(PRODUCTS['high-protein-dessert-cookbook-70']);
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
 
   // Announcement Bar & Media Gallery states
   const [announcementSettings, setAnnouncementSettings] = useState<AnnouncementSettings>({
@@ -93,7 +100,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
   // Reload data from DB helper
   const reloadData = async () => {
     try {
-      const [allPosts, allSeo, allLeads, allMessages, allTracking, allRobots, announcement, media] = await Promise.all([
+      const [allPosts, allSeo, allLeads, allMessages, allTracking, allRobots, announcement, media, allProducts] = await Promise.all([
         db.getPosts(),
         db.getSeoConfigs(),
         db.getLeads(),
@@ -101,7 +108,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
         db.getTrackingSettings(),
         db.getRobotsTxt(),
         db.getAnnouncementSettings(),
-        db.getMediaItems()
+        db.getMediaItems(),
+        db.getProducts()
       ]);
       setPosts(allPosts);
       setSeoConfigs(allSeo);
@@ -111,6 +119,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
       setRobotsTxt(allRobots);
       if (announcement) setAnnouncementSettings(announcement);
       if (media) setMediaItems(media);
+      if (allProducts) {
+        setProducts(allProducts);
+        // keep current selection synced
+        setSelectedProductId(prevId => {
+          const current = allProducts[prevId] || allProducts['high-protein-dessert-cookbook-70'];
+          setEditingProduct(current ? { ...current } : null);
+          return prevId;
+        });
+      }
     } catch (err) {
       console.error(err);
       onToast('Error loading database data', 'error');
@@ -119,6 +136,64 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
     // Read session storage logs
     const logs = JSON.parse(sessionStorage.getItem('bhyou_pixel_logs') || '[]');
     setPixelLogs(logs);
+  };
+
+  // Ebook handlers
+  const handleSelectProduct = (id: string) => {
+    setSelectedProductId(id);
+    if (products[id]) {
+      setEditingProduct({ ...products[id] });
+    }
+  };
+
+  const handleProductFieldChange = (field: keyof EbookProduct, value: any) => {
+    if (!editingProduct) return;
+    setEditingProduct({
+      ...editingProduct,
+      [field]: value
+    });
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !editingProduct) return;
+
+    setUploadingCover(true);
+    try {
+      const url = await uploadToCloudinary(file);
+      setEditingProduct({
+        ...editingProduct,
+        coverImage: url
+      });
+      // Also save into media library
+      const newItem: MediaItem = {
+        id: 'media-' + Date.now(),
+        url,
+        fileName: file.name,
+        createdAt: new Date().toISOString()
+      };
+      await db.saveMediaItem(newItem);
+      onToast('Cover image uploaded to Cloudinary! Click Save to publish.', 'success');
+    } catch (err: any) {
+      console.error(err);
+      onToast(`Upload failed: ${err.message}`, 'error');
+    } finally {
+      setUploadingCover(false);
+    }
+  };
+
+  const handleSaveProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProduct) return;
+
+    try {
+      await db.saveProduct(editingProduct);
+      onToast(`Settings & cover saved for ${editingProduct.title}!`, 'success');
+      await reloadData();
+    } catch (err: any) {
+      console.error(err);
+      onToast(`Error saving product: ${err.message}`, 'error');
+    }
   };
 
   useEffect(() => {
@@ -473,6 +548,14 @@ ${pages.map(p => `  <url>
           <ul className="admin-menu">
             <li>
               <button 
+                onClick={() => { setActiveTab('ebooks'); }} 
+                className={`admin-menu-item-btn ${activeTab === 'ebooks' ? 'active' : ''}`}
+              >
+                <BookOpen size={16} /> Ebooks & Covers
+              </button>
+            </li>
+            <li>
+              <button 
                 onClick={() => { setActiveTab('blog'); setEditingPost(null); setIsCreatingPost(false); }} 
                 className={`admin-menu-item-btn ${activeTab === 'blog' ? 'active' : ''}`}
               >
@@ -530,6 +613,398 @@ ${pages.map(p => `  <url>
 
       {/* Main Content Area */}
       <main className="admin-content">
+
+        {/* --- EBOOKS & COVERS TAB --- */}
+        {activeTab === 'ebooks' && (
+          <div>
+            <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+              <div>
+                <h1 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <BookOpen size={26} style={{ color: 'var(--primary)' }} />
+                  Ebook Management & Covers
+                </h1>
+                <p style={{ color: 'var(--text-muted-light)', fontSize: '14px', marginTop: '4px' }}>
+                  Update book covers, direct Gumroad checkout URLs, pricing, and live content for your digital recipe products.
+                </p>
+              </div>
+              {editingProduct && (
+                <a 
+                  href={`#${editingProduct.route}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn btn-secondary" 
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px', textDecoration: 'none' }}
+                >
+                  <ExternalLink size={14} /> View Live Ebook Page
+                </a>
+              )}
+            </div>
+
+            {/* Product Switcher Selector Tabs */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '28px' }}>
+              {Object.values(products).map((prod) => {
+                const isSelected = selectedProductId === prod.id;
+                const isDessert = prod.id === 'high-protein-dessert-cookbook-70';
+                return (
+                  <div 
+                    key={prod.id}
+                    onClick={() => handleSelectProduct(prod.id)}
+                    style={{
+                      background: isSelected ? 'rgba(197, 160, 89, 0.12)' : 'var(--dark-surface)',
+                      border: isSelected ? '2px solid var(--primary)' : '1px solid var(--dark-border)',
+                      borderRadius: '12px',
+                      padding: '16px 20px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '16px',
+                      transition: 'all 0.2s ease',
+                      position: 'relative'
+                    }}
+                  >
+                    <div style={{ width: '52px', height: '70px', borderRadius: '6px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 4px 10px rgba(0,0,0,0.3)', background: '#111' }}>
+                      <img 
+                        src={prod.coverImage} 
+                        alt={prod.title} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = isDessert ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                        }}
+                      />
+                    </div>
+                    <div style={{ flexGrow: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                        <span className="badge" style={{ fontSize: '10.5px', padding: '2px 6px', backgroundColor: isDessert ? 'var(--primary)' : '#3b82f6', color: 'white' }}>
+                          {isDessert ? 'New Ebook' : 'Flagship'}
+                        </span>
+                        <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--primary)' }}>${prod.price}</span>
+                      </div>
+                      <h4 style={{ margin: 0, fontSize: '15px', color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {prod.title}
+                      </h4>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted-light)' }}>
+                        {prod.recipes} Recipes • {prod.pages} Pages
+                      </span>
+                    </div>
+                    {isSelected && (
+                      <div style={{ position: 'absolute', top: '12px', right: '12px', color: 'var(--primary)' }}>
+                        <Check size={18} />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {editingProduct && (
+              <form onSubmit={handleSaveProduct}>
+                <div className="grid-2col" style={{ alignItems: 'flex-start' }}>
+                  
+                  {/* LEFT COLUMN: Cover Image Management */}
+                  <div className="admin-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <h2>
+                        {editingProduct.id === 'high-protein-dessert-cookbook-70' 
+                          ? 'High-Protein Dessert Cookbook — Cover Image' 
+                          : `${editingProduct.shortTitle || editingProduct.title} — Cover Image`}
+                      </h2>
+                      <span className="badge badge-primary" style={{ fontSize: '11px' }}>Active Cover</span>
+                    </div>
+
+                    <p style={{ color: 'var(--text-muted-light)', fontSize: '13.5px', marginBottom: '20px', lineHeight: 1.5 }}>
+                      Upload or update the official book cover. Any change saved here updates immediately on the live website pages, hero sections, and mobile sticky bars.
+                    </p>
+
+                    {/* Realistic 3D Mockup Cover Preview */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#09090b', padding: '30px 20px', borderRadius: '12px', border: '1px solid #27272a', marginBottom: '20px' }}>
+                      <div className="ebook-mockup" style={{ width: '220px', height: '295px', boxShadow: '0 16px 32px rgba(0,0,0,0.6)' }}>
+                        <img 
+                          src={editingProduct.coverImage} 
+                          alt="Ebook Cover Preview" 
+                          className="ebook-cover-img"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = editingProduct.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                          }}
+                        />
+                        <div className="ebook-spine"></div>
+                        <div className="mockup-badge">
+                          {editingProduct.id === 'high-protein-dessert-cookbook-70' ? 'NEW' : 'FLAGSHIP'}
+                          <span>${editingProduct.price}</span>
+                        </div>
+                      </div>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted-light)', marginTop: '16px' }}>
+                        Live Front-Cover Preview (${editingProduct.price})
+                      </span>
+                    </div>
+
+                    {/* Direct Upload Button (Cloudinary) */}
+                    <div className="admin-form-group">
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <UploadCloud size={16} style={{ color: 'var(--primary)' }} />
+                        Upload New Cover Image (Instant Cloudinary Storage)
+                      </label>
+                      <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <label className="btn btn-primary" style={{ cursor: uploadingCover ? 'not-allowed' : 'pointer', opacity: uploadingCover ? 0.7 : 1, display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 18px', fontSize: '13.5px' }}>
+                          {uploadingCover ? <RefreshCw size={16} className="spin-icon" /> : <UploadCloud size={16} />}
+                          {uploadingCover ? 'Uploading...' : 'Choose Image & Upload'}
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={handleCoverUpload}
+                            disabled={uploadingCover}
+                            style={{ display: 'none' }}
+                          />
+                        </label>
+                        <button 
+                          type="button" 
+                          onClick={() => setShowMediaPicker(!showMediaPicker)}
+                          className="btn btn-secondary"
+                          style={{ fontSize: '13px', padding: '10px 14px' }}
+                        >
+                          <Image size={15} style={{ marginRight: '6px' }} />
+                          Pick from Media Library
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Media library popup picker if requested */}
+                    {showMediaPicker && (
+                      <div style={{ background: '#18181b', padding: '16px', borderRadius: '8px', border: '1px solid #3f3f46', marginBottom: '20px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                          <strong style={{ fontSize: '13px', color: 'white' }}>Select from Media Gallery:</strong>
+                          <button type="button" onClick={() => setShowMediaPicker(false)} style={{ background: 'none', border: 'none', color: '#a1a1aa', cursor: 'pointer', fontSize: '12px' }}>Close</button>
+                        </div>
+                        {mediaItems.length === 0 ? (
+                          <p style={{ fontSize: '12px', color: 'var(--text-muted-light)' }}>No media items uploaded yet. Upload an image above.</p>
+                        ) : (
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '10px', maxHeight: '180px', overflowY: 'auto' }}>
+                            {mediaItems.map((m) => (
+                              <div 
+                                key={m.id}
+                                onClick={() => {
+                                  handleProductFieldChange('coverImage', m.url);
+                                  setShowMediaPicker(false);
+                                  onToast('Selected cover from media library!', 'info');
+                                }}
+                                style={{
+                                  height: '75px',
+                                  borderRadius: '6px',
+                                  overflow: 'hidden',
+                                  border: editingProduct.coverImage === m.url ? '2px solid var(--primary)' : '1px solid #3f3f46',
+                                  cursor: 'pointer',
+                                  background: '#09090b'
+                                }}
+                                title={m.fileName || 'Click to select'}
+                              >
+                                <img src={m.url} alt={m.fileName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Cover Image URL Manual Field */}
+                    <div className="admin-form-group">
+                      <label>Cover Image URL (Direct link or CDN path)</label>
+                      <input 
+                        type="text" 
+                        className="admin-form-input" 
+                        value={editingProduct.coverImage}
+                        onChange={(e) => handleProductFieldChange('coverImage', e.target.value)}
+                        placeholder="https://..."
+                        required
+                      />
+                      <span style={{ fontSize: '11.5px', color: 'var(--text-muted-light)', marginTop: '4px', display: 'block' }}>
+                        You can paste any custom image URL or use the upload button above.
+                      </span>
+                    </div>
+
+                    {/* Reset to default option */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <button 
+                        type="button" 
+                        onClick={() => {
+                          const defaultImg = editingProduct.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                          handleProductFieldChange('coverImage', defaultImg);
+                          onToast('Cover reset to original default', 'info');
+                        }}
+                        style={{ background: 'none', border: 'none', color: 'var(--text-muted-light)', fontSize: '12px', cursor: 'pointer', textDecoration: 'underline' }}
+                      >
+                        Reset to default cover image
+                      </button>
+                    </div>
+
+                  </div>
+
+                  {/* RIGHT COLUMN: Product Information & Gumroad Destination */}
+                  <div className="admin-card">
+                    <h2>Product Details & Gumroad Checkout</h2>
+
+                    {/* Gumroad URL Destination */}
+                    <div className="admin-form-group" style={{ background: 'rgba(197, 160, 89, 0.08)', padding: '16px', borderRadius: '10px', border: '1px solid rgba(197, 160, 89, 0.25)' }}>
+                      <label style={{ color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        🔗 Direct Gumroad Product URL (Direct Checkout Destination)
+                      </label>
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+                        <input 
+                          type="url" 
+                          className="admin-form-input" 
+                          style={{ backgroundColor: '#09090b', color: 'white', fontWeight: 600 }}
+                          value={editingProduct.gumroadUrl}
+                          onChange={(e) => handleProductFieldChange('gumroadUrl', e.target.value)}
+                          placeholder={editingProduct.id === 'high-protein-dessert-cookbook-70' ? 'https://bhyou.gumroad.com/l/bhyou' : 'https://bhyou.gumroad.com/l/pzebkb'}
+                          required
+                        />
+                        <a 
+                          href={editingProduct.gumroadUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="btn btn-secondary"
+                          style={{ whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', textDecoration: 'none', padding: '10px 14px' }}
+                          title="Test Gumroad URL in new tab"
+                        >
+                          <ExternalLink size={14} /> Test Link
+                        </a>
+                      </div>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted-light)', marginTop: '6px', display: 'block' }}>
+                        ⚡ <strong>Must open the exact product directly</strong> (e.g. <code>https://bhyou.gumroad.com/l/bhyou</code>). No intermediate pages.
+                      </span>
+                    </div>
+
+                    {/* Title & Subtitle */}
+                    <div className="admin-form-group">
+                      <label>Ebook Main Title</label>
+                      <input 
+                        type="text" 
+                        className="admin-form-input" 
+                        value={editingProduct.title}
+                        onChange={(e) => handleProductFieldChange('title', e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    <div className="admin-form-group">
+                      <label>Subtitle / Hook</label>
+                      <input 
+                        type="text" 
+                        className="admin-form-input" 
+                        value={editingProduct.subtitle}
+                        onChange={(e) => handleProductFieldChange('subtitle', e.target.value)}
+                      />
+                    </div>
+
+                    {/* Pricing */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                      <div className="admin-form-group">
+                        <label>Sale Price ($ USD)</label>
+                        <input 
+                          type="number" 
+                          step="0.01" 
+                          className="admin-form-input" 
+                          value={editingProduct.price}
+                          onChange={(e) => handleProductFieldChange('price', parseFloat(e.target.value) || 0)}
+                          required
+                        />
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Original / Strikethrough Price ($ USD)</label>
+                        <input 
+                          type="number" 
+                          step="0.01" 
+                          className="admin-form-input" 
+                          value={editingProduct.originalPrice}
+                          onChange={(e) => handleProductFieldChange('originalPrice', parseFloat(e.target.value) || 0)}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Page Count & Recipes */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+                      <div className="admin-form-group">
+                        <label>Number of Recipes</label>
+                        <input 
+                          type="number" 
+                          className="admin-form-input" 
+                          value={editingProduct.recipes}
+                          onChange={(e) => handleProductFieldChange('recipes', parseInt(e.target.value, 10) || 0)}
+                          required
+                        />
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Total Pages</label>
+                        <input 
+                          type="number" 
+                          className="admin-form-input" 
+                          value={editingProduct.pages}
+                          onChange={(e) => handleProductFieldChange('pages', parseInt(e.target.value, 10) || 0)}
+                          required
+                        />
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Categories Count</label>
+                        <input 
+                          type="number" 
+                          className="admin-form-input" 
+                          value={editingProduct.categoriesCount || 9}
+                          onChange={(e) => handleProductFieldChange('categoriesCount', parseInt(e.target.value, 10) || 0)}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Calories & Access */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                      <div className="admin-form-group">
+                        <label>Calories Tag</label>
+                        <input 
+                          type="text" 
+                          className="admin-form-input" 
+                          value={editingProduct.calories}
+                          onChange={(e) => handleProductFieldChange('calories', e.target.value)}
+                          placeholder="Under 400 Calories"
+                        />
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Access Type</label>
+                        <input 
+                          type="text" 
+                          className="admin-form-input" 
+                          value={editingProduct.access}
+                          onChange={(e) => handleProductFieldChange('access', e.target.value)}
+                          placeholder="Lifetime Access"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="admin-form-group">
+                      <label>Product Description</label>
+                      <textarea 
+                        className="admin-form-textarea" 
+                        rows={4}
+                        value={editingProduct.description}
+                        onChange={(e) => handleProductFieldChange('description', e.target.value)}
+                      />
+                    </div>
+
+                    {/* Save Button */}
+                    <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #27272a', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                      <button 
+                        type="submit" 
+                        className="btn btn-primary" 
+                        style={{ padding: '14px 32px', fontSize: '15px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                      >
+                        <Save size={18} /> Save Ebook Settings & Cover
+                      </button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </form>
+            )}
+          </div>
+        )}
 
         {/* --- ANNOUNCEMENT TAB --- */}
         {activeTab === 'announcement' && (

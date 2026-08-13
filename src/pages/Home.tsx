@@ -284,12 +284,19 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                 <div style={{ background: 'white', borderRadius: '16px', border: '1px solid var(--light-border)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ background: 'var(--light-surface)', padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid var(--light-border)', position: 'relative' }}>
                     <span className="badge badge-primary" style={{ position: 'absolute', top: '16px', left: '16px' }}>Flagship Ebook</span>
-                    <Link to="/cookbook">
+                    <a 
+                      href="https://bhyou.gumroad.com/l/pzebkb" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      onClick={handleBuyClick}
+                      style={{ textDecoration: 'none', display: 'block' }}
+                      title="Click to buy 50 High-Protein Recipes on Gumroad"
+                    >
                       <div className="ebook-mockup" style={{ width: '180px', height: '245px', cursor: 'pointer' }}>
                         <img src={flagship.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} alt={flagship.title} className="ebook-cover-img" />
                         <div className="ebook-spine"></div>
                       </div>
-                    </Link>
+                    </a>
                   </div>
 
                   <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '14px' }}>
@@ -320,12 +327,26 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                     </div>
 
                     <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-                      <Link to="/cookbook" className="btn btn-primary" style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}>
-                        View 50-Recipe Ebook
-                      </Link>
-                      <button onClick={handleBuyClick} className="btn btn-secondary" style={{ padding: '12px 18px', fontSize: '14px' }}>
+                      <a 
+                        href="https://bhyou.gumroad.com/l/pzebkb" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        onClick={handleBuyClick} 
+                        className="btn btn-primary" 
+                        style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}
+                      >
+                        Get the Cookbook
+                      </a>
+                      <a 
+                        href="https://bhyou.gumroad.com/l/pzebkb" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        onClick={handleBuyClick} 
+                        className="btn btn-secondary" 
+                        style={{ padding: '12px 18px', fontSize: '14px', textDecoration: 'none' }}
+                      >
                         Buy (${flagship.price})
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -344,12 +365,19 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                     <span className="badge" style={{ position: 'absolute', top: '16px', right: '16px', backgroundColor: '#fef3c7', color: '#b45309' }}>
                       {dessert.recipes} Recipes
                     </span>
-                    <Link to="/dessert-cookbook">
+                    <a 
+                      href="https://bhyou.gumroad.com/l/bhyou" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      onClick={handleDessertBuyClick}
+                      style={{ textDecoration: 'none', display: 'block' }}
+                      title="Click to buy The High-Protein Dessert Cookbook on Gumroad"
+                    >
                       <div className="ebook-mockup" style={{ width: '180px', height: '245px', cursor: 'pointer' }}>
                         <img src={dessert.coverImage || '/dessert_cookbook_cover.png'} alt={dessert.title} className="ebook-cover-img" />
                         <div className="ebook-spine"></div>
                       </div>
-                    </Link>
+                    </a>
                   </div>
 
                   <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '14px' }}>
@@ -380,9 +408,16 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                     </div>
 
                     <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-                      <Link to="/dessert-cookbook" className="btn btn-primary" style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}>
+                      <a 
+                        href="https://bhyou.gumroad.com/l/bhyou" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        onClick={handleDessertBuyClick} 
+                        className="btn btn-primary" 
+                        style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}
+                      >
                         Get the Cookbook
-                      </Link>
+                      </a>
                       <a 
                         href="https://bhyou.gumroad.com/l/bhyou" 
                         target="_blank" 

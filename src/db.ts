@@ -1698,7 +1698,11 @@ export const checkAndFixSeoConfigs = async () => {
   }
 };
 
+let productsTableMissing = false;
+
 export const db = {
+  isProductsTableMissing: () => productsTableMissing,
+
   // Posts
   getPosts: async (): Promise<BlogPost[]> => {
     initDb();
@@ -2051,10 +2055,16 @@ export const db = {
         data.forEach((p: any) => {
           map[p.id] = p as EbookProduct;
         });
+        productsTableMissing = false;
         return sanitize({ ...PRODUCTS, ...map });
       }
-      if (error && error.code !== 'PGRST116' && error.code !== '42P01') {
-        console.warn("Supabase getProducts error, falling back to localStorage:", error);
+      if (error) {
+        if (error.code === 'PGRST205' || error.code === '42P01' || error.message?.includes('schema cache')) {
+          productsTableMissing = true;
+        }
+        if (error.code !== 'PGRST116' && error.code !== '42P01') {
+          console.warn("Supabase getProducts error, falling back to localStorage:", error);
+        }
       }
     }
     try {
@@ -2083,9 +2093,17 @@ export const db = {
         .select('*')
         .eq('id', id)
         .single();
-      if (!error && data) return sanitizeOne(data as EbookProduct);
-      if (error && error.code !== 'PGRST116' && error.code !== '42P01') {
-        console.warn("Supabase getProduct error, falling back to localStorage:", error);
+      if (!error && data) {
+        productsTableMissing = false;
+        return sanitizeOne(data as EbookProduct);
+      }
+      if (error) {
+        if (error.code === 'PGRST205' || error.code === '42P01' || error.message?.includes('schema cache')) {
+          productsTableMissing = true;
+        }
+        if (error.code !== 'PGRST116' && error.code !== '42P01') {
+          console.warn("Supabase getProduct error, falling back to localStorage:", error);
+        }
       }
     }
     try {
@@ -2102,7 +2120,13 @@ export const db = {
         .from('products')
         .upsert(product);
       if (error) {
+        if (error.code === 'PGRST205' || error.code === '42P01' || error.message?.includes('schema cache')) {
+          productsTableMissing = true;
+        }
         console.warn("Supabase saveProduct error, falling back to localStorage:", error);
+        throw new Error(error.message || "Failed to save to database");
+      } else {
+        productsTableMissing = false;
       }
     }
     const stored = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || JSON.stringify(PRODUCTS));

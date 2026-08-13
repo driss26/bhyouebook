@@ -39,6 +39,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
   const [editingProduct, setEditingProduct] = useState<EbookProduct | null>(PRODUCTS['high-protein-dessert-cookbook-70']);
   const [uploadingCover, setUploadingCover] = useState(false);
   const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [productsTableMissing, setProductsTableMissing] = useState(false);
 
   // Announcement Bar & Media Gallery states
   const [announcementSettings, setAnnouncementSettings] = useState<AnnouncementSettings>({
@@ -77,18 +78,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
     formData.append('file', file);
     formData.append('upload_preset', uploadPreset);
     
-    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-      method: 'POST',
-      body: formData,
-    });
-    
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error?.message || 'Cloudinary upload failed');
+    try {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error?.message || `Cloudinary upload failed (Preset: "${uploadPreset}", Cloud: "${cloudName}")`);
+      }
+      
+      const data = await response.json();
+      return data.secure_url;
+    } catch (err: any) {
+      if (err.message.includes('Preset:')) throw err;
+      throw new Error(`${err.message} (Preset: "${uploadPreset}", Cloud: "${cloudName}")`);
     }
-    
-    const data = await response.json();
-    return data.secure_url;
   };
 
   // SEO Page Editor State
@@ -128,6 +134,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
           return prevId;
         });
       }
+      setProductsTableMissing(db.isProductsTableMissing());
     } catch (err) {
       console.error(err);
       onToast('Error loading database data', 'error');
@@ -639,6 +646,75 @@ ${pages.map(p => `  <url>
                 </a>
               )}
             </div>
+
+            {productsTableMissing && (
+              <div style={{
+                background: 'rgba(239, 68, 68, 0.15)',
+                border: '1px solid #ef4444',
+                borderRadius: '8px',
+                padding: '16px',
+                marginBottom: '24px',
+                color: '#f87171',
+                fontSize: '14px',
+                lineHeight: '1.6'
+              }}>
+                <strong style={{ color: 'white', display: 'block', marginBottom: '6px', fontSize: '15px' }}>
+                  ⚠️ Table "products" manquante dans Supabase / Missing products table!
+                </strong>
+                Le site live utilise la base de données Supabase, mais la table <code>products</code> n'a pas encore été créée dans votre projet.
+                Tant que cette table n'existe pas, vos modifications ne seront pas visibles sur le site de production.
+                <br /><br />
+                Veuillez copier et exécuter la requête SQL ci-dessous dans le <strong>SQL Editor</strong> de votre tableau de bord Supabase pour corriger ce problème :
+                <details style={{ marginTop: '10px', cursor: 'pointer' }}>
+                  <summary style={{ color: 'var(--primary)', fontWeight: 'bold', outline: 'none' }}>Afficher la requête SQL à exécuter</summary>
+                  <pre style={{
+                    background: '#09090b',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    overflowX: 'auto',
+                    marginTop: '8px',
+                    color: '#e4e4e7',
+                    fontSize: '12px',
+                    border: '1px solid #27272a',
+                    fontFamily: 'monospace'
+                  }}>{`CREATE TABLE IF NOT EXISTS "products" (
+  "id" TEXT PRIMARY KEY,
+  "title" TEXT NOT NULL,
+  "fullTitle" TEXT,
+  "shortTitle" TEXT,
+  "subtitle" TEXT,
+  "price" NUMERIC(10,2) NOT NULL,
+  "originalPrice" NUMERIC(10,2),
+  "productType" TEXT,
+  "format" TEXT,
+  "pages" INTEGER,
+  "recipes" INTEGER,
+  "calories" TEXT,
+  "protein" TEXT,
+  "access" TEXT,
+  "level" TEXT,
+  "categoriesCount" INTEGER,
+  "coverImage" TEXT NOT NULL,
+  "route" TEXT NOT NULL,
+  "gumroadUrl" TEXT NOT NULL,
+  "downloadUrl" TEXT,
+  "rating" NUMERIC(3,1),
+  "reviewsCount" INTEGER,
+  "description" TEXT
+);
+
+INSERT INTO "products" ("id", "title", "fullTitle", "shortTitle", "subtitle", "price", "originalPrice", "productType", "format", "pages", "recipes", "calories", "protein", "access", "level", "categoriesCount", "coverImage", "route", "gumroadUrl", "downloadUrl", "rating", "reviewsCount", "description")
+VALUES
+('bhyou-50-recipes', '50 High-Protein Recipes', 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories', '50 High-Protein Recipes', '50 Guilt-Free Healthy Recipes Under 400 Calories', 11.99, 24.99, 'Digital Cookbook', 'Instant Digital Download (PDF)', 60, 50, 'Under 400 Calories', '30g+ Protein / Meal', 'Lifetime Access', 'Beginner-Friendly', NULL, 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg', '/cookbook', 'https://bhyou.gumroad.com/l/pzebkb', '/downloads/bhyou-50-recipes.pdf', 4.9, 142, 'Stop starving yourself. Enjoy 50 delicious, easy-to-prep, macro-friendly recipes designed to support muscle growth and burn fat. Instant digital PDF download.'),
+('high-protein-dessert-cookbook-70', 'The High-Protein Dessert Cookbook', 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories', 'High-Protein Dessert Cookbook', '70 Healthy Recipes Under 400 Calories', 19.99, 39.99, 'Digital Cookbook', 'Instant Digital Download (PDF)', 181, 70, 'Under 400 Calories', 'High-Protein', 'Lifetime Access', 'Beginner-Friendly', 9, '/dessert_cookbook_cover.png', '/dessert-cookbook', 'https://bhyou.gumroad.com/l/bhyou', '/downloads/high-protein-dessert-cookbook.pdf', 5.0, 88, 'Love desserts but still want to hit your protein goals? This premium cookbook features 70 delicious high-protein dessert recipes, each carefully crafted to satisfy your sweet cravings while keeping calories under control.')
+ON CONFLICT ("id") DO UPDATE SET
+  "title" = EXCLUDED."title",
+  "coverImage" = EXCLUDED."coverImage",
+  "gumroadUrl" = EXCLUDED."gumroadUrl",
+  "price" = EXCLUDED."price";`}</pre>
+                </details>
+              </div>
+            )}
 
             {/* Product Switcher Selector Tabs */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '28px' }}>

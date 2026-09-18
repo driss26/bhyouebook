@@ -1,71 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Sparkles, Flame, CheckCircle, ArrowRight, ShieldCheck, Star, Plus, Minus } from 'lucide-react';
+import { 
+  CheckCircle, ArrowRight, ShieldCheck, Star, 
+  BookOpen, Sparkles, Flame, Clock, Calendar, 
+  Utensils, Zap, HeartHandshake, Eye
+} from 'lucide-react';
 import { firePageView, firePixel, db, PRODUCTS } from '../db';
-import type { PageSeo, EbookProduct } from '../db';
+import type { BlogPost, EbookProduct } from '../db';
+import { CinematicDessertShowcase } from '../components/CinematicDessertShowcase';
 
 interface HomeProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ onToast }) => {
-  const [seoConfig, setSeoConfig] = useState<PageSeo | null>(null);
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [products, setProducts] = useState<Record<string, EbookProduct>>(PRODUCTS);
-
-  const loadProducts = async () => {
-    try {
-      const all = await db.getProducts();
-      if (all) setProducts(all);
-    } catch (err) {
-      console.error("Error loading products in Home:", err);
-    }
-  };
-
-  const toggleFaq = (index: number) => {
-    if (activeFaq === index) {
-      setActiveFaq(null);
-    } else {
-      setActiveFaq(index);
-    }
-  };
-
-  const faqs = [
-    {
-      q: "What is included in the ebook?",
-      a: "You get 50 premium high-protein recipes (strictly under 400 calories), our structured 7-Day Meal Plan, grocery shopping lists, and kitchen cheat sheets."
-    },
-    {
-      q: "Is this beginner friendly?",
-      a: "Yes! Every recipe includes simple, step-by-step instructions and uses budget-friendly ingredients available at any local grocery store."
-    },
-    {
-      q: "How will I receive my ebook?",
-      a: "It is delivered instantly as a high-resolution, mobile-optimized digital PDF to your email inbox immediately after purchase."
-    },
-    {
-      q: "Are calories and protein included?",
-      a: "Yes, every single recipe features accurate, verified calorie counts and complete macronutrient breakdowns (protein, carbs, fats)."
-    },
-    {
-      q: "Can I use these recipes for meal prep?",
-      a: "Absolutely! Many of the recipes (like our 10 chicken meal preps) are specifically designed to be cooked in advance and stored in the fridge."
-    }
-  ];
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
+  const [product, setProduct] = useState<EbookProduct>(PRODUCTS['bhyou-50-recipes']);
+  const [showAboutModal, setShowAboutModal] = useState(false);
+  const [selectedPreviewImage, setSelectedPreviewImage] = useState<string | null>(null);
 
   useEffect(() => {
     firePageView('/');
-    loadProducts();
 
-    const handleProductsUpdated = () => {
-      loadProducts();
-    };
-    window.addEventListener('products_updated', handleProductsUpdated);
+    // Load products
+    db.getProducts().then((all) => {
+      if (all && all['bhyou-50-recipes']) {
+        setProduct(all['bhyou-50-recipes']);
+      }
+    }).catch(err => console.error("Error loading products:", err));
 
+    // Load blog posts and prioritize the 6 strongest relevant articles
+    db.getPosts().then((posts) => {
+      if (posts && posts.length > 0) {
+        const prioritySlugs = [
+          'healthy-chocolate-lava-cake',
+          'high-protein-chicken-meals',
+          'guilt-free-desserts-under-200-calories',
+          'high-protein-dinners-under-400-calories',
+          'healthy-meal-prep-under-30-minutes',
+          'healthy-desserts-under-400-calories'
+        ];
+        
+        const sorted = [...posts].sort((a, b) => {
+          const aIndex = prioritySlugs.indexOf(a.slug);
+          const bIndex = prioritySlugs.indexOf(b.slug);
+          if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+          if (aIndex !== -1) return -1;
+          if (bIndex !== -1) return 1;
+          return 0;
+        });
+
+        setFeaturedPosts(sorted.slice(0, 6));
+      }
+    }).catch(err => console.error("Error loading blog posts:", err));
+
+    // Load SEO Config
     db.getSeoConfigs().then(configs => {
       const homeConfig = configs.find(c => c.pageId === 'home');
       if (homeConfig) {
-        setSeoConfig(homeConfig);
         if (homeConfig.seoTitle) {
           document.title = homeConfig.seoTitle;
         }
@@ -77,528 +69,561 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
     }).catch(err => {
       console.error("Error loading home page SEO config:", err);
     });
-
-    return () => {
-      window.removeEventListener('products_updated', handleProductsUpdated);
-    };
   }, []);
 
   const handleBuyClick = () => {
-    const flagship = products['bhyou-50-recipes'] || PRODUCTS['bhyou-50-recipes'];
-    firePixel('Google Ads', 'click_buy_cookbook_1199', { price: flagship.price });
-    firePixel('Meta Pixel', 'InitiateCheckout', { content_name: flagship.fullTitle || flagship.title, value: flagship.price, currency: 'USD' });
+    firePixel('Google Ads', 'click_buy_cookbook_1599', { price: 15.99 });
+    firePixel('Meta Pixel', 'InitiateCheckout', { 
+      content_name: 'High-Protein Recipes Under 400 Calories', 
+      value: 15.99, 
+      currency: 'USD' 
+    });
+    firePixel('Pinterest Tag', 'checkout_click', { 
+      product_id: 'bhyou-50-recipes', 
+      value: 15.99 
+    });
     onToast('Opening Gumroad Secure Checkout...', 'success');
-    window.open(flagship.gumroadUrl || 'https://bhyou.gumroad.com/l/pzebkb', '_blank');
+    window.open(product.gumroadUrl || 'https://bhyou.gumroad.com/l/pzebkb', '_blank');
   };
 
-  const handleDessertBuyClick = () => {
-    const dessert = products['high-protein-dessert-cookbook-70'] || PRODUCTS['high-protein-dessert-cookbook-70'];
-    firePixel('Google Ads', 'click_buy_dessert_cookbook_1999', { price: dessert.price });
-    firePixel('Meta Pixel', 'InitiateCheckout', { content_name: dessert.fullTitle || dessert.title, value: dessert.price, currency: 'USD' });
-    onToast('Opening Gumroad Secure Checkout...', 'success');
-  };
-
-  const scrollToBuySection = () => {
-    const el = document.getElementById('promo-section');
+  const scrollToEbook = () => {
+    const el = document.getElementById('featured-ebook');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="hero">
-        <div className="container hero-grid">
-          <div className="hero-content">
-            <span className="badge badge-primary" style={{ marginBottom: '16px' }}>
-              <Sparkles size={12} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-              Fresh Nutrition Launch
-            </span>
+    <div className="homepage-wrapper">
+      
+      {/* ================================================== */}
+      {/* 1. HERO SECTION                                   */}
+      {/* ================================================== */}
+      <section className="hero-editorial" aria-label="Hero Introduction">
+        <div className="container">
+          <div className="hero-editorial-grid">
+            
+            {/* Editorial Text Content */}
+            <div className="hero-editorial-content">
+              <div className="hero-editorial-tag">
+                <Sparkles size={14} className="hero-tag-icon" />
+                <span>Modern Nutrition & Culinary Lifestyle</span>
+              </div>
 
-            <h1 className="hero-title" style={{ marginBottom: '16px' }}>
-              {seoConfig?.ogTitle ? (
-                <>
-                  {seoConfig.ogTitle.includes(':') ? (
-                    <>
-                      {seoConfig.ogTitle.split(':')[0]}: <span>{seoConfig.ogTitle.split(':').slice(1).join(':')}</span>
-                    </>
-                  ) : (
-                    <span>{seoConfig.ogTitle}</span>
-                  )}
-                </>
-              ) : (
-                <>
-                  Get Lean & Stay Full: <span>50 High-Protein Recipes Under 400 Calories</span>
-                </>
-              )}
-            </h1>
+              {/* ONE clear H1 only */}
+              <h1 className="hero-editorial-title">
+                High-Protein Recipes &amp; Healthy Desserts
+              </h1>
 
-            {/* Shopify-style Price block */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', margin: '8px 0 24px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)', padding: '10px 0', width: '100%', maxWidth: '340px' }}>
-              <span style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>$11.99</span>
-              <span style={{ fontSize: '16px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$24.99</span>
-              <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '3px 6px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>SAVE 52%</span>
+              {/* Natural SEO-friendly supporting paragraph */}
+              <p className="hero-editorial-lead">
+                Discover delicious high-protein recipes, healthy desserts, low-calorie meals, and easy meal ideas designed to make healthy eating simple and enjoyable.
+              </p>
+
+              {/* Hero Value Highlights */}
+              <div className="hero-editorial-highlights">
+                <div className="hero-highlight-item">
+                  <Flame size={16} className="highlight-icon" />
+                  <span>50 Recipes Under 400 Kcal</span>
+                </div>
+                <div className="hero-highlight-item">
+                  <Utensils size={16} className="highlight-icon" />
+                  <span>30g+ Protein / Serving</span>
+                </div>
+                <div className="hero-highlight-item">
+                  <CheckCircle size={16} className="highlight-icon" />
+                  <span>7-Day Meal Plan Included</span>
+                </div>
+              </div>
+
+              {/* Primary Call to Action */}
+              <div className="hero-editorial-actions">
+                <button 
+                  onClick={handleBuyClick} 
+                  className="btn btn-primary hero-main-cta"
+                  aria-label="Get the Ebook — $15.99"
+                >
+                  Get the Ebook — $15.99
+                  <ArrowRight size={18} />
+                </button>
+                <button 
+                  onClick={scrollToEbook}
+                  className="btn btn-secondary hero-secondary-cta"
+                >
+                  View Book Details
+                </button>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="hero-editorial-trust">
+                <div className="trust-stars-row">
+                  <div className="stars-cluster">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={15} fill="#fbbf24" color="#fbbf24" />
+                    ))}
+                  </div>
+                  <span className="trust-score">4.9/5 Rating</span>
+                  <span className="trust-dot">•</span>
+                  <span className="trust-note">Instant PDF Download</span>
+                </div>
+              </div>
             </div>
 
-            {/* Mobile-only eBook cover mockup with rating block below it */}
-            <div className="mobile-only-mockup">
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
+            {/* Editorial Hero Visual Card */}
+            <div className="hero-editorial-visual">
+              <div className="editorial-media-card">
+                <img 
+                  src="/hero_showcase.jpg" 
+                  alt="High-protein savory chicken avocado bowl alongside a guilt-free dark chocolate protein lava cake with berries"
+                  className="editorial-media-img"
+                  fetchPriority="high"
+                  loading="eager"
+                />
+                <div className="editorial-media-badge top-badge">
+                  <span className="badge-bullet" />
+                  <span>Macro-Balanced Culinary Photography</span>
+                </div>
+                <div className="editorial-media-card-footer">
+                  <div className="media-footer-pill">
+                    <span className="pill-label">Savory Meals</span>
+                    <span className="pill-val">Over 35g Protein</span>
+                  </div>
+                  <div className="media-footer-pill">
+                    <span className="pill-label">Guilt-Free Desserts</span>
+                    <span className="pill-val">Under 220 Kcal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================== */}
+      {/* 2. CINEMATIC DESSERTS ANIMATION                    */}
+      {/* ================================================== */}
+      <CinematicDessertShowcase />
+
+      {/* ================================================== */}
+      {/* 3. ABOUT BHYOU                                     */}
+      {/* ================================================== */}
+      <section id="about" className="about-bh-section" aria-label="About BHYou">
+        <div className="container">
+          <div className="about-bh-grid">
+            
+            {/* Left Story Column */}
+            <div className="about-bh-story">
+              <span className="section-subtitle">Our Philosophy</span>
+              <h2 className="section-title">About BHYou</h2>
+              
+              <div className="about-bh-copy">
+                <p className="about-highlight-text">
+                  BHYou is all about making healthy eating simple, delicious, and realistic. We create recipes that combine great taste with practical nutrition, helping you enjoy high-protein meals and healthier desserts without making food boring.
+                </p>
+                <p>
+                  We believe that long-term body composition and vibrant energy shouldn't require starving, bland chicken breasts, or giving up your favorite sweets. By reimagining comfort food favorites through macro-optimized ingredients, we show you that high-protein recipes and low-calorie meals can be the most flavorful part of your day.
+                </p>
+              </div>
+
+              {/* Secondary CTA */}
+              <div className="about-cta-container">
+                <button 
+                  onClick={() => setShowAboutModal(true)} 
+                  className="about-secondary-link"
+                >
+                  Learn More About BHYou →
+                </button>
+              </div>
+            </div>
+
+            {/* Right Pillars Cards */}
+            <div className="about-bh-pillars">
+              <div className="about-pillar-card">
+                <div className="pillar-icon-box">
+                  <Flame size={22} />
+                </div>
+                <div>
+                  <h3 className="pillar-title">High-Protein Focus</h3>
+                  <p className="pillar-desc">
+                    Every dish delivers generous, muscle-sparing protein to keep you full for hours and fuel active recovery.
+                  </p>
+                </div>
+              </div>
+
+              <div className="about-pillar-card">
+                <div className="pillar-icon-box">
+                  <Sparkles size={22} />
+                </div>
+                <div>
+                  <h3 className="pillar-title">Healthy Desserts</h3>
+                  <p className="pillar-desc">
+                    From molten lava cakes to tiramisu cups, satisfy your sweet tooth without throwing off your daily calorie deficit.
+                  </p>
+                </div>
+              </div>
+
+              <div className="about-pillar-card">
+                <div className="pillar-icon-box">
+                  <Utensils size={22} />
+                </div>
+                <div>
+                  <h3 className="pillar-title">Low-Calorie Recipes</h3>
+                  <p className="pillar-desc">
+                    Strictly portioned and verified recipes under 400 calories that maximize volume so you never feel restricted.
+                  </p>
+                </div>
+              </div>
+
+              <div className="about-pillar-card">
+                <div className="pillar-icon-box">
+                  <HeartHandshake size={22} />
+                </div>
+                <div>
+                  <h3 className="pillar-title">Realistic Meal Ideas</h3>
+                  <p className="pillar-desc">
+                    Practical, accessible ingredients available at any local grocery store with 30-minute prep times.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================== */}
+      {/* 4. BEST-SELLING / FEATURED EBOOK                   */}
+      {/* ================================================== */}
+      <section id="featured-ebook" className="featured-ebook-section" aria-label="Featured Ebook">
+        <div className="container">
+          
+          <div className="section-title-wrapper text-center">
+            <span className="section-subtitle">The BHYou Recipe Collection</span>
+            <h2 className="section-title">High-Protein Recipes Under 400 Calories</h2>
+            <p className="section-intro-text">
+              The flagship digital cookbook designed to fuel fat loss and lean muscle with gourmet meals you’ll actually look forward to eating.
+            </p>
+          </div>
+
+          <div className="featured-ebook-showcase">
+            
+            {/* Visual Column: 3D Mockup & Previews */}
+            <div className="ebook-visual-column">
+              <div className="ebook-mockup-wrapper">
+                <div 
+                  className="ebook-mockup" 
+                  onClick={handleBuyClick} 
+                  title="Click to get High-Protein Recipes on Gumroad"
+                  role="button"
+                  tabIndex={0}
+                >
                   <img 
-                    src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" 
-                    alt="High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories Cookbook Cover" 
+                    src={product.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} 
+                    alt="High-Protein Recipes Under 400 Calories Ebook Cover" 
                     className="ebook-cover-img" 
                   />
-                  <div className="ebook-spine"></div>
+                  <div className="ebook-spine" />
                   <div className="mockup-badge">
-                    ONLY
-                    <span>$11.99</span>
+                    <span>$15.99</span>
                   </div>
                 </div>
-                {/* Rating under the image (Mobile) */}
-                <div className="rating-under-mockup">
-                  <div className="stars">
-                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                    <Star size={16} fill="#fbbf24" color="#fbbf24" />
+              </div>
+
+              {/* Interior Page Previews */}
+              <div className="interior-preview-block">
+                <div className="preview-header">
+                  <span className="preview-tag">
+                    <Eye size={14} /> Interior Page Preview
+                  </span>
+                  <span className="preview-sub">Actual cookbook recipes</span>
+                </div>
+                <div 
+                  className="preview-img-container"
+                  onClick={() => setSelectedPreviewImage('/recipe_preview.png')}
+                  title="Click to view high-resolution page preview"
+                >
+                  <img 
+                    src="/recipe_preview.png" 
+                    alt="Interior cookbook page previews: Grilled Lemon Herb Chicken, Fluffy Protein Pancakes, Smashed Avocado Toast, and Berry Smoothie Bowl" 
+                    className="interior-preview-thumb"
+                    loading="lazy"
+                  />
+                  <div className="preview-overlay-btn">
+                    <span>Enlarge Preview</span>
                   </div>
-                  <span className="rating-val">4.9/5.0</span>
-                  <span>(142 verified reviews)</span>
+                </div>
+                <div className="preview-caption">
+                  <span>Pages 1–4 sample: Full macros, step-by-step instructions, ingredient checklists.</span>
                 </div>
               </div>
             </div>
 
-            <p className="hero-subheadline">
-              {seoConfig?.ogDescription || seoConfig?.metaDescription || `Stop starving yourself. Enjoy 50 delicious, easy-to-prep, macro-friendly recipes designed to support muscle growth and burn fat. Instant digital PDF download.`}
-            </p>
-            
-            <div className="hero-bullet-list">
-              <div className="hero-bullet">
-                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
-                <span>50 High-Protein Recipes (Under 400 kcal)</span>
-              </div>
-              <div className="hero-bullet">
-                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
-                <span>15 Guilt-Free Healthy Desserts</span>
-              </div>
-              <div className="hero-bullet">
-                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
-                <span>10 Easy Chicken Meal Preps</span>
-              </div>
-              <div className="hero-bullet">
-                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
-                <span>7-Day Structured Meal Plan</span>
-              </div>
-              <div className="hero-bullet">
-                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
-                <span>Calories & Macro Counts on Every Page</span>
-              </div>
-              <div className="hero-bullet">
-                <CheckCircle size={16} style={{ color: 'var(--success)' }} />
-                <span>Instant Digital Access Anywhere</span>
-              </div>
-            </div>
-
-            <div className="hero-actions" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '8px' }}>
-              <button onClick={handleBuyClick} className="btn btn-primary" style={{ width: '100%' }}>
-                Get My Recipe Ebook
-                <ArrowRight size={18} />
-              </button>
-              <div style={{ marginTop: '4px', fontSize: '13px', color: 'var(--text-muted-dark)', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', textAlign: 'center' }}>
-                <span>⚡ Instant Access After Purchase • Mobile Friendly Checkout</span>
-                <span>🔒 Secure Payments Powered by Gumroad • Join 2,600+ healthy recipe lovers</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Desktop eBook mockup with rating block below it */}
-          <div className="mockup-container">
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div className="ebook-mockup" onClick={scrollToBuySection} style={{ cursor: 'pointer' }}>
-                <img 
-                  src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" 
-                  alt="50 High-Protein Recipes Under 400 Calories Cookbook Cover" 
-                  className="ebook-cover-img" 
-                />
-                <div className="ebook-spine"></div>
-                <div className="mockup-badge">
-                  ONLY
-                  <span>$11.99</span>
-                </div>
-              </div>
-              {/* Rating under the image (Desktop) */}
-              <div className="rating-under-mockup">
-                <div className="stars">
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                  <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                </div>
-                <span className="rating-val">4.9/5.0</span>
-                <span>(142 verified reviews)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social proof/trust banner */}
-      <section style={{ backgroundColor: 'var(--light-surface)', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)', padding: '24px 0' }}>
-        <div className="container social-proof-container">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: 'var(--text-muted-dark)' }}>
-            <ShieldCheck size={20} className="text-primary" style={{ color: 'var(--primary)' }} />
-            <span>100% Secure Checkout</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600, color: 'var(--text-muted-dark)' }}>
-            <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
-            <span style={{ marginLeft: '6px' }}>5,000+ Happy Fit Cooks</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: 'var(--text-muted-dark)' }}>
-            <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>✓ PDF format</span>
-            <span>Instant Access Anywhere</span>
-          </div>
-        </div>
-      </section>
-
-      {/* BHYou Ebook Collection Grid (Both Products) */}
-      <section id="collection" className="section-padding" style={{ borderBottom: '1px solid var(--light-border)' }}>
-        <div className="container">
-          <div className="section-title-wrapper" style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <span className="section-subtitle">Complete Collection</span>
-            <h2 className="section-title">Explore the BHYou Cookbook Collection</h2>
-            <p style={{ color: 'var(--text-muted-dark)', maxWidth: '650px', margin: '0 auto' }}>
-              Choose your goal: master full high-protein meals and weekly meal prep, or indulge in guilt-free gourmet desserts under 400 calories.
-            </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', maxWidth: '1050px', margin: '0 auto' }}>
-            
-            {/* Product 1 Card */}
-            {(() => {
-              const flagship = products['bhyou-50-recipes'] || PRODUCTS['bhyou-50-recipes'];
-              return (
-                <div style={{ background: 'white', borderRadius: '16px', border: '1px solid var(--light-border)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ background: 'var(--light-surface)', padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid var(--light-border)', position: 'relative' }}>
-                    <span className="badge badge-primary" style={{ position: 'absolute', top: '16px', left: '16px' }}>Flagship Ebook</span>
-                    <a 
-                      href="https://bhyou.gumroad.com/l/pzebkb" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      onClick={handleBuyClick}
-                      style={{ textDecoration: 'none', display: 'block' }}
-                      title="Click to buy 50 High-Protein Recipes on Gumroad"
-                    >
-                      <div className="ebook-mockup" style={{ width: '180px', height: '245px', cursor: 'pointer' }}>
-                        <img src={flagship.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} alt={flagship.title} className="ebook-cover-img" />
-                        <div className="ebook-spine"></div>
-                      </div>
-                    </a>
+            {/* Merchandising & Value Breakdown Column */}
+            <div className="ebook-details-column">
+              
+              {/* Product Price Box */}
+              <div className="ebook-pricing-card">
+                <div className="pricing-row">
+                  <div className="price-tag-group">
+                    <span className="price-main">$15.99</span>
+                    <span className="price-original">$29.99</span>
+                    <span className="price-badge-save">SAVE 47%</span>
                   </div>
+                  <div className="format-badge">
+                    <BookOpen size={14} />
+                    <span>Instant Digital PDF</span>
+                  </div>
+                </div>
+                <p className="pricing-guarantee-note">
+                  Lifetime access • Free future updates • 100% Mobile &amp; Tablet Friendly
+                </p>
+              </div>
 
-                  <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '14px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <span style={{ fontWeight: 700, fontSize: '14px' }}>{flagship.rating ? `${flagship.rating}.0/5.0` : '4.9/5.0'}</span>
-                        <span style={{ fontSize: '12px', color: 'var(--text-muted-dark)' }}>({flagship.reviewsCount || 142} reviews)</span>
-                      </div>
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted-dark)' }}>{flagship.pages} Pages • {flagship.recipes} Recipes</span>
+              {/* Transparent Value Checklist: Strictly Actual Content */}
+              <div className="ebook-inclusions">
+                <h3 className="inclusions-title">What Is Included in Your Digital Download:</h3>
+                
+                <div className="inclusions-grid">
+                  <div className="inclusion-item">
+                    <CheckCircle size={18} className="inclusion-icon" />
+                    <div>
+                      <strong>50 High-Protein Recipes</strong>
+                      <p>Carefully balanced meals strictly under 400 kcal and high in protein.</p>
                     </div>
+                  </div>
 
-                    <h3 style={{ fontSize: '20px', color: 'var(--text-dark)' }}>{flagship.title}</h3>
-                    <p style={{ color: 'var(--text-muted-dark)', fontSize: '14px', lineHeight: 1.6, flexGrow: 1 }}>
-                      {flagship.description || '50 delicious, macro-friendly meals designed for fat loss, muscle building, and meal prep. Includes breakfasts, chicken preps, dinners, and our 7-Day Meal Plan.'}
-                    </p>
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
-                      <span style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>${flagship.price}</span>
-                      {flagship.originalPrice && (
-                        <span style={{ fontSize: '15px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>${flagship.originalPrice}</span>
-                      )}
-                      {flagship.originalPrice && (
-                        <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '3px 8px', borderRadius: '4px', fontSize: '11.5px', fontWeight: 700 }}>
-                          SAVE {Math.round((1 - flagship.price / flagship.originalPrice) * 100)}%
-                        </span>
-                      )}
+                  <div className="inclusion-item">
+                    <CheckCircle size={18} className="inclusion-icon" />
+                    <div>
+                      <strong>Healthy Desserts Section</strong>
+                      <p>15 protein cheesecakes, lava cakes, brownies, and mousse treats.</p>
                     </div>
+                  </div>
 
-                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-                      <a 
-                        href="https://bhyou.gumroad.com/l/pzebkb" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        onClick={handleBuyClick} 
-                        className="btn btn-primary" 
-                        style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}
-                      >
-                        Get the Cookbook
-                      </a>
-                      <a 
-                        href="https://bhyou.gumroad.com/l/pzebkb" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        onClick={handleBuyClick} 
-                        className="btn btn-secondary" 
-                        style={{ padding: '12px 18px', fontSize: '14px', textDecoration: 'none' }}
-                      >
-                        Buy (${flagship.price})
-                      </a>
+                  <div className="inclusion-item">
+                    <CheckCircle size={18} className="inclusion-icon" />
+                    <div>
+                      <strong>Chicken Meal Preps</strong>
+                      <p>10 easy, juicy chicken recipes designed specifically for batch cooking.</p>
+                    </div>
+                  </div>
+
+                  <div className="inclusion-item">
+                    <CheckCircle size={18} className="inclusion-icon" />
+                    <div>
+                      <strong>7-Day Structured Meal Plan</strong>
+                      <p>Day-by-day breakfast, lunch, snack, and dinner meal prep schedules.</p>
+                    </div>
+                  </div>
+
+                  <div className="inclusion-item">
+                    <CheckCircle size={18} className="inclusion-icon" />
+                    <div>
+                      <strong>Bonus Kitchen Essentials &amp; Cheat Sheets</strong>
+                      <p>High-protein food cheat sheet, shopping lists, and pantry staples.</p>
                     </div>
                   </div>
                 </div>
-              );
-            })()}
+              </div>
 
-            {/* Product 2 Card */}
-            {(() => {
-              const dessert = products['high-protein-dessert-cookbook-70'] || PRODUCTS['high-protein-dessert-cookbook-70'];
-              return (
-                <div style={{ background: 'white', borderRadius: '16px', border: '2px solid var(--primary)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                  <div style={{ background: 'var(--primary-glow)', padding: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid var(--light-border)', position: 'relative' }}>
-                    <span className="badge" style={{ position: 'absolute', top: '16px', left: '16px', backgroundColor: 'var(--primary)', color: 'white' }}>
-                      New Release
-                    </span>
-                    <span className="badge" style={{ position: 'absolute', top: '16px', right: '16px', backgroundColor: '#fef3c7', color: '#b45309' }}>
-                      {dessert.recipes} Recipes
-                    </span>
-                    <a 
-                      href="https://bhyou.gumroad.com/l/bhyou" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      onClick={handleDessertBuyClick}
-                      style={{ textDecoration: 'none', display: 'block' }}
-                      title="Click to buy The High-Protein Dessert Cookbook on Gumroad"
-                    >
-                      <div className="ebook-mockup" style={{ width: '180px', height: '245px', cursor: 'pointer' }}>
-                        <img src={dessert.coverImage || '/dessert_cookbook_cover.png'} alt={dessert.title} className="ebook-cover-img" />
-                        <div className="ebook-spine"></div>
-                      </div>
-                    </a>
-                  </div>
-
-                  <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', flexGrow: 1, gap: '14px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <span style={{ fontWeight: 700, fontSize: '14px' }}>{dessert.rating ? `${dessert.rating}.0/5.0` : '5.0/5.0'}</span>
-                        <span style={{ fontSize: '12px', color: 'var(--text-muted-dark)' }}>({dessert.reviewsCount || 88} reviews)</span>
-                      </div>
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary)' }}>{dessert.pages} Pages • {dessert.categoriesCount || 9} Categories</span>
-                    </div>
-
-                    <h3 style={{ fontSize: '20px', color: 'var(--text-dark)' }}>{dessert.title}</h3>
-                    <p style={{ color: 'var(--text-muted-dark)', fontSize: '14px', lineHeight: 1.6, flexGrow: 1 }}>
-                      {dessert.description || '70 delicious high-protein desserts under 400 calories. Satisfy sweet cravings with protein lava cakes, brownies, ice creams, mousses, and cheesecakes.'}
-                    </p>
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
-                      <span style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-dark)' }}>${dessert.price}</span>
-                      {dessert.originalPrice && (
-                        <span style={{ fontSize: '15px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>${dessert.originalPrice}</span>
-                      )}
-                      {dessert.originalPrice && (
-                        <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '3px 8px', borderRadius: '4px', fontSize: '11.5px', fontWeight: 700 }}>
-                          SAVE {Math.round((1 - dessert.price / dessert.originalPrice) * 100)}%
-                        </span>
-                      )}
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-                      <a 
-                        href="https://bhyou.gumroad.com/l/bhyou" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        onClick={handleDessertBuyClick} 
-                        className="btn btn-primary" 
-                        style={{ flex: 1, textDecoration: 'none', textAlign: 'center', fontSize: '15px' }}
-                      >
-                        Get the Cookbook
-                      </a>
-                      <a 
-                        href="https://bhyou.gumroad.com/l/bhyou" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        onClick={handleDessertBuyClick}
-                        className="btn btn-secondary" 
-                        style={{ padding: '12px 18px', fontSize: '14px', textDecoration: 'none' }}
-                      >
-                        Buy (${dessert.price})
-                      </a>
-                    </div>
-                  </div>
+              {/* Answers to Immediate Buyer Questions */}
+              <div className="buyer-qa-accordion">
+                <div className="qa-item">
+                  <h4 className="qa-heading">Who is this ebook for?</h4>
+                  <p className="qa-answer">
+                    Anyone looking to burn fat, build lean muscle, or cook healthier without spending hours in the kitchen or eating bland diet foods.
+                  </p>
                 </div>
-              );
-            })()}
 
-          </div>
-        </div>
-      </section>
-
-      {/* Features Overview */}
-      <section className="section-padding">
-        <div className="container">
-          <div className="section-title-wrapper">
-            <span className="section-subtitle">What's Inside</span>
-            <h2 className="section-title">Designed for Real, Sustainable Results</h2>
-            <p style={{ color: 'var(--text-muted-dark)' }}>No crash diets. No starving. Just delicious, high-volume meals that keep you full and energized throughout the day.</p>
-          </div>
-
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon-wrapper">
-                <Flame size={24} />
+                <div className="qa-item">
+                  <h4 className="qa-heading">What happens after purchase?</h4>
+                  <p className="qa-answer">
+                    You receive instant access. A direct download link is sent to your email immediately by Gumroad, allowing you to open and save the PDF on your iPhone, Android, iPad, or computer.
+                  </p>
+                </div>
               </div>
-              <h3>High Protein, Low Calorie</h3>
-              <p>Every single recipe has over 30g of protein and is strictly under 400 calories. Perfect for burning fat while maintaining lean muscle.</p>
-            </div>
 
-            <div className="feature-card">
-              <div className="feature-icon-wrapper">
-                <BookOpen size={24} />
-              </div>
-              <h3>Clear Macro Breakdowns</h3>
-              <p>Calorie and macronutrient (protein, carbs, fat) counts are clearly displayed on every page. Easily track your food with pre-logged MyFitnessPal codes!</p>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon-wrapper">
-                <Sparkles size={24} />
-              </div>
-              <h3>Meal Prep Friendly</h3>
-              <p>Quick recipes and storage instructions. Spend less time in the kitchen and always have a high-protein meal ready in your fridge.</p>
-            </div>
-          </div>
-
-          <div style={{ marginTop: '56px', textAlign: 'center' }}>
-            <Link to="/cookbook" className="btn btn-primary">
-              Explore Product Details
-              <ArrowRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Ebook Page-by-Page Outline */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--light-surface)', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
-        <div className="container">
-          <div className="section-title-wrapper" style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <span className="section-subtitle">What's Inside</span>
-            <h2 className="section-title">Ebook Page-by-Page Outline</h2>
-            <p style={{ color: 'var(--text-muted-dark)' }}>Here is exactly what you will find on every page of the 60-page digital cookbook.</p>
-          </div>
-
-          <div style={{ maxWidth: '900px', margin: '0 auto', backgroundColor: 'white', borderRadius: 'var(--border-radius)', border: '1px solid var(--light-border)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-            <div className="admin-table-wrapper" style={{ margin: 0 }}>
-              <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                <thead>
-                  <tr style={{ backgroundColor: 'var(--light-surface)' }}>
-                    <th style={{ padding: '16px', fontWeight: 600, width: '120px', color: 'var(--text-dark)' }}>Page(s)</th>
-                    <th style={{ padding: '16px', fontWeight: 600, width: '200px', color: 'var(--text-dark)' }}>Page Type</th>
-                    <th style={{ padding: '16px', fontWeight: 600, color: 'var(--text-dark)' }}>Content Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { page: "1", type: "Cover", desc: "High-Protein Recipes eBook — Cover Page" },
-                    { page: "2", type: "Welcome", desc: "Welcome + How to Use This Book" },
-                    { page: "3", type: "Intro", desc: "Nutrition Basics (Simplified)" },
-                    { page: "4", type: "Table of Contents", desc: "Full Table of Contents" },
-                    { page: "4", type: "Section Divider", desc: "SECTION 1: HIGH-PROTEIN BREAKFASTS", highlight: true },
-                    { page: "5-12", type: "Recipes (Breakfasts)", desc: "Breakfast Recipes #1 to #10 (High Protein)" },
-                    { page: "12", type: "Section Divider", desc: "SECTION 2: HEALTHY DESSERTS", highlight: true },
-                    { page: "13-26", type: "Recipes (Desserts)", desc: "Dessert Recipes #1 to #15" },
-                    { page: "27", type: "Section Divider", desc: "SECTION 3: CHICKEN MEALS", highlight: true },
-                    { page: "27-35", type: "Recipes (Chicken)", desc: "Chicken Meal Recipes #1 to #10" },
-                    { page: "35", type: "Section Divider", desc: "SECTION 4: LUNCH & DINNER", highlight: true },
-                    { page: "35-44", type: "Recipes (Lunch & Dinner)", desc: "Lunch & Dinner Recipes #1 to #10" },
-                    { page: "44", type: "Section Divider", desc: "SECTION 5: SMOOTHIES & DRINKS", highlight: true },
-                    { page: "44-48", type: "Recipes (Smoothies)", desc: "Smoothie & Drink Recipes #1 to #5" },
-                    { page: "49", type: "Section Divider", desc: "SECTION 6: 7-DAY MEAL PLAN", highlight: true },
-                    { page: "49-51", type: "Meal Plan", desc: "7-Day High-Protein Meal Plan (Day 1 to Day 7)" },
-                    { page: "51-52", type: "Bonus", desc: "Bonus: Protein Sources Guide" },
-                    { page: "53", type: "Bonus", desc: "Bonus: Grocery Shopping List" },
-                    { page: "54-55", type: "Bonus", desc: "Bonus: Kitchen Essentials" },
-                    { page: "56", type: "Bonus", desc: "Bonus: High-Protein Cheat Sheet" },
-                    { page: "57", type: "Snack Ideas + Closing", desc: "Closing Page + Call to Action" },
-                    { page: "58", type: "Quote Page", desc: "Inspirational Quote Page" },
-                    { page: "59", type: "Outline Page", desc: "Full Page-by-Page Outline" },
-                    { page: "60", type: "Thank You Page", desc: "Thank You + Social Media Links" }
-                  ].map((row, idx) => (
-                    <tr key={idx} style={{ 
-                      borderBottom: '1px solid var(--light-border)',
-                      backgroundColor: row.highlight ? 'var(--primary-glow)' : 'transparent',
-                      fontWeight: row.highlight ? 600 : 'normal'
-                    }}>
-                      <td style={{ padding: '14px 16px', color: 'var(--primary)', fontWeight: 700 }}>{row.page}</td>
-                      <td style={{ padding: '14px 16px' }}>
-                        <span style={{ 
-                          backgroundColor: row.highlight ? 'var(--primary)' : 'var(--light-surface)', 
-                          color: row.highlight ? 'white' : 'var(--text-dark)',
-                          padding: '4px 10px', 
-                          borderRadius: '4px',
-                          fontSize: '12px',
-                          fontWeight: 600
-                        }}>
-                          {row.type}
-                        </span>
-                      </td>
-                      <td style={{ padding: '14px 16px', color: row.highlight ? 'var(--primary)' : 'var(--text-dark)' }}>{row.desc}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Promotion Banner */}
-      <section id="promo-section" className="home-promo-section">
-        <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, opacity: 0.05, background: 'radial-gradient(var(--primary) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-        <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <span style={{ color: 'var(--primary)', fontWeight: 700, textTransform: 'uppercase', fontSize: '14px', letterSpacing: '0.1em', display: 'block', marginBottom: '16px' }}>Limited Time Launch Offer</span>
-          <h2>Get the Full 50-Recipe Cookbook & Meal Plan Today</h2>
-          <p style={{ color: 'var(--text-muted-light)', fontSize: '16px', marginBottom: '40px', lineHeight: 1.6 }}>
-            Start cooking gourmet, macro-friendly meals tonight. Take action now and receive the 7-Day Meal Plan, Grocery List, and Cooking cheatsheets entirely free with your purchase!
-          </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <button onClick={handleBuyClick} className="btn btn-primary">
-              Buy Cookbook ($11.99)
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--light-surface)', borderTop: '1px solid var(--light-border)', borderBottom: '1px solid var(--light-border)' }}>
-        <div className="container">
-          <div className="section-title-wrapper" style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <span className="section-subtitle">Got Questions?</span>
-            <h2 className="section-title">Frequently Asked Questions</h2>
-            <p style={{ color: 'var(--text-muted-dark)' }}>Everything you need to know about the ebook purchase and contents.</p>
-          </div>
-
-          <div className="faq-max-width" style={{ maxWidth: '800px', margin: '0 auto' }}>
-            {faqs.map((faq, index) => (
-              <div className="faq-item" key={index}>
-                <button className="faq-question-btn" onClick={() => toggleFaq(index)}>
-                  <h3>{faq.q}</h3>
-                  {activeFaq === index ? <Minus size={18} /> : <Plus size={18} />}
+              {/* Conversion CTA Block */}
+              <div className="ebook-checkout-cta-block">
+                <button 
+                  onClick={handleBuyClick} 
+                  className="btn btn-primary ebook-order-btn"
+                  aria-label="Get the Ebook — $15.99"
+                >
+                  Get the Ebook — $15.99
+                  <ArrowRight size={18} />
                 </button>
-                {activeFaq === index && (
-                  <div className="faq-answer">
-                    <p>{faq.a}</p>
-                  </div>
-                )}
+                <div className="checkout-security-notes">
+                  <span className="sec-note">
+                    <ShieldCheck size={16} /> 256-Bit SSL Encrypted Checkout via Gumroad
+                  </span>
+                  <span className="sec-note">
+                    <Zap size={15} /> Instant Delivery to Your Email
+                  </span>
+                </div>
               </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================== */}
+      {/* 5. FEATURED / POPULAR BLOGS                        */}
+      {/* ================================================== */}
+      <section className="featured-blogs-section" aria-label="Popular Recipes and Guides">
+        <div className="container">
+          
+          <div className="section-title-wrapper text-center">
+            <span className="section-subtitle">Nutrition Guides &amp; Meal Ideas</span>
+            <h2 className="section-title">Popular Recipes &amp; Healthy Food Guides</h2>
+            <p className="section-intro-text">
+              Free recipes, meal prep strategies, and nutritional deep dives to support your healthy lifestyle every week.
+            </p>
+          </div>
+
+          <div className="featured-blogs-grid">
+            {featuredPosts.map((post) => (
+              <article key={post.id} className="editorial-blog-card">
+                <Link to={`/blog/${post.slug}`} className="editorial-card-media">
+                  <img 
+                    src={post.featuredImage} 
+                    alt={post.title} 
+                    className="editorial-card-img"
+                    loading="lazy"
+                  />
+                  <span className="card-category-tag">{post.category}</span>
+                </Link>
+
+                <div className="editorial-card-content">
+                  <div className="card-meta-line">
+                    <span className="meta-item">
+                      <Calendar size={13} />
+                      {new Date(post.createdAt).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </span>
+                    <span className="meta-item">
+                      <Clock size={13} />
+                      {post.readTime}
+                    </span>
+                  </div>
+
+                  <h3 className="editorial-card-title">
+                    <Link to={`/blog/${post.slug}`} className="title-link">
+                      {post.title}
+                    </Link>
+                  </h3>
+
+                  <p className="editorial-card-excerpt">
+                    {post.excerpt}
+                  </p>
+
+                  <div className="editorial-card-footer">
+                    <Link to={`/blog/${post.slug}`} className="card-read-more-link">
+                      Read More →
+                    </Link>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
+
+          <div className="blogs-more-cta-wrapper text-center">
+            <Link to="/blog" className="btn btn-secondary">
+              View All Recipes &amp; Articles
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
         </div>
       </section>
+
+      {/* ================================================== */}
+      {/* Lightbox / Modal for Preview Images               */}
+      {/* ================================================== */}
+      {selectedPreviewImage && (
+        <div 
+          className="preview-lightbox-overlay"
+          onClick={() => setSelectedPreviewImage(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="preview-lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="lightbox-close-btn"
+              onClick={() => setSelectedPreviewImage(null)}
+              aria-label="Close Preview"
+            >
+              ✕
+            </button>
+            <img 
+              src={selectedPreviewImage} 
+              alt="High-resolution cookbook interior preview" 
+              className="lightbox-full-img"
+            />
+            <div className="lightbox-footer">
+              <span>Sample Pages: 50 High-Protein Recipes Under 400 Calories</span>
+              <button onClick={handleBuyClick} className="btn btn-primary btn-sm">
+                Get the Ebook — $15.99
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================================================== */}
+      {/* About BHYou Modal for "Learn More About BHYou →"   */}
+      {/* ================================================== */}
+      {showAboutModal && (
+        <div 
+          className="promo-modal-overlay" 
+          onClick={() => setShowAboutModal(false)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="promo-modal about-modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="promo-modal-close" 
+              onClick={() => setShowAboutModal(false)}
+              aria-label="Close Modal"
+            >
+              ✕
+            </button>
+            <div className="about-modal-body">
+              <span className="section-subtitle">Our Mission &amp; Standard</span>
+              <h2 style={{ fontSize: '28px', marginBottom: '16px', color: 'var(--text-dark)' }}>
+                About BHYou Nutrition
+              </h2>
+              <p style={{ color: 'var(--text-muted-dark)', lineHeight: 1.7, marginBottom: '16px' }}>
+                BHYou is all about making healthy eating simple, delicious, and realistic. We create recipes that combine great taste with practical nutrition, helping you enjoy high-protein meals and healthier desserts without making food boring.
+              </p>
+              <p style={{ color: 'var(--text-muted-dark)', lineHeight: 1.7, marginBottom: '20px' }}>
+                Our recipes are crafted with everyday ingredients, accurate macro breakdowns, and verified calorie counts. Whether you're meal prepping for a busy workweek, hitting the gym, or baking guilt-free weekend treats, BHYou gives you the recipes and meal plans to achieve your goals sustainably.
+              </p>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <Link 
+                  to="/blog" 
+                  className="btn btn-primary"
+                  onClick={() => setShowAboutModal(false)}
+                >
+                  Explore Free Recipes
+                </Link>
+                <button 
+                  onClick={() => { setShowAboutModal(false); handleBuyClick(); }}
+                  className="btn btn-secondary"
+                >
+                  Get the Ebook — $15.99
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

@@ -1249,15 +1249,15 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
   {
     pageId: 'home',
     pageName: 'Home Page',
-    seoTitle: 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories',
-    metaDescription: 'Boost your metabolism and burn fat with BHYou. Get 50 mouth-watering, high-protein recipes under 400 calories. Includes desserts and meal plans!',
+    seoTitle: 'High-Protein Recipes & Healthy Desserts | BHYou',
+    metaDescription: 'Discover high-protein recipes, healthy desserts, and low-calorie meals from BHYou. Easy, delicious recipes with protein and calorie information.',
     focusKeyword: 'high protein recipes',
-    seoScore: 92,
+    seoScore: 98,
     slug: '',
     canonicalUrl: 'https://bhyou.com',
-    ogTitle: 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories',
-    ogDescription: 'Get 50 protein-packed, low-calorie recipes designed to burn fat and build muscle. Standard and free options available!',
-    ogImage: 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'
+    ogTitle: 'High-Protein Recipes & Healthy Desserts | BHYou',
+    ogDescription: 'Discover high-protein recipes, healthy desserts, and low-calorie meals from BHYou. Easy, delicious recipes with protein and calorie information.',
+    ogImage: 'https://bhyou.com/og-image.jpg'
   },
   {
     pageId: 'sales',
@@ -1478,9 +1478,14 @@ export const initDb = () => {
       const currentSeo = JSON.parse(localStorage.getItem(KEYS.SEO) || '[]');
       let updated = false;
       const newSeo = currentSeo.map((item: any) => {
-        if (item.pageId === 'home' && item.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
-          item.seoTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
-          item.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+        if (item.pageId === 'home' && item.seoTitle !== 'High-Protein Recipes & Healthy Desserts | BHYou') {
+          item.seoTitle = 'High-Protein Recipes & Healthy Desserts | BHYou';
+          item.ogTitle = 'High-Protein Recipes & Healthy Desserts | BHYou';
+          item.metaDescription = 'Discover high-protein recipes, healthy desserts, and low-calorie meals from BHYou. Easy, delicious recipes with protein and calorie information.';
+          item.ogDescription = 'Discover high-protein recipes, healthy desserts, and low-calorie meals from BHYou. Easy, delicious recipes with protein and calorie information.';
+          item.ogImage = 'https://bhyou.com/og-image.jpg';
+          item.focusKeyword = 'high protein recipes';
+          item.seoScore = 98;
           updated = true;
         }
         if (item.pageId === 'sales' && (item.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories' || item.metaDescription.includes('Money-back guarantee!'))) {

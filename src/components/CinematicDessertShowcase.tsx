@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { Play, Pause, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 
-interface DessertSlide {
+export interface DessertSlide {
   id: string;
   name: string;
   shortLabel: string;
@@ -13,7 +12,7 @@ interface DessertSlide {
   description: string;
 }
 
-const DESSERT_SLIDES: DessertSlide[] = [
+export const DESSERT_SLIDES: DessertSlide[] = [
   {
     id: 'cheesecake',
     name: 'Vanilla Bean Basque Protein Cheesecake',
@@ -76,208 +75,181 @@ const DESSERT_SLIDES: DessertSlide[] = [
   }
 ];
 
-const AUTOPLAY_DURATION_MS = 5500;
+const AUTOPLAY_INTERVAL_MS = 4000;
 
-export const CinematicDessertShowcase: React.FC = () => {
+interface CinematicDessertShowcaseProps {
+  onSlideClick?: (slide: DessertSlide) => void;
+  className?: string;
+}
+
+export const CinematicDessertShowcase: React.FC<CinematicDessertShowcaseProps> = ({
+  onSlideClick,
+  className = ''
+}) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const progressIntervalRef = useRef<number | null>(null);
-  const showcaseRef = useRef<HTMLDivElement | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const nextSlide = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % DESSERT_SLIDES.length);
-    setProgress(0);
   }, []);
 
   const prevSlide = useCallback(() => {
     setActiveIndex((prev) => (prev - 1 + DESSERT_SLIDES.length) % DESSERT_SLIDES.length);
-    setProgress(0);
   }, []);
 
   const goToSlide = (idx: number) => {
     setActiveIndex(idx);
-    setProgress(0);
   };
 
-  // Progress and autoplay loop
+  // Continuous automatic movement (pauses when user hovers to view/read)
   useEffect(() => {
-    if (!isPlaying) {
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-      return;
-    }
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      nextSlide();
+    }, AUTOPLAY_INTERVAL_MS);
 
-    const stepMs = 50;
-    const increment = (stepMs / AUTOPLAY_DURATION_MS) * 100;
+    return () => clearInterval(interval);
+  }, [isHovered, nextSlide]);
 
-    progressIntervalRef.current = window.setInterval(() => {
-      setProgress((old) => {
-        if (old >= 100) {
-          nextSlide();
-          return 0;
-        }
-        return old + increment;
-      });
-    }, stepMs);
-
-    return () => {
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-    };
-  }, [isPlaying, nextSlide]);
-
-  // Keyboard navigation
+  // Keyboard navigation for accessibility
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowRight') {
       nextSlide();
     } else if (e.key === 'ArrowLeft') {
       prevSlide();
-    } else if (e.key === ' ') {
-      e.preventDefault();
-      setIsPlaying((prev) => !prev);
     }
+  };
+
+  // Mobile swipe support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 45) {
+      nextSlide();
+    } else if (diff < -45) {
+      prevSlide();
+    }
+    setTouchStartX(null);
   };
 
   const currentSlide = DESSERT_SLIDES[activeIndex];
 
   return (
-    <section 
-      className="cinematic-dessert-section" 
-      aria-label="Cinematic Desserts Showcase"
-      ref={showcaseRef}
+    <div 
+      className={`hero-showcase-theater ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       onKeyDown={handleKeyDown}
+      role="region"
+      aria-label="Automated Gourmet Dessert Showcase"
       tabIndex={0}
     >
-      <div className="container">
-        
-        {/* Cinematic Commercial Showcase Screen */}
-        <div 
-          className="cinematic-theater"
-          onMouseEnter={() => setIsPlaying(false)}
-          onMouseLeave={() => setIsPlaying(true)}
-          role="region"
-          aria-live="polite"
-        >
-          {/* Slides Images Stack with Ken Burns motion */}
-          <div className="cinematic-viewport">
-            {DESSERT_SLIDES.map((slide, index) => {
-              const isActive = index === activeIndex;
-              return (
-                <div 
-                  key={slide.id} 
-                  className={`cinematic-slide ${isActive ? 'active' : ''}`}
-                  aria-hidden={!isActive}
-                >
-                  <img 
-                    src={slide.image} 
-                    alt={slide.alt}
-                    className="cinematic-slide-img"
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                  />
-                  <div className="cinematic-vignette" />
-                </div>
-              );
-            })}
-
-            {/* Top Film Metadata Overlay */}
-            <div className="cinematic-top-bar">
-              <div className="cinematic-badge">
-                <Sparkles size={13} className="sparkle-icon" />
-                <span>BHYou Culinary Lab • Gourmet Health Series</span>
-              </div>
-              <div className="cinematic-counter">
-                <span>0{activeIndex + 1}</span>
-                <span className="counter-sep">/</span>
-                <span>0{DESSERT_SLIDES.length}</span>
-              </div>
-            </div>
-
-            {/* Lower Overlay Content */}
-            <div className="cinematic-caption-panel">
-              <div className="caption-tag-row">
-                <span className="dessert-category-pill">{currentSlide.category}</span>
-                <span className="dessert-macro-pill">{currentSlide.macros}</span>
-              </div>
-              <h3 className="cinematic-dessert-title">{currentSlide.name}</h3>
-              <p className="cinematic-dessert-desc">{currentSlide.description}</p>
-            </div>
-
-            {/* Linear Progress Bar */}
-            <div className="cinematic-progress-track">
-              <div 
-                className="cinematic-progress-fill" 
-                style={{ width: `${progress}%` }} 
+      {/* Viewport for images */}
+      <div className="hero-showcase-viewport">
+        {DESSERT_SLIDES.map((slide, index) => {
+          const isActive = index === activeIndex;
+          return (
+            <div 
+              key={slide.id} 
+              className={`hero-showcase-slide ${isActive ? 'active' : ''}`}
+              aria-hidden={!isActive}
+              onClick={() => onSlideClick && onSlideClick(slide)}
+            >
+              <img 
+                src={slide.image} 
+                alt={slide.alt}
+                className="hero-showcase-img"
+                loading={index === 0 ? 'eager' : 'lazy'}
               />
+              <div className="hero-showcase-vignette" />
             </div>
+          );
+        })}
 
-            {/* Interactive Player Controls */}
-            <div className="cinematic-controls">
-              <button 
-                onClick={prevSlide} 
-                className="cinematic-ctrl-btn"
-                aria-label="Previous Dessert"
-                title="Previous Dessert"
-              >
-                <ChevronLeft size={20} />
-              </button>
-
-              <button 
-                onClick={() => setIsPlaying((p) => !p)} 
-                className="cinematic-ctrl-btn play-pause-btn"
-                aria-label={isPlaying ? 'Pause auto-play' : 'Play auto-play'}
-                title={isPlaying ? 'Pause' : 'Play'}
-              >
-                {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-              </button>
-
-              <button 
-                onClick={nextSlide} 
-                className="cinematic-ctrl-btn"
-                aria-label="Next Dessert"
-                title="Next Dessert"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
+        {/* Top Badges Overlay */}
+        <div className="hero-showcase-top-bar">
+          <div className="hero-showcase-badge">
+            <Sparkles size={13} className="sparkle-icon" />
+            <span>BHYou Culinary Series • Under 220 Kcal</span>
           </div>
-
-          {/* Quick-select Navigation Tabs */}
-          <div className="cinematic-pill-nav" role="tablist">
-            {DESSERT_SLIDES.map((slide, idx) => (
-              <button
-                key={slide.id}
-                role="tab"
-                aria-selected={idx === activeIndex}
-                className={`cinematic-tab-pill ${idx === activeIndex ? 'active' : ''}`}
-                onClick={() => goToSlide(idx)}
-              >
-                <span className="pill-dot" />
-                <span className="pill-text">{slide.shortLabel}</span>
-              </button>
-            ))}
+          <div className="hero-showcase-counter">
+            <span>0{activeIndex + 1}</span>
+            <span className="counter-sep">/</span>
+            <span>0{DESSERT_SLIDES.length}</span>
           </div>
         </div>
 
-        {/* SEO-Readable Content Block as required by prompt */}
-        <div className="cinematic-seo-content-block">
-          <div className="seo-block-inner">
-            <span className="section-subtitle">Gourmet Nutrition Reimagined</span>
-            <h2 className="section-title">Healthy High-Protein Desserts</h2>
-            <p className="seo-supporting-paragraph">
-              Explore delicious protein-packed desserts, from chocolate cheesecakes and tiramisu cups to fruity mousses and easy no-bake treats.
-            </p>
-            <div className="seo-cta-wrapper">
-              <Link to="/blog" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                Explore Our Recipes →
-              </Link>
-            </div>
+        {/* Slide Caption Panel */}
+        <div className="hero-showcase-caption">
+          <div className="caption-tag-row">
+            <span className="dessert-category-pill">{currentSlide.category}</span>
+            <span className="dessert-macro-pill">{currentSlide.macros}</span>
           </div>
+          <h3 className="hero-showcase-title">{currentSlide.name}</h3>
+          <p className="hero-showcase-desc">{currentSlide.description}</p>
         </div>
 
+        {/* Carousel Navigation Arrows */}
+        <div className="hero-showcase-nav-arrows">
+          <button 
+            type="button"
+            onClick={(e) => { e.stopPropagation(); prevSlide(); }} 
+            className="hero-nav-arrow-btn"
+            aria-label="Previous recipe"
+            title="Previous recipe"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button 
+            type="button"
+            onClick={(e) => { e.stopPropagation(); nextSlide(); }} 
+            className="hero-nav-arrow-btn"
+            aria-label="Next recipe"
+            title="Next recipe"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+
+        {/* Modern Slide Indicators (Dots) */}
+        <div className="hero-showcase-dots">
+          {DESSERT_SLIDES.map((slide, idx) => (
+            <button
+              key={slide.id}
+              type="button"
+              className={`hero-dot ${idx === activeIndex ? 'active' : ''}`}
+              onClick={(e) => { e.stopPropagation(); goToSlide(idx); }}
+              aria-label={`Go to slide ${idx + 1}: ${slide.shortLabel}`}
+              title={slide.shortLabel}
+            />
+          ))}
+        </div>
       </div>
-    </section>
+
+      {/* Quick-Select Recipe Tabs */}
+      <div className="hero-showcase-tabs" role="tablist">
+        {DESSERT_SLIDES.map((slide, idx) => (
+          <button
+            key={slide.id}
+            type="button"
+            role="tab"
+            aria-selected={idx === activeIndex}
+            className={`hero-tab-pill ${idx === activeIndex ? 'active' : ''}`}
+            onClick={() => goToSlide(idx)}
+          >
+            <span className="tab-pill-dot" />
+            <span className="tab-pill-text">{slide.shortLabel}</span>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 };

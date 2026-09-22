@@ -3,11 +3,70 @@ import { Link } from 'react-router-dom';
 import { 
   CheckCircle, ArrowRight, ShieldCheck, Star, 
   BookOpen, Sparkles, Flame, Clock, Calendar, 
-  Utensils, Zap, HeartHandshake, Eye
+  Utensils, Zap, HeartHandshake, Eye, ChevronDown
 } from 'lucide-react';
 import { firePageView, firePixel, db, PRODUCTS } from '../db';
 import type { BlogPost, EbookProduct } from '../db';
-import { CinematicDessertShowcase } from '../components/CinematicDessertShowcase';
+
+interface HeroSlideItem {
+  id: string;
+  name: string;
+  category: string;
+  macros: string;
+  image: string;
+  alt: string;
+}
+
+const HERO_SLIDES: HeroSlideItem[] = [
+  {
+    id: 'chocolate',
+    name: 'Molten Dark Chocolate Protein Fondant',
+    category: 'Warm Dessert',
+    macros: '26g Protein • 210 Kcal',
+    image: '/desserts/chocolate-dessert.jpg',
+    alt: 'Warm molten chocolate protein lava cake with rich flowing center and raspberries'
+  },
+  {
+    id: 'cheesecake',
+    name: 'Vanilla Bean Basque Protein Cheesecake',
+    category: 'Signature Bake',
+    macros: '24g Protein • 195 Kcal',
+    image: '/desserts/protein-cheesecake.jpg',
+    alt: 'Slice of Basque burnt protein cheesecake topped with fresh raspberries and coulis'
+  },
+  {
+    id: 'tiramisu',
+    name: 'Espresso-Infused Tiramisu Cups',
+    category: 'No-Bake Gourmet',
+    macros: '22g Protein • 180 Kcal',
+    image: '/desserts/tiramisu-cups.jpg',
+    alt: 'Layered Italian tiramisu cup with espresso sponge, whipped protein cream, and cocoa'
+  },
+  {
+    id: 'mango',
+    name: 'Tropical Whipped Mango Protein Mousse',
+    category: 'Light & Fruity',
+    macros: '18g Protein • 160 Kcal',
+    image: '/desserts/mango-mousse.jpg',
+    alt: 'Glass goblet of vibrant golden mango protein mousse garnished with diced mango'
+  },
+  {
+    id: 'cupcakes',
+    name: 'Golden Vanilla Whipped Protein Cupcakes',
+    category: 'Bakery Classics',
+    macros: '20g Protein • 175 Kcal',
+    image: '/desserts/protein-cupcakes.jpg',
+    alt: 'Bakery-style vanilla protein cupcakes with whipped swirl frosting'
+  },
+  {
+    id: 'caramel',
+    name: 'Salted Caramel Pecan Protein Pots',
+    category: 'Chilled Treats',
+    macros: '21g Protein • 190 Kcal',
+    image: '/desserts/caramel-dessert.jpg',
+    alt: 'Layered salted caramel protein cream crowned with toasted pecans'
+  }
+];
 
 interface HomeProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
@@ -18,6 +77,17 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
   const [product, setProduct] = useState<EbookProduct>(PRODUCTS['bhyou-50-recipes']);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [selectedPreviewImage, setSelectedPreviewImage] = useState<string | null>(null);
+
+  // Background slider state: images move automatically on their own
+  const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+
+  // Continuous automatic movement (every 3.8 seconds)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 3800);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     firePageView('/');
@@ -97,113 +167,122 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
     <div className="homepage-wrapper">
       
       {/* ================================================== */}
-      {/* 1. HERO SECTION                                   */}
+      {/* 1. HERO WITH AUTO-MOVING BACKGROUND & OVERLAY COPY */}
       {/* ================================================== */}
-      <section className="hero-editorial" aria-label="Hero Introduction">
-        <div className="container">
-          <div className="hero-editorial-grid">
+      <section 
+        className="hero-overlay-showcase" 
+        aria-label="Hero Introduction"
+      >
+        {/* Background Images with Automatic Smooth Motion */}
+        <div className="hero-bg-slider" aria-hidden="true">
+          {HERO_SLIDES.map((slide, idx) => (
+            <div 
+              key={slide.id} 
+              className={`hero-bg-slide ${idx === currentHeroSlide ? 'active' : ''}`}
+            >
+              <img 
+                src={slide.image} 
+                alt={slide.alt} 
+                className="hero-bg-img"
+                loading={idx === 0 ? 'eager' : 'lazy'}
+                fetchPriority={idx === 0 ? 'high' : 'auto'}
+              />
+            </div>
+          ))}
+          {/* Dark Film & Radial Vignette Overlay to make white typography crystal clear */}
+          <div className="hero-bg-vignette" />
+        </div>
+
+        {/* Persuasive Copy Overlay ("mn fo9mnhum lktaba") */}
+        <div className="container hero-overlay-container">
+          <div className="hero-overlay-content">
             
-            {/* Editorial Text Content */}
-            <div className="hero-editorial-content">
-              <div className="hero-editorial-tag">
-                <Sparkles size={14} className="hero-tag-icon" />
-                <span>Modern Nutrition & Culinary Lifestyle</span>
+            {/* Top Editorial Badge */}
+            <div className="hero-overlay-badge">
+              <Sparkles size={14} className="badge-sparkle" />
+              <span>Gourmet Nutrition Reimagined • 50+ High-Protein Recipes</span>
+            </div>
+
+            {/* Main High-Impact H1 Headline */}
+            <h1 className="hero-overlay-title">
+              Eat What You Love, Hit Your Protein Goals &amp; Never Give Up Desserts.
+            </h1>
+
+            {/* Persuasive Hook Message */}
+            <p className="hero-overlay-lead">
+              Who said eating clean has to be bland and boring? Discover chef-crafted, macro-optimized recipes — from molten lava cakes and Basque cheesecakes to juicy meal-prep dinners — all strictly under 400 calories and packed with 20g–40g of protein. Scroll down to discover our best recipes and complete digital cookbooks.
+            </p>
+
+            {/* Value Badges */}
+            <div className="hero-overlay-highlights">
+              <div className="hero-overlay-pill">
+                <Flame size={15} className="pill-icon" />
+                <span>50 Recipes Under 400 Kcal</span>
               </div>
-
-              {/* ONE clear H1 only */}
-              <h1 className="hero-editorial-title">
-                High-Protein Recipes &amp; Healthy Desserts
-              </h1>
-
-              {/* Natural SEO-friendly supporting paragraph */}
-              <p className="hero-editorial-lead">
-                Discover delicious high-protein recipes, healthy desserts, low-calorie meals, and easy meal ideas designed to make healthy eating simple and enjoyable.
-              </p>
-
-              {/* Hero Value Highlights */}
-              <div className="hero-editorial-highlights">
-                <div className="hero-highlight-item">
-                  <Flame size={16} className="highlight-icon" />
-                  <span>50 Recipes Under 400 Kcal</span>
-                </div>
-                <div className="hero-highlight-item">
-                  <Utensils size={16} className="highlight-icon" />
-                  <span>30g+ Protein / Serving</span>
-                </div>
-                <div className="hero-highlight-item">
-                  <CheckCircle size={16} className="highlight-icon" />
-                  <span>7-Day Meal Plan Included</span>
-                </div>
+              <div className="hero-overlay-pill">
+                <Utensils size={15} className="pill-icon" />
+                <span>20g–40g+ Protein / Serving</span>
               </div>
-
-              {/* Primary Call to Action */}
-              <div className="hero-editorial-actions">
-                <button 
-                  onClick={handleBuyClick} 
-                  className="btn btn-primary hero-main-cta"
-                  aria-label="Get the Ebook — $15.99"
-                >
-                  Get the Ebook — $15.99
-                  <ArrowRight size={18} />
-                </button>
-                <button 
-                  onClick={scrollToEbook}
-                  className="btn btn-secondary hero-secondary-cta"
-                >
-                  View Book Details
-                </button>
+              <div className="hero-overlay-pill">
+                <Sparkles size={15} className="pill-icon" />
+                <span>Guilt-Free Desserts Under 220 Kcal</span>
               </div>
-
-              {/* Trust Indicators */}
-              <div className="hero-editorial-trust">
-                <div className="trust-stars-row">
-                  <div className="stars-cluster">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={15} fill="#fbbf24" color="#fbbf24" />
-                    ))}
-                  </div>
-                  <span className="trust-score">4.9/5 Rating</span>
-                  <span className="trust-dot">•</span>
-                  <span className="trust-note">Instant PDF Download</span>
-                </div>
+              <div className="hero-overlay-pill">
+                <CheckCircle size={15} className="pill-icon" />
+                <span>7-Day Structured Meal Plan</span>
               </div>
             </div>
 
-            {/* Editorial Hero Visual Card */}
-            <div className="hero-editorial-visual">
-              <div className="editorial-media-card">
-                <img 
-                  src="/hero_showcase.jpg" 
-                  alt="High-protein savory chicken avocado bowl alongside a guilt-free dark chocolate protein lava cake with berries"
-                  className="editorial-media-img"
-                  fetchPriority="high"
-                  loading="eager"
-                />
-                <div className="editorial-media-badge top-badge">
-                  <span className="badge-bullet" />
-                  <span>Macro-Balanced Culinary Photography</span>
+            {/* CTA Buttons */}
+            <div className="hero-overlay-actions">
+              <button 
+                onClick={handleBuyClick} 
+                className="btn btn-primary hero-btn-main"
+                aria-label="Get the Ebook — $15.99"
+              >
+                Get the Ebook — $15.99
+                <ArrowRight size={18} />
+              </button>
+              <button 
+                onClick={scrollToEbook}
+                className="btn hero-btn-secondary"
+              >
+                Explore Recipes &amp; Cookbooks ↓
+              </button>
+            </div>
+
+            {/* Trust Rating */}
+            <div className="hero-overlay-trust">
+              <div className="trust-stars-row">
+                <div className="stars-cluster">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={15} fill="#fbbf24" color="#fbbf24" />
+                  ))}
                 </div>
-                <div className="editorial-media-card-footer">
-                  <div className="media-footer-pill">
-                    <span className="pill-label">Savory Meals</span>
-                    <span className="pill-val">Over 35g Protein</span>
-                  </div>
-                  <div className="media-footer-pill">
-                    <span className="pill-label">Guilt-Free Desserts</span>
-                    <span className="pill-val">Under 220 Kcal</span>
-                  </div>
-                </div>
+                <span className="trust-score">4.9/5 Rating</span>
+                <span className="trust-dot">•</span>
+                <span className="trust-note">Loved by 1,200+ Foodies</span>
+                <span className="trust-dot">•</span>
+                <span className="trust-note">Instant PDF Download</span>
               </div>
             </div>
 
           </div>
+
+          {/* Scroll Cue to Encourage Visitors to Keep Scrolling */}
+          <div 
+            className="hero-overlay-scroll-cue" 
+            onClick={scrollToEbook} 
+            role="button" 
+            tabIndex={0}
+            title="Scroll down to view recipes and cookbook"
+          >
+            <span className="scroll-cue-text">Scroll to explore recipes, meal plans &amp; cookbooks</span>
+            <ChevronDown size={20} className="scroll-arrow-anim" />
+          </div>
+
         </div>
       </section>
-
-      {/* ================================================== */}
-      {/* 2. CINEMATIC DESSERTS ANIMATION                    */}
-      {/* ================================================== */}
-      <CinematicDessertShowcase />
 
       {/* ================================================== */}
       {/* 3. ABOUT BHYOU                                     */}

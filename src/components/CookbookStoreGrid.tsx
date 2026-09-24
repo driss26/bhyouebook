@@ -100,15 +100,15 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
                 <div className="shopify-card-media-wrap">
                   <Link to={product.route || '/cookbook'} className="shopify-img-link" title={`View details for ${product.title}`}>
                     <img 
-                      src={product.coverImage || (isDessert ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg')} 
+                      src={product.coverImage || (isDessert ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg')} 
                       alt={`${product.title} Cover`}
                       className="shopify-product-img"
                       style={{ maxHeight: '310px', maxWidth: '230px', width: 'auto', height: 'auto', objectFit: 'contain' }}
                       loading="lazy"
                       onError={(e) => {
                         const target = e.currentTarget;
-                        const fallback = isDessert ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
-                        if (!target.src.endsWith(fallback)) {
+                        const fallback = isDessert ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                        if (target.src !== fallback) {
                           target.src = fallback;
                         }
                       }}
@@ -128,7 +128,7 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
                   {/* Quick Preview Action */}
                   <button 
                     type="button"
-                    onClick={() => setSelectedPreviewImage(isDessert ? '/dessert_cookbook_cover.png' : '/recipe_preview.png')}
+                    onClick={() => setSelectedPreviewImage(isDessert ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : '/recipe_preview.png')}
                     className="shopify-quick-preview-btn"
                     title="Preview Interior Pages"
                   >

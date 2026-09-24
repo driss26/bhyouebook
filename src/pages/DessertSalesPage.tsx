@@ -281,13 +281,14 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                     title="Click to view purchase details"
                   >
                     <img 
-                      src={product.coverImage || '/dessert_cookbook_cover.png'} 
+                      src={product.coverImage || 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp'} 
                       alt={product.title} 
                       className="ebook-cover-img" 
                       onError={(e) => {
                         const target = e.currentTarget;
-                        if (!target.src.endsWith('/dessert_cookbook_cover.png')) {
-                          target.src = '/dessert_cookbook_cover.png';
+                        const fallback = 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp';
+                        if (target.src !== fallback) {
+                          target.src = fallback;
                         }
                       }}
                     />
@@ -389,13 +390,14 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                   title="Click to view purchase details"
                 >
                   <img 
-                    src={product.coverImage || '/dessert_cookbook_cover.png'} 
+                    src={product.coverImage || 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp'} 
                     alt={product.title} 
                     className="ebook-cover-img" 
                     onError={(e) => {
                       const target = e.currentTarget;
-                      if (!target.src.endsWith('/dessert_cookbook_cover.png')) {
-                        target.src = '/dessert_cookbook_cover.png';
+                      const fallback = 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp';
+                      if (target.src !== fallback) {
+                        target.src = fallback;
                       }
                     }}
                   />
@@ -780,7 +782,7 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
       <div className={`dessert-sticky-bar ${showStickyBar ? 'visible' : ''}`}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <img src={product.coverImage || '/dessert_cookbook_cover.png'} alt={product.title} style={{ width: '38px', height: '48px', objectFit: 'cover', borderRadius: '4px', boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }} />
+            <img src={product.coverImage || 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp'} alt={product.title} style={{ width: '38px', height: '48px', objectFit: 'cover', borderRadius: '4px', boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }} />
             <div>
               <div className="sticky-title" style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-dark)' }}>{product.title}</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

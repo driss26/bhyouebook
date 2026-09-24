@@ -859,7 +859,7 @@ ${pages.map(p => `  <url>
                               alt={prod.title} 
                               style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                               onError={(e) => {
-                                (e.target as HTMLImageElement).src = prod.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                                (e.target as HTMLImageElement).src = prod.id === 'high-protein-dessert-cookbook-70' ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
                               }}
                             />
                           </div>
@@ -1297,7 +1297,7 @@ ${pages.map(p => `  <url>
 INSERT INTO "products" ("id", "title", "fullTitle", "shortTitle", "subtitle", "price", "originalPrice", "productType", "format", "pages", "recipes", "calories", "protein", "access", "level", "categoriesCount", "coverImage", "route", "gumroadUrl", "downloadUrl", "rating", "reviewsCount", "description")
 VALUES
 ('bhyou-50-recipes', '50 High-Protein Recipes', 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories', '50 High-Protein Recipes', '50 Guilt-Free Healthy Recipes Under 400 Calories', 11.99, 24.99, 'Digital Cookbook', 'Instant Digital Download (PDF)', 60, 50, 'Under 400 Calories', '30g+ Protein / Meal', 'Lifetime Access', 'Beginner-Friendly', NULL, 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg', '/cookbook', 'https://bhyou.gumroad.com/l/pzebkb', '/downloads/bhyou-50-recipes.pdf', 4.9, 142, 'Stop starving yourself. Enjoy 50 delicious, easy-to-prep, macro-friendly recipes designed to support muscle growth and burn fat. Instant digital PDF download.'),
-('high-protein-dessert-cookbook-70', 'The High-Protein Dessert Cookbook', 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories', 'High-Protein Dessert Cookbook', '70 Healthy Recipes Under 400 Calories', 19.99, 39.99, 'Digital Cookbook', 'Instant Digital Download (PDF)', 181, 70, 'Under 400 Calories', 'High-Protein', 'Lifetime Access', 'Beginner-Friendly', 9, '/dessert_cookbook_cover.png', '/dessert-cookbook', 'https://bhyou.gumroad.com/l/bhyou', '/downloads/high-protein-dessert-cookbook.pdf', 5.0, 88, 'Love desserts but still want to hit your protein goals? This premium cookbook features 70 delicious high-protein dessert recipes, each carefully crafted to satisfy your sweet cravings while keeping calories under control.')
+('high-protein-dessert-cookbook-70', 'The High-Protein Dessert Cookbook', 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories', 'High-Protein Dessert Cookbook', '70 Healthy Recipes Under 400 Calories', 19.99, 39.99, 'Digital Cookbook', 'Instant Digital Download (PDF)', 181, 70, 'Under 400 Calories', 'High-Protein', 'Lifetime Access', 'Beginner-Friendly', 9, 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp', '/dessert-cookbook', 'https://bhyou.gumroad.com/l/bhyou', '/downloads/high-protein-dessert-cookbook.pdf', 5.0, 88, 'Love desserts but still want to hit your protein goals? This premium cookbook features 70 delicious high-protein dessert recipes, each carefully crafted to satisfy your sweet cravings while keeping calories under control.')
 ON CONFLICT ("id") DO UPDATE SET
   "title" = EXCLUDED."title",
   "coverImage" = EXCLUDED."coverImage",
@@ -1335,7 +1335,7 @@ ON CONFLICT ("id") DO UPDATE SET
                         alt={prod.title} 
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = isDessert ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                          (e.target as HTMLImageElement).src = isDessert ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
                         }}
                       />
                     </div>
@@ -1390,7 +1390,7 @@ ON CONFLICT ("id") DO UPDATE SET
                           alt="Ebook Cover Preview" 
                           className="ebook-cover-img"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = editingProduct.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                            (e.target as HTMLImageElement).src = editingProduct.id === 'high-protein-dessert-cookbook-70' ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
                           }}
                         />
                         <div className="ebook-spine"></div>
@@ -1492,7 +1492,7 @@ ON CONFLICT ("id") DO UPDATE SET
                       <button 
                         type="button" 
                         onClick={() => {
-                          const defaultImg = editingProduct.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                          const defaultImg = editingProduct.id === 'high-protein-dessert-cookbook-70' ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
                           handleProductFieldChange('coverImage', defaultImg);
                           onToast('Cover reset to original default', 'info');
                         }}

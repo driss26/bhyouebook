@@ -1343,7 +1343,7 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
     canonicalUrl: 'https://bhyou.com/dessert-cookbook',
     ogTitle: 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories',
     ogDescription: 'Love desserts but still want to hit your protein goals? 70 delicious high-protein dessert recipes under 400 calories. Instant digital download!',
-    ogImage: '/dessert_cookbook_cover.png'
+    ogImage: 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp'
   }
 ];
 
@@ -1415,7 +1415,7 @@ export const PRODUCTS: Record<string, EbookProduct> = {
     access: 'Lifetime Access',
     level: 'Beginner-Friendly',
     categoriesCount: 9,
-    coverImage: '/dessert_cookbook_cover.png',
+    coverImage: 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp',
     route: '/dessert-cookbook',
     gumroadUrl: 'https://bhyou.gumroad.com/l/bhyou',
     downloadUrl: '/downloads/high-protein-dessert-cookbook.pdf',

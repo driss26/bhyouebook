@@ -213,7 +213,6 @@ function App() {
               <Link to="/cookbooks" onClick={() => setMobileMenuOpen(false)}>Cookbooks</Link>
               <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blogs and Recipes</Link>
               <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About BHYou</Link>
-              <a href="mailto:contact@bhyou.com" onClick={() => setMobileMenuOpen(false)}>Contact Us</a>
             </div>
           )}
         </nav>
@@ -266,7 +265,6 @@ function App() {
                   <li><Link to="/cookbooks" className="footer-link">Cookbooks</Link></li>
                   <li><Link to="/blog" className="footer-link">Blogs &amp; Recipes</Link></li>
                   <li><Link to="/about" className="footer-link">About BHYou</Link></li>
-                  <li><a href="mailto:contact@bhyou.com" className="footer-link">Contact</a></li>
                 </ul>
               </div>
 
@@ -311,7 +309,6 @@ function App() {
                   <Shield size={12} /> Privacy Policy
                 </Link>
                 <Link to="/terms">Terms of Service</Link>
-                <a href="mailto:contact@bhyou.com">contact@bhyou.com</a>
               </div>
             </div>
 

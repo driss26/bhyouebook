@@ -272,7 +272,7 @@ function App() {
               <div className="footer-column">
                 <h4>BHYou Ebooks</h4>
                 <ul className="footer-links">
-                  <li><Link to="/cookbook" className="footer-link">50 High-Protein Recipes ($15.99)</Link></li>
+                  <li><Link to="/cookbook" className="footer-link">50 High-Protein Recipes ($11.99)</Link></li>
                   <li><Link to="/dessert-cookbook" className="footer-link">Dessert Cookbook: 70 Recipes ($15.99)</Link></li>
                   <li><Link to="/blog" className="footer-link">Nutrition &amp; Recipe Guides</Link></li>
                 </ul>

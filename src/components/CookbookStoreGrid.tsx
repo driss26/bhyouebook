@@ -103,6 +103,7 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
                       src={product.coverImage || (isDessert ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg')} 
                       alt={`${product.title} Cover`}
                       className="shopify-product-img"
+                      style={{ maxHeight: '310px', maxWidth: '230px', width: 'auto', height: 'auto', objectFit: 'contain' }}
                       loading="lazy"
                       onError={(e) => {
                         const target = e.currentTarget;

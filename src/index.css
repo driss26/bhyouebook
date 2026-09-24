@@ -3711,7 +3711,6 @@ input:checked + .slider-round:before {
 
 /* Tablets (<= 768px) */
 @media (max-width: 768px) {
-  .hero-editorial.hero-unified {
   .hero-overlay-showcase {
     min-height: 85vh;
     padding: 50px 0 35px;

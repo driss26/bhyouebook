@@ -175,18 +175,23 @@ function App() {
                 </NavLink>
               </li>
               <li>
+                <a href="/#recipes" className="nav-link">
+                  Recipes
+                </a>
+              </li>
+              <li>
                 <NavLink to="/cookbooks" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
                   Cookbooks
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/blog" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                  Blog &amp; Recipes
+                  Blog
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                  About BHYou
+                  About
                 </NavLink>
               </li>
             </ul>
@@ -210,9 +215,10 @@ function App() {
           {mobileMenuOpen && (
             <div className="mobile-nav-dropdown">
               <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-              <Link to="/cookbooks" onClick={() => setMobileMenuOpen(false)}>Cookbooks (BHYou Library)</Link>
-              <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog &amp; Recipes</Link>
-              <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About BHYou</Link>
+              <a href="/#recipes" onClick={() => setMobileMenuOpen(false)}>Recipes</a>
+              <Link to="/cookbooks" onClick={() => setMobileMenuOpen(false)}>Cookbooks</Link>
+              <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+              <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
               <a href="mailto:contact@bhyou.com" onClick={() => setMobileMenuOpen(false)}>Contact Us</a>
             </div>
           )}
@@ -249,7 +255,7 @@ function App() {
                   <img src="https://i.ibb.co/zVRtqFyS/BHYou-Healthful-Protein-Logo-removebg-preview.png" alt="BHYou Logo" className="footer-logo-img" />
                 </Link>
                 <p>
-                  Helping busy fitness enthusiasts fuel their muscles, burn stubborn fat, and live happily with premium, low-calorie gourmet recipes.
+                  Helping you enjoy delicious high-protein recipes, healthy desserts, and easy everyday meals with balanced nutrition.
                 </p>
                 <div className="footer-socials">
                   <a href="https://www.youtube.com/@BHYouu" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="YouTube">
@@ -262,10 +268,9 @@ function App() {
               <div className="footer-column">
                 <h4>Navigation</h4>
                 <ul className="footer-links">
-                  <li><Link to="/blog" className="footer-link">Recipes</Link></li>
-                  <li><Link to="/dessert-cookbook" className="footer-link">Desserts</Link></li>
+                  <li><a href="/#recipes" className="footer-link">Recipes</a></li>
+                  <li><Link to="/cookbooks" className="footer-link">Cookbooks</Link></li>
                   <li><Link to="/blog" className="footer-link">Blog</Link></li>
-                  <li><Link to="/cookbook" className="footer-link">Ebook</Link></li>
                   <li><Link to="/about" className="footer-link">About</Link></li>
                   <li><a href="mailto:contact@bhyou.com" className="footer-link">Contact</a></li>
                 </ul>

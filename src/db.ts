@@ -103,20 +103,20 @@ export interface HeroSlideItem {
 
 export const DEFAULT_HERO_SLIDES: HeroSlideItem[] = [
   {
-    id: 'chocolate',
-    name: 'Molten Dark Chocolate Protein Fondant',
-    category: 'Warm Dessert',
-    macros: '26g Protein • 210 Kcal',
-    image: '/desserts/chocolate-dessert.jpg',
-    alt: 'Warm molten chocolate protein lava cake with rich flowing center and raspberries'
-  },
-  {
     id: 'cheesecake',
     name: 'Vanilla Bean Basque Protein Cheesecake',
     category: 'Signature Bake',
     macros: '24g Protein • 195 Kcal',
     image: '/desserts/protein-cheesecake.jpg',
-    alt: 'Slice of Basque burnt protein cheesecake topped with fresh raspberries and coulis'
+    alt: 'High-protein cheesecake dessert with fresh raspberries and coulis'
+  },
+  {
+    id: 'chocolate',
+    name: 'Molten Dark Chocolate Protein Fondant',
+    category: 'Warm Dessert',
+    macros: '26g Protein • 210 Kcal',
+    image: '/desserts/chocolate-dessert.jpg',
+    alt: 'Warm molten chocolate protein dessert with rich flowing center and raspberries'
   },
   {
     id: 'tiramisu',
@@ -1310,13 +1310,13 @@ const DEFAULT_SEO_CONFIGS: PageSeo[] = [
     pageId: 'home',
     pageName: 'Home Page',
     seoTitle: 'High-Protein Recipes & Healthy Desserts | BHYou',
-    metaDescription: 'Discover high-protein recipes, healthy desserts, and low-calorie meals from BHYou. Easy, delicious recipes with protein and calorie information.',
+    metaDescription: 'Discover easy high-protein recipes, healthy desserts, low-calorie meals, protein-packed snacks, and recipes under 400 calories from BHYou.',
     focusKeyword: 'high protein recipes',
-    seoScore: 98,
+    seoScore: 99,
     slug: '',
     canonicalUrl: 'https://bhyou.com',
     ogTitle: 'High-Protein Recipes & Healthy Desserts | BHYou',
-    ogDescription: 'Discover high-protein recipes, healthy desserts, and low-calorie meals from BHYou. Easy, delicious recipes with protein and calorie information.',
+    ogDescription: 'Discover easy high-protein recipes, healthy desserts, low-calorie meals, protein-packed snacks, and recipes under 400 calories from BHYou.',
     ogImage: 'https://bhyou.com/og-image.jpg'
   },
   {
@@ -1662,9 +1662,11 @@ export const checkAndFixSeoConfigs = async () => {
     const salesConfig = configs.find(c => c.pageId === 'sales');
     const dessertConfig = configs.find(c => c.pageId === 'dessert-sales');
     
-    if (homeConfig && homeConfig.ogTitle !== 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories') {
-      homeConfig.seoTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
-      homeConfig.ogTitle = 'High-Protein Recipes: 50 Guilt-Free Healthy Recipes Under 400 Calories';
+    if (homeConfig && homeConfig.seoTitle !== 'High-Protein Recipes & Healthy Desserts | BHYou') {
+      homeConfig.seoTitle = 'High-Protein Recipes & Healthy Desserts | BHYou';
+      homeConfig.ogTitle = 'High-Protein Recipes & Healthy Desserts | BHYou';
+      homeConfig.metaDescription = 'Discover easy high-protein recipes, healthy desserts, low-calorie meals, protein-packed snacks, and recipes under 400 calories from BHYou.';
+      homeConfig.ogDescription = 'Discover easy high-protein recipes, healthy desserts, low-calorie meals, protein-packed snacks, and recipes under 400 calories from BHYou.';
       await db.saveSeoConfig(homeConfig);
     }
     

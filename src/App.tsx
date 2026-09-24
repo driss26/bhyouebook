@@ -175,23 +175,18 @@ function App() {
                 </NavLink>
               </li>
               <li>
-                <a href="/#recipes" className="nav-link">
-                  Recipes
-                </a>
-              </li>
-              <li>
                 <NavLink to="/cookbooks" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
                   Cookbooks
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/blog" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                  Blog
+                  Blogs and Recipes
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                  About
+                  About BHYou
                 </NavLink>
               </li>
             </ul>
@@ -215,10 +210,9 @@ function App() {
           {mobileMenuOpen && (
             <div className="mobile-nav-dropdown">
               <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-              <a href="/#recipes" onClick={() => setMobileMenuOpen(false)}>Recipes</a>
               <Link to="/cookbooks" onClick={() => setMobileMenuOpen(false)}>Cookbooks</Link>
-              <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
-              <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
+              <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blogs and Recipes</Link>
+              <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About BHYou</Link>
               <a href="mailto:contact@bhyou.com" onClick={() => setMobileMenuOpen(false)}>Contact Us</a>
             </div>
           )}
@@ -268,10 +262,10 @@ function App() {
               <div className="footer-column">
                 <h4>Navigation</h4>
                 <ul className="footer-links">
-                  <li><a href="/#recipes" className="footer-link">Recipes</a></li>
+                  <li><Link to="/" className="footer-link">Home</Link></li>
                   <li><Link to="/cookbooks" className="footer-link">Cookbooks</Link></li>
-                  <li><Link to="/blog" className="footer-link">Blog</Link></li>
-                  <li><Link to="/about" className="footer-link">About</Link></li>
+                  <li><Link to="/blog" className="footer-link">Blogs &amp; Recipes</Link></li>
+                  <li><Link to="/about" className="footer-link">About BHYou</Link></li>
                   <li><a href="mailto:contact@bhyou.com" className="footer-link">Contact</a></li>
                 </ul>
               </div>
@@ -281,8 +275,8 @@ function App() {
                 <h4>BHYou Ebooks</h4>
                 <ul className="footer-links">
                   <li><Link to="/cookbook" className="footer-link">50 High-Protein Recipes ($15.99)</Link></li>
-                  <li><Link to="/dessert-cookbook" className="footer-link">Dessert Cookbook: 70 Recipes ($19.99)</Link></li>
-                  <li><Link to="/blog" className="footer-link">Nutrition &amp; Recipe Blog</Link></li>
+                  <li><Link to="/dessert-cookbook" className="footer-link">Dessert Cookbook: 70 Recipes ($15.99)</Link></li>
+                  <li><Link to="/blog" className="footer-link">Nutrition &amp; Recipe Guides</Link></li>
                 </ul>
               </div>
 

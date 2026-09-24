@@ -76,7 +76,7 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
               Our Digital Cookbooks &amp; Recipe Guides
             </h2>
             <p className="shopify-store-subtitle">
-              Chef-crafted, macro-optimized digital cookbooks designed to help you hit your protein goals, burn fat, and enjoy delicious gourmet food every single day.
+              Chef-crafted, macro-optimized digital cookbooks designed to help you hit your protein goals, support balanced nutrition, and enjoy delicious gourmet food every single day.
             </p>
           </div>
         )}

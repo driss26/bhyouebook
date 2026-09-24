@@ -1404,8 +1404,8 @@ export const PRODUCTS: Record<string, EbookProduct> = {
     fullTitle: 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories',
     shortTitle: 'High-Protein Dessert Cookbook',
     subtitle: '70 Healthy Recipes Under 400 Calories',
-    price: 19.99,
-    originalPrice: 39.99,
+    price: 15.99,
+    originalPrice: 29.99,
     productType: 'Digital Cookbook',
     format: 'Instant Digital Download (PDF)',
     pages: 181,
@@ -1631,11 +1631,15 @@ export const initDb = () => {
           }
         }
       }
-      // Force heal incorrect or obsolete Gumroad URLs
+      // Force heal incorrect or obsolete Gumroad URLs & price
       if (stored['high-protein-dessert-cookbook-70']) {
         const dessertProd = stored['high-protein-dessert-cookbook-70'];
         if (!dessertProd.gumroadUrl || dessertProd.gumroadUrl.includes('dessert-cookbook') || dessertProd.gumroadUrl === 'https://bhyou.gumroad.com') {
           dessertProd.gumroadUrl = 'https://bhyou.gumroad.com/l/bhyou';
+          changed = true;
+        }
+        if (dessertProd.price === 19.99 || !dessertProd.price) {
+          dessertProd.price = 15.99;
           changed = true;
         }
       }

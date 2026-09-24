@@ -89,7 +89,7 @@ const POPULAR_RECIPES: PopularRecipeItem[] = [
 
 export const Home: React.FC<HomeProps> = ({ onToast }) => {
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
-  const [product, setProduct] = useState<EbookProduct>(PRODUCTS['bhyou-50-recipes']);
+  const [product, setProduct] = useState<EbookProduct>(PRODUCTS['high-protein-dessert-cookbook-70']);
 
   // Background slider state: images move automatically on their own
   const [heroSlides, setHeroSlides] = useState<HeroSlideItem[]>(DEFAULT_HERO_SLIDES);
@@ -118,8 +118,8 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
     // Load products & listen for live price/cover updates from dashboard
     const loadProduct = () => {
       db.getProducts().then((all) => {
-        if (all && all['bhyou-50-recipes']) {
-          setProduct(all['bhyou-50-recipes']);
+        if (all && all['high-protein-dessert-cookbook-70']) {
+          setProduct(all['high-protein-dessert-cookbook-70']);
         }
       }).catch(err => console.error("Error loading products:", err));
     };
@@ -178,16 +178,16 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
     const priceVal = product.price || 15.99;
     firePixel('Google Ads', 'click_buy_cookbook', { price: priceVal });
     firePixel('Meta Pixel', 'InitiateCheckout', { 
-      content_name: product.fullTitle || product.title || 'High-Protein Recipes Under 400 Calories', 
+      content_name: product.fullTitle || product.title || 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories', 
       value: priceVal, 
       currency: 'USD' 
     });
     firePixel('Pinterest Tag', 'checkout_click', { 
-      product_id: product.id || 'bhyou-50-recipes', 
+      product_id: product.id || 'high-protein-dessert-cookbook-70', 
       value: priceVal 
     });
     onToast('Opening Gumroad Secure Checkout...', 'success');
-    window.open(product.gumroadUrl || 'https://bhyou.gumroad.com/l/pzebkb', '_blank');
+    window.open(product.gumroadUrl || 'https://bhyou.gumroad.com/l/bhyou', '_blank');
   };
 
   const scrollToRecipes = () => {
@@ -535,7 +535,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
       <section id="featured-ebook" className="featured-cookbook-section" aria-label="BHYou Digital Cookbooks">
         <div className="container">
           
-          {/* Spotlight Hero Card for 70+ High-Protein Recipes Cookbook */}
+          {/* Spotlight Hero Card for The High-Protein Dessert Cookbook */}
           <div className="cookbook-spotlight-card">
             <div className="cookbook-spotlight-grid">
               
@@ -544,7 +544,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                 <div className="cookbook-cover-wrap">
                   <img 
                     src={product.coverImage || 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp'} 
-                    alt="BHYou High-Protein Recipes Digital Cookbook Cover"
+                    alt={product.fullTitle || 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories'}
                     className="cookbook-cover-img"
                     loading="lazy"
                   />
@@ -563,22 +563,22 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                 </div>
                 
                 <h2 className="cookbook-spotlight-title">
-                  70+ High-Protein Recipes in One Cookbook
+                  {product.title || 'The High-Protein Dessert Cookbook'}
                 </h2>
 
+                <p className="cookbook-spotlight-subtitle">
+                  {product.subtitle || '70 Healthy Recipes Under 400 Calories'}
+                </p>
+
                 <p className="cookbook-spotlight-desc">
-                  From high-protein desserts and cheesecakes to cookies, smoothies, bowls, and everyday meal ideas, the BHYou cookbook brings 70 recipes together in one practical collection.
+                  {product.description || 'Love desserts but still want to hit your protein goals? This premium cookbook features 70 delicious high-protein dessert recipes, each carefully crafted to satisfy your sweet cravings while keeping calories under control.'}
                 </p>
 
                 {/* Specific Highlights Required */}
                 <div className="cookbook-highlights-grid">
                   <div className="cookbook-highlight-pill">
                     <CheckCircle size={15} className="pill-ico" />
-                    <span>70+ Recipes</span>
-                  </div>
-                  <div className="cookbook-highlight-pill">
-                    <CheckCircle size={15} className="pill-ico" />
-                    <span>15g+ Protein Per Serving</span>
+                    <span>70 Recipes</span>
                   </div>
                   <div className="cookbook-highlight-pill">
                     <CheckCircle size={15} className="pill-ico" />
@@ -586,24 +586,28 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                   </div>
                   <div className="cookbook-highlight-pill">
                     <CheckCircle size={15} className="pill-ico" />
-                    <span>9 Recipe Categories</span>
+                    <span>High-Protein</span>
                   </div>
                   <div className="cookbook-highlight-pill">
                     <CheckCircle size={15} className="pill-ico" />
-                    <span>7-Day Meal Plan</span>
+                    <span>9 Categories</span>
+                  </div>
+                  <div className="cookbook-highlight-pill">
+                    <CheckCircle size={15} className="pill-ico" />
+                    <span>Instant PDF Download</span>
                   </div>
                 </div>
 
                 {/* Price & Primary CTA */}
                 <div className="cookbook-purchase-bar">
                   <div className="cookbook-price-wrap">
-                    <span className="price-tag">$15.99</span>
+                    <span className="price-tag">${product.price || 15.99}</span>
                     <span className="price-format">One-time payment • Lifetime access</span>
                   </div>
                   <button 
                     onClick={handleBuyClick} 
                     className="btn btn-primary cookbook-cta-btn"
-                    aria-label="View the Cookbook — $15.99"
+                    aria-label={`View the Cookbook — $${product.price || 15.99}`}
                   >
                     <span>View the Cookbook →</span>
                   </button>

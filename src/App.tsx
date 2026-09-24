@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, NavLink, useLocation } from 'react-router-dom';
 import { 
-  Shield, Menu, X, Send, Bell, Sparkles, CheckCircle, ArrowRight, BookOpen
+  Shield, Menu, X, Bell, Sparkles, CheckCircle, ArrowRight, BookOpen
 } from 'lucide-react';
 
 // Pages
@@ -60,7 +60,6 @@ function App() {
   const [announcementBgStart, setAnnouncementBgStart] = useState('#064e3b');
   const [announcementBgEnd, setAnnouncementBgEnd] = useState('#10b981');
   const [announcementTextColor, setAnnouncementTextColor] = useState('#ecfdf5');
-  const [footerEmail, setFooterEmail] = useState('');
 
   // Automatic promo popup trigger after 5 seconds on site
   useEffect(() => {
@@ -150,21 +149,6 @@ function App() {
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 4000);
-  };
-
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!footerEmail) return;
-
-    try {
-      await db.saveLead(footerEmail, 'footer_newsletter');
-      showToast('Subscribed to BHYou Newsletter!', 'success');
-      firePixel('Google Analytics 4', 'newsletter_optin');
-      setFooterEmail('');
-    } catch (err) {
-      console.error("Error saving lead:", err);
-      showToast('Failed to subscribe. Please try again.', 'error');
-    }
   };
 
 
@@ -321,25 +305,6 @@ function App() {
                   <li><Link to="/dessert-cookbook" className="footer-link">Dessert Cookbook: 70 Recipes ($15.99)</Link></li>
                   <li><Link to="/blog" className="footer-link">Nutrition &amp; Recipe Guides</Link></li>
                 </ul>
-              </div>
-
-              {/* Newsletter Col */}
-              <div className="footer-newsletter">
-                <h4>Weekly Free Recipes</h4>
-                <p>Get a fresh, macro-friendly recipe sent directly to your inbox every Sunday.</p>
-                <form onSubmit={handleNewsletterSubmit} className="newsletter-form">
-                  <input 
-                    type="email" 
-                    placeholder="Enter email..." 
-                    className="newsletter-input"
-                    value={footerEmail}
-                    onChange={(e) => setFooterEmail(e.target.value)}
-                    required 
-                  />
-                  <button type="submit" className="btn btn-primary newsletter-btn" aria-label="Subscribe">
-                    <Send size={14} />
-                  </button>
-                </form>
               </div>
 
             </div>

@@ -5,68 +5,8 @@ import {
   BookOpen, Sparkles, Flame, Clock, Calendar, 
   Utensils, Zap, HeartHandshake, Eye, ChevronDown
 } from 'lucide-react';
-import { firePageView, firePixel, db, PRODUCTS } from '../db';
-import type { BlogPost, EbookProduct } from '../db';
-
-interface HeroSlideItem {
-  id: string;
-  name: string;
-  category: string;
-  macros: string;
-  image: string;
-  alt: string;
-}
-
-const HERO_SLIDES: HeroSlideItem[] = [
-  {
-    id: 'chocolate',
-    name: 'Molten Dark Chocolate Protein Fondant',
-    category: 'Warm Dessert',
-    macros: '26g Protein • 210 Kcal',
-    image: '/desserts/chocolate-dessert.jpg',
-    alt: 'Warm molten chocolate protein lava cake with rich flowing center and raspberries'
-  },
-  {
-    id: 'cheesecake',
-    name: 'Vanilla Bean Basque Protein Cheesecake',
-    category: 'Signature Bake',
-    macros: '24g Protein • 195 Kcal',
-    image: '/desserts/protein-cheesecake.jpg',
-    alt: 'Slice of Basque burnt protein cheesecake topped with fresh raspberries and coulis'
-  },
-  {
-    id: 'tiramisu',
-    name: 'Espresso-Infused Tiramisu Cups',
-    category: 'No-Bake Gourmet',
-    macros: '22g Protein • 180 Kcal',
-    image: '/desserts/tiramisu-cups.jpg',
-    alt: 'Layered Italian tiramisu cup with espresso sponge, whipped protein cream, and cocoa'
-  },
-  {
-    id: 'mango',
-    name: 'Tropical Whipped Mango Protein Mousse',
-    category: 'Light & Fruity',
-    macros: '18g Protein • 160 Kcal',
-    image: '/desserts/mango-mousse.jpg',
-    alt: 'Glass goblet of vibrant golden mango protein mousse garnished with diced mango'
-  },
-  {
-    id: 'cupcakes',
-    name: 'Golden Vanilla Whipped Protein Cupcakes',
-    category: 'Bakery Classics',
-    macros: '20g Protein • 175 Kcal',
-    image: '/desserts/protein-cupcakes.jpg',
-    alt: 'Bakery-style vanilla protein cupcakes with whipped swirl frosting'
-  },
-  {
-    id: 'caramel',
-    name: 'Salted Caramel Pecan Protein Pots',
-    category: 'Chilled Treats',
-    macros: '21g Protein • 190 Kcal',
-    image: '/desserts/caramel-dessert.jpg',
-    alt: 'Layered salted caramel protein cream crowned with toasted pecans'
-  }
-];
+import { firePageView, firePixel, db, PRODUCTS, DEFAULT_HERO_SLIDES } from '../db';
+import type { BlogPost, EbookProduct, HeroSlideItem } from '../db';
 
 interface HomeProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
@@ -79,25 +19,50 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
   const [selectedPreviewImage, setSelectedPreviewImage] = useState<string | null>(null);
 
   // Background slider state: images move automatically on their own
+  const [heroSlides, setHeroSlides] = useState<HeroSlideItem[]>(DEFAULT_HERO_SLIDES);
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
 
   // Continuous automatic movement (every 3.8 seconds)
   useEffect(() => {
+    if (heroSlides.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrentHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+      setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
     }, 3800);
     return () => clearInterval(timer);
-  }, []);
+  }, [heroSlides.length]);
 
   useEffect(() => {
     firePageView('/');
 
-    // Load products
-    db.getProducts().then((all) => {
-      if (all && all['bhyou-50-recipes']) {
-        setProduct(all['bhyou-50-recipes']);
-      }
-    }).catch(err => console.error("Error loading products:", err));
+    // Load products & listen for live price/cover updates from dashboard
+    const loadProduct = () => {
+      db.getProducts().then((all) => {
+        if (all && all['bhyou-50-recipes']) {
+          setProduct(all['bhyou-50-recipes']);
+        }
+      }).catch(err => console.error("Error loading products:", err));
+    };
+    loadProduct();
+
+    const handleProductsUpdated = () => {
+      loadProduct();
+    };
+    window.addEventListener('products_updated', handleProductsUpdated);
+
+    // Load dynamic hero slides & listen for live image updates from dashboard
+    const loadHeroSlides = () => {
+      db.getHeroSlides().then((slides) => {
+        if (slides && slides.length > 0) {
+          setHeroSlides(slides);
+        }
+      }).catch(err => console.error("Error loading hero slides:", err));
+    };
+    loadHeroSlides();
+
+    const handleHeroSlidesUpdated = () => {
+      loadHeroSlides();
+    };
+    window.addEventListener('hero_slides_updated', handleHeroSlidesUpdated);
 
     // Load blog posts and prioritize the 6 strongest relevant articles
     db.getPosts().then((posts) => {
@@ -139,18 +104,24 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
     }).catch(err => {
       console.error("Error loading home page SEO config:", err);
     });
+
+    return () => {
+      window.removeEventListener('products_updated', handleProductsUpdated);
+      window.removeEventListener('hero_slides_updated', handleHeroSlidesUpdated);
+    };
   }, []);
 
   const handleBuyClick = () => {
-    firePixel('Google Ads', 'click_buy_cookbook_1599', { price: 15.99 });
+    const priceVal = product.price || 15.99;
+    firePixel('Google Ads', 'click_buy_cookbook', { price: priceVal });
     firePixel('Meta Pixel', 'InitiateCheckout', { 
-      content_name: 'High-Protein Recipes Under 400 Calories', 
-      value: 15.99, 
+      content_name: product.fullTitle || product.title || 'High-Protein Recipes Under 400 Calories', 
+      value: priceVal, 
       currency: 'USD' 
     });
     firePixel('Pinterest Tag', 'checkout_click', { 
-      product_id: 'bhyou-50-recipes', 
-      value: 15.99 
+      product_id: product.id || 'bhyou-50-recipes', 
+      value: priceVal 
     });
     onToast('Opening Gumroad Secure Checkout...', 'success');
     window.open(product.gumroadUrl || 'https://bhyou.gumroad.com/l/pzebkb', '_blank');
@@ -175,14 +146,14 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
       >
         {/* Background Images with Automatic Smooth Motion */}
         <div className="hero-bg-slider" aria-hidden="true">
-          {HERO_SLIDES.map((slide, idx) => (
+          {heroSlides.map((slide, idx) => (
             <div 
-              key={slide.id} 
+              key={slide.id || idx} 
               className={`hero-bg-slide ${idx === currentHeroSlide ? 'active' : ''}`}
             >
               <img 
                 src={slide.image} 
-                alt={slide.alt} 
+                alt={slide.alt || slide.name} 
                 className="hero-bg-img"
                 loading={idx === 0 ? 'eager' : 'lazy'}
                 fetchPriority={idx === 0 ? 'high' : 'auto'}
@@ -238,9 +209,9 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
               <button 
                 onClick={handleBuyClick} 
                 className="btn btn-primary hero-btn-main"
-                aria-label="Get the Ebook — $15.99"
+                aria-label={`Get the Ebook — $${product.price}`}
               >
-                Get the Ebook — $15.99
+                Get the Ebook — ${product.price}
                 <ArrowRight size={18} />
               </button>
               <button 
@@ -445,9 +416,13 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
               <div className="ebook-pricing-card">
                 <div className="pricing-row">
                   <div className="price-tag-group">
-                    <span className="price-main">$15.99</span>
-                    <span className="price-original">$29.99</span>
-                    <span className="price-badge-save">SAVE 47%</span>
+                    <span className="price-main">${product.price}</span>
+                    {product.originalPrice && <span className="price-original">${product.originalPrice}</span>}
+                    {product.originalPrice && (
+                      <span className="price-badge-save">
+                        SAVE {Math.round((1 - product.price / product.originalPrice) * 100)}%
+                      </span>
+                    )}
                   </div>
                   <div className="format-badge">
                     <BookOpen size={14} />
@@ -528,9 +503,9 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                 <button 
                   onClick={handleBuyClick} 
                   className="btn btn-primary ebook-order-btn"
-                  aria-label="Get the Ebook — $15.99"
+                  aria-label={`Get the Ebook — $${product.price}`}
                 >
-                  Get the Ebook — $15.99
+                  Get the Ebook — ${product.price}
                   <ArrowRight size={18} />
                 </button>
                 <div className="checkout-security-notes">
@@ -647,7 +622,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
             <div className="lightbox-footer">
               <span>Sample Pages: 50 High-Protein Recipes Under 400 Calories</span>
               <button onClick={handleBuyClick} className="btn btn-primary btn-sm">
-                Get the Ebook — $15.99
+                Get the Ebook — ${product.price}
               </button>
             </div>
           </div>
@@ -695,7 +670,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
                   onClick={() => { setShowAboutModal(false); handleBuyClick(); }}
                   className="btn btn-secondary"
                 >
-                  Get the Ebook — $15.99
+                  Get the Ebook — ${product.price}
                 </button>
               </div>
             </div>

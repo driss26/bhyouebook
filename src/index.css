@@ -2753,11 +2753,13 @@ input:checked + .slider-round:before {
   width: 100%;
   height: 100%;
   opacity: 0;
+  z-index: 0;
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-bg-slide.active {
   opacity: 1;
+  z-index: 1;
 }
 
 .hero-bg-img {
@@ -2766,6 +2768,7 @@ input:checked + .slider-round:before {
   object-fit: cover;
   object-position: center;
   transform: scale(1);
+  filter: contrast(1.05) saturate(1.1);
   transition: transform 6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -2773,14 +2776,15 @@ input:checked + .slider-round:before {
   transform: scale(1.05);
 }
 
-/* Film Vignette Overlay to ensure text readability */
+/* Film Vignette Overlay to ensure text readability while letting food photography shine */
 .hero-bg-vignette {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(10, 11, 15, 0.68) 0%, rgba(8, 9, 13, 0.88) 100%),
-              linear-gradient(180deg, rgba(8, 9, 13, 0.6) 0%, rgba(8, 9, 13, 0.72) 45%, rgba(8, 9, 13, 0.95) 100%);
+  background: 
+    radial-gradient(ellipse at center, rgba(10, 12, 16, 0.2) 0%, rgba(10, 12, 16, 0.48) 100%),
+    linear-gradient(180deg, rgba(10, 12, 16, 0.22) 0%, rgba(10, 12, 16, 0.36) 45%, rgba(10, 12, 16, 0.85) 100%);
 }
 
 /* Foreground Container & Typography ("mn fo9mnhum lktaba") */
@@ -2807,10 +2811,10 @@ input:checked + .slider-round:before {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(14, 16, 22, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   color: #ffffff;
   padding: 7px 18px;
   border-radius: 30px;
@@ -2818,6 +2822,7 @@ input:checked + .slider-round:before {
   font-weight: 600;
   letter-spacing: 0.03em;
   margin-bottom: 22px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .hero-overlay-badge .badge-sparkle {
@@ -2831,16 +2836,17 @@ input:checked + .slider-round:before {
   color: #ffffff;
   letter-spacing: -0.03em;
   margin-bottom: 22px;
-  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 0, 0, 0.55);
 }
 
 .hero-overlay-lead {
   font-size: 19px;
-  color: rgba(255, 255, 255, 0.92);
+  color: #ffffff;
+  font-weight: 450;
   line-height: 1.68;
   max-width: 760px;
   margin: 0 auto 32px;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.95);
 }
 
 /* High-Protein Highlights */
@@ -2859,13 +2865,14 @@ input:checked + .slider-round:before {
   font-size: 13.5px;
   font-weight: 600;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(14, 16, 22, 0.68);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   padding: 8px 16px;
   border-radius: 10px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .hero-overlay-pill .pill-icon {
@@ -2886,7 +2893,7 @@ input:checked + .slider-round:before {
   padding: 16px 36px;
   font-size: 17px;
   font-weight: 700;
-  box-shadow: 0 10px 30px -5px rgba(197, 160, 89, 0.5);
+  box-shadow: 0 10px 30px -5px rgba(197, 160, 89, 0.55);
   border: none;
 }
 
@@ -2895,21 +2902,22 @@ input:checked + .slider-round:before {
   font-size: 16px;
   font-weight: 600;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(14, 16, 22, 0.68);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.25s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .hero-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
   color: #ffffff;
   transform: translateY(-2px);
 }
@@ -2921,8 +2929,15 @@ input:checked + .slider-round:before {
   justify-content: center;
   gap: 12px;
   font-size: 13.5px;
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  background: rgba(14, 16, 22, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 /* Bottom Dish Tag & Navigation Bar */
@@ -2933,7 +2948,7 @@ input:checked + .slider-round:before {
   gap: 20px;
   width: 100%;
   max-width: 900px;
-  margin: 46px auto 0;
+  margin: 28px auto 0;
   padding: 12px 22px;
   background: rgba(14, 16, 22, 0.78);
   backdrop-filter: blur(14px);

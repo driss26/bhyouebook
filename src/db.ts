@@ -92,6 +92,66 @@ export interface RobotConfig {
   content: string;
 }
 
+export interface HeroSlideItem {
+  id: string;
+  name: string;
+  category: string;
+  macros: string;
+  image: string;
+  alt: string;
+}
+
+export const DEFAULT_HERO_SLIDES: HeroSlideItem[] = [
+  {
+    id: 'chocolate',
+    name: 'Molten Dark Chocolate Protein Fondant',
+    category: 'Warm Dessert',
+    macros: '26g Protein • 210 Kcal',
+    image: '/desserts/chocolate-dessert.jpg',
+    alt: 'Warm molten chocolate protein lava cake with rich flowing center and raspberries'
+  },
+  {
+    id: 'cheesecake',
+    name: 'Vanilla Bean Basque Protein Cheesecake',
+    category: 'Signature Bake',
+    macros: '24g Protein • 195 Kcal',
+    image: '/desserts/protein-cheesecake.jpg',
+    alt: 'Slice of Basque burnt protein cheesecake topped with fresh raspberries and coulis'
+  },
+  {
+    id: 'tiramisu',
+    name: 'Espresso-Infused Tiramisu Cups',
+    category: 'No-Bake Gourmet',
+    macros: '22g Protein • 180 Kcal',
+    image: '/desserts/tiramisu-cups.jpg',
+    alt: 'Layered Italian tiramisu cup with espresso sponge, whipped protein cream, and cocoa'
+  },
+  {
+    id: 'mango',
+    name: 'Tropical Whipped Mango Protein Mousse',
+    category: 'Light & Fruity',
+    macros: '18g Protein • 160 Kcal',
+    image: '/desserts/mango-mousse.jpg',
+    alt: 'Glass goblet of vibrant golden mango protein mousse garnished with diced mango'
+  },
+  {
+    id: 'cupcakes',
+    name: 'Golden Vanilla Whipped Protein Cupcakes',
+    category: 'Bakery Classics',
+    macros: '20g Protein • 175 Kcal',
+    image: '/desserts/protein-cupcakes.jpg',
+    alt: 'Bakery-style vanilla protein cupcakes with whipped swirl frosting'
+  },
+  {
+    id: 'caramel',
+    name: 'Salted Caramel Pecan Protein Pots',
+    category: 'Chilled Treats',
+    macros: '21g Protein • 190 Kcal',
+    image: '/desserts/caramel-dessert.jpg',
+    alt: 'Layered salted caramel protein cream crowned with toasted pecans'
+  }
+];
+
 const DEFAULT_POSTS: BlogPost[] = [
   {
     id: 'post-1',
@@ -1399,6 +1459,7 @@ const KEYS = {
   ANNOUNCEMENT: 'bhyou_announcement',
   MEDIA: 'bhyou_media',
   PRODUCTS: 'bhyou_products',
+  HERO_SLIDES: 'bhyou_hero_slides',
 };
 
 const DEFAULT_ANNOUNCEMENT: AnnouncementSettings = {
@@ -1411,6 +1472,9 @@ const DEFAULT_ANNOUNCEMENT: AnnouncementSettings = {
 
 // Initialize DB helper
 export const initDb = () => {
+  if (!localStorage.getItem(KEYS.HERO_SLIDES)) {
+    localStorage.setItem(KEYS.HERO_SLIDES, JSON.stringify(DEFAULT_HERO_SLIDES));
+  }
   if (!localStorage.getItem(KEYS.POSTS)) {
     localStorage.setItem(KEYS.POSTS, JSON.stringify(DEFAULT_POSTS));
   } else {
@@ -2120,24 +2184,53 @@ export const db = {
   },
 
   saveProduct: async (product: EbookProduct): Promise<void> => {
+    // 1. Always save to LocalStorage immediately and dispatch update event
+    try {
+      const stored = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || JSON.stringify(PRODUCTS));
+      stored[product.id] = product;
+      localStorage.setItem(KEYS.PRODUCTS, JSON.stringify(stored));
+      window.dispatchEvent(new CustomEvent('products_updated', { detail: product }));
+    } catch (e) {
+      console.error("Error saving product to localStorage:", e);
+    }
+
+    // 2. Also save to Supabase if connected
     if (hasSupabase) {
-      const { error } = await supabase
-        .from('products')
-        .upsert(product);
-      if (error) {
-        if (error.code === 'PGRST205' || error.code === '42P01' || error.message?.includes('schema cache')) {
-          productsTableMissing = true;
+      try {
+        const { error } = await supabase
+          .from('products')
+          .upsert(product);
+        if (error) {
+          if (error.code === 'PGRST205' || error.code === '42P01' || error.message?.includes('schema cache')) {
+            productsTableMissing = true;
+          }
+          console.warn("Supabase saveProduct error (saved locally):", error);
+        } else {
+          productsTableMissing = false;
         }
-        console.warn("Supabase saveProduct error, falling back to localStorage:", error);
-        throw new Error(error.message || "Failed to save to database");
-      } else {
-        productsTableMissing = false;
+      } catch (err) {
+        console.warn("Supabase network error (saved locally):", err);
       }
     }
-    const stored = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || JSON.stringify(PRODUCTS));
-    stored[product.id] = product;
-    localStorage.setItem(KEYS.PRODUCTS, JSON.stringify(stored));
-    window.dispatchEvent(new CustomEvent('products_updated', { detail: product }));
+  },
+
+  // Hero Background Slides & Images
+  getHeroSlides: async (): Promise<HeroSlideItem[]> => {
+    try {
+      const stored = localStorage.getItem(KEYS.HERO_SLIDES);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.error("Error reading hero slides from localStorage:", e);
+    }
+    return DEFAULT_HERO_SLIDES;
+  },
+
+  saveHeroSlides: async (slides: HeroSlideItem[]): Promise<void> => {
+    localStorage.setItem(KEYS.HERO_SLIDES, JSON.stringify(slides));
+    window.dispatchEvent(new CustomEvent('hero_slides_updated', { detail: slides }));
   },
 };
 

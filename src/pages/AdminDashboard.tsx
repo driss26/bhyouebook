@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Settings, FileText, BarChart2, Mail, Plus, Edit, Trash2, 
-  Save, RefreshCw, Code, Lock, Megaphone, Image, Copy, UploadCloud, ExternalLink, Check, BookOpen
+  Save, RefreshCw, Code, Lock, Megaphone, Image, Copy, UploadCloud, ExternalLink, Check, BookOpen,
+  DollarSign, Sliders
 } from 'lucide-react';
-import { firePageView, db, PRODUCTS } from '../db';
+import { firePageView, db, PRODUCTS, DEFAULT_HERO_SLIDES } from '../db';
 import { supabase } from '../supabaseClient';
-import type { BlogPost, PageSeo, Lead, ContactMessage, TrackingSettings, AnnouncementSettings, MediaItem, EbookProduct } from '../db';
+import type { BlogPost, PageSeo, Lead, ContactMessage, TrackingSettings, AnnouncementSettings, MediaItem, EbookProduct, HeroSlideItem } from '../db';
 
 const hasSupabase = !!import.meta.env.VITE_SUPABASE_URL && !!import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -22,7 +23,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
     }
   }, []);
 
-  const [activeTab, setActiveTab] = useState<'ebooks' | 'blog' | 'announcement' | 'media' | 'seo' | 'leads' | 'analytics'>('ebooks');
+  const [activeTab, setActiveTab] = useState<'pricing' | 'hero-images' | 'ebooks' | 'blog' | 'announcement' | 'media' | 'seo' | 'leads' | 'analytics'>('pricing');
   
   // States for Database values
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -40,6 +41,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
   const [uploadingCover, setUploadingCover] = useState(false);
   const [showMediaPicker, setShowMediaPicker] = useState(false);
   const [productsTableMissing, setProductsTableMissing] = useState(false);
+
+  // Hero Slides & Homepage Images states
+  const [heroSlides, setHeroSlides] = useState<HeroSlideItem[]>(DEFAULT_HERO_SLIDES);
+  const [uploadingHeroIndex, setUploadingHeroIndex] = useState<number | null>(null);
 
   // Announcement Bar & Media Gallery states
   const [announcementSettings, setAnnouncementSettings] = useState<AnnouncementSettings>({
@@ -106,7 +111,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
   // Reload data from DB helper
   const reloadData = async () => {
     try {
-      const [allPosts, allSeo, allLeads, allMessages, allTracking, allRobots, announcement, media, allProducts] = await Promise.all([
+      const [allPosts, allSeo, allLeads, allMessages, allTracking, allRobots, announcement, media, allProducts, allHeroSlides] = await Promise.all([
         db.getPosts(),
         db.getSeoConfigs(),
         db.getLeads(),
@@ -115,7 +120,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
         db.getRobotsTxt(),
         db.getAnnouncementSettings(),
         db.getMediaItems(),
-        db.getProducts()
+        db.getProducts(),
+        db.getHeroSlides(),
       ]);
       setPosts(allPosts);
       setSeoConfigs(allSeo);
@@ -125,6 +131,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
       setRobotsTxt(allRobots);
       if (announcement) setAnnouncementSettings(announcement);
       if (media) setMediaItems(media);
+      if (allHeroSlides && allHeroSlides.length > 0) setHeroSlides(allHeroSlides);
       if (allProducts) {
         setProducts(allProducts);
         // keep current selection synced
@@ -143,6 +150,122 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
     // Read session storage logs
     const logs = JSON.parse(sessionStorage.getItem('bhyou_pixel_logs') || '[]');
     setPixelLogs(logs);
+  };
+
+  // Quick Pricing handlers
+  const handleQuickPriceChange = (productId: string, field: 'price' | 'originalPrice' | 'gumroadUrl', value: any) => {
+    setProducts(prev => {
+      const updated = { ...prev };
+      if (updated[productId]) {
+        updated[productId] = { ...updated[productId], [field]: value };
+      }
+      return updated;
+    });
+    if (editingProduct && editingProduct.id === productId) {
+      setEditingProduct(prev => prev ? { ...prev, [field]: value } : null);
+    }
+  };
+
+  const handleSaveSinglePrice = async (productId: string) => {
+    const prod = products[productId];
+    if (!prod) return;
+    try {
+      await db.saveProduct(prod);
+      onToast(`Saved price for ${prod.title}! ($${prod.price})`, 'success');
+    } catch (err: any) {
+      console.error(err);
+      onToast(`Saved locally: $${prod.price}`, 'info');
+    }
+  };
+
+  const handleSaveAllPrices = async () => {
+    try {
+      for (const prod of Object.values(products)) {
+        await db.saveProduct(prod);
+      }
+      onToast('All ebook prices updated successfully across the site!', 'success');
+    } catch (err: any) {
+      console.error(err);
+      onToast('Prices saved to localStorage!', 'info');
+    }
+  };
+
+  // Hero Slides & Images handlers
+  const handleHeroSlideChange = (index: number, field: keyof HeroSlideItem, value: string) => {
+    setHeroSlides(prev => {
+      const next = [...prev];
+      next[index] = { ...next[index], [field]: value };
+      return next;
+    });
+  };
+
+  const handleAddHeroSlide = () => {
+    const newSlide: HeroSlideItem = {
+      id: `slide-${Date.now()}`,
+      name: 'New High-Protein Recipe',
+      category: 'Healthy Treat',
+      macros: '25g Protein • 200 Kcal',
+      image: '/desserts/chocolate-dessert.jpg',
+      alt: 'Healthy high-protein recipe dish'
+    };
+    setHeroSlides(prev => [...prev, newSlide]);
+    onToast('Added new slide! Customize its image and title, then click Save.', 'info');
+  };
+
+  const handleRemoveHeroSlide = (index: number) => {
+    if (heroSlides.length <= 1) {
+      onToast('You must keep at least 1 hero slide.', 'error');
+      return;
+    }
+    setHeroSlides(prev => prev.filter((_, i) => i !== index));
+    onToast('Slide removed. Remember to click Save!', 'info');
+  };
+
+  const handleMoveHeroSlide = (index: number, direction: 'up' | 'down') => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= heroSlides.length) return;
+    setHeroSlides(prev => {
+      const next = [...prev];
+      const temp = next[index];
+      next[index] = next[targetIndex];
+      next[targetIndex] = temp;
+      return next;
+    });
+  };
+
+  const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setUploadingHeroIndex(index);
+      onToast('Uploading image to Cloudinary...', 'info');
+      const url = await uploadToCloudinary(file);
+      handleHeroSlideChange(index, 'image', url);
+      onToast('Image uploaded successfully! Click Save to apply.', 'success');
+    } catch (err: any) {
+      console.error(err);
+      onToast(err.message || 'Error uploading image', 'error');
+    } finally {
+      setUploadingHeroIndex(null);
+    }
+  };
+
+  const handleSaveHeroSlides = async () => {
+    try {
+      await db.saveHeroSlides(heroSlides);
+      onToast('Hero background images updated successfully on the homepage!', 'success');
+    } catch (err) {
+      console.error(err);
+      onToast('Error saving hero slides', 'error');
+    }
+  };
+
+  const handleResetHeroSlides = async () => {
+    if (window.confirm('Reset hero slides back to original 6 dessert slides?')) {
+      setHeroSlides(DEFAULT_HERO_SLIDES);
+      await db.saveHeroSlides(DEFAULT_HERO_SLIDES);
+      onToast('Hero slides reset to default!', 'success');
+    }
   };
 
   // Ebook handlers
@@ -555,10 +678,28 @@ ${pages.map(p => `  <url>
           <ul className="admin-menu">
             <li>
               <button 
+                onClick={() => { setActiveTab('pricing'); }} 
+                className={`admin-menu-item-btn ${activeTab === 'pricing' ? 'active' : ''}`}
+                style={{ fontWeight: 600 }}
+              >
+                <DollarSign size={16} style={{ color: 'var(--primary)' }} /> Ebook Pricing
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => { setActiveTab('hero-images'); }} 
+                className={`admin-menu-item-btn ${activeTab === 'hero-images' ? 'active' : ''}`}
+                style={{ fontWeight: 600 }}
+              >
+                <Sliders size={16} style={{ color: 'var(--primary)' }} /> Hero Slides &amp; Images
+              </button>
+            </li>
+            <li>
+              <button 
                 onClick={() => { setActiveTab('ebooks'); }} 
                 className={`admin-menu-item-btn ${activeTab === 'ebooks' ? 'active' : ''}`}
               >
-                <BookOpen size={16} /> Ebooks & Covers
+                <BookOpen size={16} /> Ebook Details &amp; Covers
               </button>
             </li>
             <li>
@@ -590,7 +731,7 @@ ${pages.map(p => `  <url>
                 onClick={() => { setActiveTab('seo'); setEditingSeo(null); }} 
                 className={`admin-menu-item-btn ${activeTab === 'seo' ? 'active' : ''}`}
               >
-                <Code size={16} /> SEO & Sitemap
+                <Code size={16} /> SEO &amp; Sitemap
               </button>
             </li>
             <li>
@@ -598,7 +739,7 @@ ${pages.map(p => `  <url>
                 onClick={() => setActiveTab('leads')} 
                 className={`admin-menu-item-btn ${activeTab === 'leads' ? 'active' : ''}`}
               >
-                <Mail size={16} /> Leads & Messages
+                <Mail size={16} /> Leads &amp; Messages
               </button>
             </li>
             <li>
@@ -606,7 +747,7 @@ ${pages.map(p => `  <url>
                 onClick={() => setActiveTab('analytics')} 
                 className={`admin-menu-item-btn ${activeTab === 'analytics' ? 'active' : ''}`}
               >
-                <BarChart2 size={16} /> Analytics & Pixels
+                <BarChart2 size={16} /> Analytics &amp; Pixels
               </button>
             </li>
           </ul>
@@ -621,7 +762,364 @@ ${pages.map(p => `  <url>
       {/* Main Content Area */}
       <main className="admin-content">
 
-        {/* --- EBOOKS & COVERS TAB --- */}
+        {/* --- 1. EBOOK PRICING TAB --- */}
+        {activeTab === 'pricing' && (
+          <div>
+            <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+              <div>
+                <h1 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <DollarSign size={26} style={{ color: 'var(--primary)' }} />
+                  Ebook Pricing Manager
+                </h1>
+                <p style={{ color: 'var(--text-muted-light)', fontSize: '14px', marginTop: '4px' }}>
+                  Set sale prices, original strikethrough prices, and checkout links. Updates propagate instantly to all homepage buttons, sales pages, and checkout flows.
+                </p>
+              </div>
+              <button 
+                type="button" 
+                onClick={handleSaveAllPrices} 
+                className="btn btn-primary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 24px', fontSize: '14px', fontWeight: 700 }}
+              >
+                <Save size={16} /> Save All Prices
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+              {Object.values(products).map((prod) => {
+                const discount = prod.originalPrice && prod.originalPrice > prod.price 
+                  ? Math.round((1 - prod.price / prod.originalPrice) * 100) 
+                  : null;
+
+                return (
+                  <div 
+                    key={prod.id} 
+                    className="admin-card" 
+                    style={{ 
+                      border: '1px solid rgba(197, 160, 89, 0.35)', 
+                      background: 'rgba(24, 24, 27, 0.85)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div>
+                      {/* Top Header Card */}
+                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #27272a' }}>
+                        <div style={{ width: '64px', height: '88px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 6px 14px rgba(0,0,0,0.5)', background: '#09090b' }}>
+                          <img 
+                            src={prod.coverImage} 
+                            alt={prod.title} 
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = prod.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                            }}
+                          />
+                        </div>
+                        <div style={{ flexGrow: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                            <span className="badge" style={{ backgroundColor: prod.id === 'high-protein-dessert-cookbook-70' ? 'var(--primary)' : '#3b82f6', color: 'white', fontSize: '11px' }}>
+                              {prod.id === 'high-protein-dessert-cookbook-70' ? 'Dessert Cookbook' : 'Flagship Ebook'}
+                            </span>
+                            {discount && (
+                              <span className="badge" style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.4)', fontSize: '11px', fontWeight: 700 }}>
+                                SAVE {discount}%
+                              </span>
+                            )}
+                          </div>
+                          <h3 style={{ margin: '0 0 4px', fontSize: '17px', color: 'white' }}>
+                            {prod.title}
+                          </h3>
+                          <span style={{ fontSize: '12px', color: 'var(--text-muted-light)' }}>
+                            ID: <code>{prod.id}</code> • {prod.recipes} Recipes
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Pricing Inputs */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                        <div className="admin-form-group" style={{ margin: 0 }}>
+                          <label style={{ fontWeight: 700, color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            💰 Sale Price ($ USD)
+                          </label>
+                          <div style={{ position: 'relative' }}>
+                            <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)', fontWeight: 800, fontSize: '16px' }}>$</span>
+                            <input 
+                              type="number" 
+                              step="0.01" 
+                              className="admin-form-input" 
+                              style={{ paddingLeft: '28px', fontSize: '18px', fontWeight: 800, color: 'white', borderColor: 'rgba(197, 160, 89, 0.5)' }}
+                              value={prod.price}
+                              onChange={(e) => handleQuickPriceChange(prod.id, 'price', parseFloat(e.target.value) || 0)}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="admin-form-group" style={{ margin: 0 }}>
+                          <label style={{ color: 'var(--text-muted-light)' }}>
+                            Original / Strikethrough ($ USD)
+                          </label>
+                          <div style={{ position: 'relative' }}>
+                            <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted-light)', fontWeight: 600, fontSize: '16px' }}>$</span>
+                            <input 
+                              type="number" 
+                              step="0.01" 
+                              className="admin-form-input" 
+                              style={{ paddingLeft: '28px', fontSize: '16px', color: 'var(--text-muted-light)' }}
+                              value={prod.originalPrice || ''}
+                              onChange={(e) => handleQuickPriceChange(prod.id, 'originalPrice', parseFloat(e.target.value) || 0)}
+                              placeholder="29.99"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Gumroad Checkout URL */}
+                      <div className="admin-form-group" style={{ marginBottom: '18px' }}>
+                        <label style={{ fontSize: '12.5px', color: 'var(--text-muted-light)' }}>
+                          Gumroad Direct Checkout Link
+                        </label>
+                        <input 
+                          type="url" 
+                          className="admin-form-input" 
+                          value={prod.gumroadUrl}
+                          onChange={(e) => handleQuickPriceChange(prod.id, 'gumroadUrl', e.target.value)}
+                          placeholder="https://bhyou.gumroad.com/l/..."
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Bottom Action Footer */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '14px', borderTop: '1px solid #27272a' }}>
+                      <a 
+                        href={`#${prod.route}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        style={{ fontSize: '12px', color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+                      >
+                        <ExternalLink size={13} /> View Live Page
+                      </a>
+                      <button 
+                        type="button" 
+                        onClick={() => handleSaveSinglePrice(prod.id)}
+                        className="btn btn-secondary"
+                        style={{ padding: '8px 16px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                      >
+                        <Check size={14} /> Update Price
+                      </button>
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* --- 2. HERO SLIDES & IMAGES TAB --- */}
+        {activeTab === 'hero-images' && (
+          <div>
+            <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+              <div>
+                <h1 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <Sliders size={26} style={{ color: 'var(--primary)' }} />
+                  Hero Slides &amp; Background Images
+                </h1>
+                <p style={{ color: 'var(--text-muted-light)', fontSize: '14px', marginTop: '4px' }}>
+                  Manage the rotating background photos on the homepage hero. Add new culinary photos, update titles, categories, and macros.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                <button 
+                  type="button" 
+                  onClick={handleResetHeroSlides}
+                  className="btn btn-secondary"
+                  style={{ fontSize: '13px', padding: '10px 16px' }}
+                >
+                  Reset Defaults
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handleAddHeroSlide}
+                  className="btn btn-secondary"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', padding: '10px 16px' }}
+                >
+                  <Plus size={15} /> Add Slide
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handleSaveHeroSlides} 
+                  className="btn btn-primary"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 22px', fontSize: '14px', fontWeight: 700 }}
+                >
+                  <Save size={16} /> Save Hero Images
+                </button>
+              </div>
+            </div>
+
+            {/* List of Hero Slides */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '32px' }}>
+              {heroSlides.map((slide, idx) => (
+                <div 
+                  key={slide.id || idx} 
+                  className="admin-card" 
+                  style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '140px 1fr auto', 
+                    gap: '20px', 
+                    alignItems: 'center',
+                    background: '#18181b',
+                    border: '1px solid #27272a'
+                  }}
+                >
+                  {/* Slide Image Preview & Upload */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+                    <div style={{ width: '130px', height: '95px', borderRadius: '8px', overflow: 'hidden', background: '#09090b', border: '1px solid #3f3f46', position: 'relative' }}>
+                      <img 
+                        src={slide.image} 
+                        alt={slide.name} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/desserts/chocolate-dessert.jpg';
+                        }}
+                      />
+                      <span style={{ position: 'absolute', bottom: '4px', left: '6px', background: 'rgba(0,0,0,0.7)', color: 'white', fontSize: '10px', padding: '2px 5px', borderRadius: '4px' }}>
+                        #{idx + 1}
+                      </span>
+                    </div>
+
+                    <label 
+                      className="btn btn-secondary" 
+                      style={{ 
+                        fontSize: '11px', 
+                        padding: '4px 8px', 
+                        cursor: uploadingHeroIndex === idx ? 'not-allowed' : 'pointer',
+                        width: '100%',
+                        textAlign: 'center',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      {uploadingHeroIndex === idx ? <RefreshCw size={12} className="spin-icon" /> : <UploadCloud size={12} />}
+                      {uploadingHeroIndex === idx ? 'Uploading...' : 'Upload Image'}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={(e) => handleHeroUpload(e, idx)}
+                        disabled={uploadingHeroIndex === idx}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </div>
+
+                  {/* Slide Details Inputs */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+                    <div className="admin-form-group" style={{ margin: 0 }}>
+                      <label style={{ fontSize: '12px' }}>Recipe Name / Title</label>
+                      <input 
+                        type="text" 
+                        className="admin-form-input" 
+                        value={slide.name}
+                        onChange={(e) => handleHeroSlideChange(idx, 'name', e.target.value)}
+                        placeholder="e.g. Molten Dark Chocolate Fondant"
+                        required
+                      />
+                    </div>
+
+                    <div className="admin-form-group" style={{ margin: 0 }}>
+                      <label style={{ fontSize: '12px' }}>Category Badge</label>
+                      <input 
+                        type="text" 
+                        className="admin-form-input" 
+                        value={slide.category}
+                        onChange={(e) => handleHeroSlideChange(idx, 'category', e.target.value)}
+                        placeholder="e.g. Warm Dessert"
+                      />
+                    </div>
+
+                    <div className="admin-form-group" style={{ margin: 0 }}>
+                      <label style={{ fontSize: '12px' }}>Macros Tag</label>
+                      <input 
+                        type="text" 
+                        className="admin-form-input" 
+                        value={slide.macros}
+                        onChange={(e) => handleHeroSlideChange(idx, 'macros', e.target.value)}
+                        placeholder="e.g. 26g Protein • 210 Kcal"
+                      />
+                    </div>
+
+                    <div className="admin-form-group" style={{ margin: 0 }}>
+                      <label style={{ fontSize: '12px' }}>Image URL / Path</label>
+                      <input 
+                        type="text" 
+                        className="admin-form-input" 
+                        value={slide.image}
+                        onChange={(e) => handleHeroSlideChange(idx, 'image', e.target.value)}
+                        placeholder="https://... or /desserts/..."
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Actions (Reorder & Delete) */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '4px' }}>
+                      <button 
+                        type="button" 
+                        onClick={() => handleMoveHeroSlide(idx, 'up')}
+                        disabled={idx === 0}
+                        className="btn btn-secondary" 
+                        style={{ padding: '6px 8px', opacity: idx === 0 ? 0.3 : 1 }}
+                        title="Move Up"
+                      >
+                        ▲
+                      </button>
+                      <button 
+                        type="button" 
+                        onClick={() => handleMoveHeroSlide(idx, 'down')}
+                        disabled={idx === heroSlides.length - 1}
+                        className="btn btn-secondary" 
+                        style={{ padding: '6px 8px', opacity: idx === heroSlides.length - 1 ? 0.3 : 1 }}
+                        title="Move Down"
+                      >
+                        ▼
+                      </button>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveHeroSlide(idx)}
+                      disabled={heroSlides.length <= 1}
+                      className="btn" 
+                      style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '6px 10px', fontSize: '12px', opacity: heroSlides.length <= 1 ? 0.4 : 1 }}
+                      title="Delete Slide"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+              <button 
+                type="button" 
+                onClick={handleSaveHeroSlides} 
+                className="btn btn-primary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 28px', fontSize: '15px', fontWeight: 700 }}
+              >
+                <Save size={16} /> Save All Hero Images
+              </button>
+            </div>
+
+          </div>
+        )}
+
+        {/* --- 3. EBOOKS & COVERS TAB --- */}
         {activeTab === 'ebooks' && (
           <div>
             <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>

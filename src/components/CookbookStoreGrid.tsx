@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   CheckCircle, ArrowRight, Star, BookOpen, Flame, Utensils, 
-  ShieldCheck, Zap, Sparkles, Download, Eye 
+  ShieldCheck, Zap, Sparkles, Download 
 } from 'lucide-react';
 import { db, firePixel, PRODUCTS } from '../db';
 import type { EbookProduct } from '../db';
@@ -19,7 +19,6 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
   showSectionHeader = true
 }) => {
   const [products, setProducts] = useState<Record<string, EbookProduct>>(PRODUCTS);
-  const [selectedPreviewImage, setSelectedPreviewImage] = useState<string | null>(null);
 
   const loadProducts = () => {
     db.getProducts().then((all) => {
@@ -124,16 +123,6 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
                       <BookOpen size={12} /> Instant PDF
                     </span>
                   </div>
-
-                  {/* Quick Preview Action */}
-                  <button 
-                    type="button"
-                    onClick={() => setSelectedPreviewImage(isDessert ? 'https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp' : '/recipe_preview.png')}
-                    className="shopify-quick-preview-btn"
-                    title="Preview Interior Pages"
-                  >
-                    <Eye size={14} /> Quick Preview
-                  </button>
                 </div>
 
                 {/* 2. Product Info (Under the Image - Shopify Style) */}
@@ -267,43 +256,6 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
         </div>
 
       </div>
-
-      {/* Lightbox / Modal for Preview Images */}
-      {selectedPreviewImage && (
-        <div 
-          className="preview-lightbox-overlay"
-          onClick={() => setSelectedPreviewImage(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="preview-lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="lightbox-close-btn"
-              onClick={() => setSelectedPreviewImage(null)}
-              aria-label="Close Preview"
-            >
-              ✕
-            </button>
-            <img 
-              src={selectedPreviewImage} 
-              alt="Cookbook preview" 
-              className="lightbox-full-img"
-            />
-            <div className="lightbox-footer">
-              <span>BHYou Digital Cookbooks — High-Protein &amp; Guilt-Free Recipes</span>
-              <button 
-                onClick={() => {
-                  setSelectedPreviewImage(null);
-                  handleBuyClick(products['bhyou-50-recipes']);
-                }} 
-                className="btn btn-primary btn-sm"
-              >
-                Get Cookbooks Now
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </section>
   );

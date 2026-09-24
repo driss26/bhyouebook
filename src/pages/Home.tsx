@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   CheckCircle, ArrowRight, Star, 
   Sparkles, Flame, Clock, Calendar, 
-  Utensils, HeartHandshake, ChevronDown
+  Utensils, Heart, ChevronDown
 } from 'lucide-react';
 import { firePageView, firePixel, db, PRODUCTS, DEFAULT_HERO_SLIDES } from '../db';
 import type { BlogPost, EbookProduct, HeroSlideItem } from '../db';
@@ -256,85 +256,143 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
       </section>
 
       {/* ================================================== */}
-      {/* 3. ABOUT BHYOU                                     */}
+      {/* 3. ABOUT BHYOU (PREMIUM EDITORIAL REDESIGN)        */}
       {/* ================================================== */}
-      <section id="about" className="about-bh-section" aria-label="About BHYou">
+      <section id="about" className="about-bh-section" aria-label="About BHYou Philosophy">
         <div className="container">
           <div className="about-bh-grid">
             
-            {/* Left Story Column */}
+            {/* Left Story Column: Brand Philosophy & Natural SEO Copy */}
             <div className="about-bh-story">
-              <span className="section-subtitle">Our Philosophy</span>
-              <h2 className="section-title">About BHYou</h2>
+              <div className="about-eyebrow-wrap">
+                <span className="about-eyebrow-line" aria-hidden="true"></span>
+                <span className="about-eyebrow-text">OUR PHILOSOPHY</span>
+              </div>
+
+              <h2 className="about-section-heading">
+                Healthy Eating Should Taste This Good
+              </h2>
               
               <div className="about-bh-copy">
-                <p className="about-highlight-text">
-                  BHYou is all about making healthy eating simple, delicious, and realistic. We create recipes that combine great taste with practical nutrition, helping you enjoy high-protein meals and healthier desserts without making food boring.
+                <p className="about-lead-copy">
+                  BHYou makes healthy eating simple, satisfying, and realistic. We create high-protein recipes, healthy desserts, low-calorie meals, and healthy meal ideas designed for real everyday life. Our healthy recipes focus on simple ingredients, practical preparation, delicious flavors, and balanced nutrition.
                 </p>
-                <p>
-                  We believe that long-term body composition and vibrant energy shouldn't require starving, bland chicken breasts, or giving up your favorite sweets. By reimagining comfort food favorites through macro-optimized ingredients, we show you that high-protein recipes and low-calorie meals can be the most flavorful part of your day.
+                <p className="about-body-copy">
+                  From high-protein desserts, protein dessert recipes, and Greek yogurt recipes to easy healthy meals, no-bake treats, high-protein snacks, protein-packed recipes, and recipes under 400 calories, BHYou helps you enjoy food while making smarter everyday choices.
                 </p>
               </div>
 
-              {/* Secondary CTA */}
+              {/* Subtle Gold Text Link */}
               <div className="about-cta-container">
                 <button 
+                  type="button"
                   onClick={() => setShowAboutModal(true)} 
-                  className="about-secondary-link"
+                  className="about-philosophy-link"
+                  aria-label="Discover the BHYou philosophy"
                 >
-                  Learn More About BHYou →
+                  <span>Discover the BHYou philosophy</span>
+                  <span className="about-link-arrow">→</span>
                 </button>
               </div>
             </div>
 
-            {/* Right Pillars Cards */}
-            <div className="about-bh-pillars">
-              <div className="about-pillar-card">
-                <div className="pillar-icon-box">
-                  <Flame size={22} />
+            {/* Right Visual Composition: Food Photography Showcase + 4 Feature Cards */}
+            <div className="about-bh-composition">
+              
+              {/* Subtle Premium Food Photography Showcase */}
+              <div className="about-photo-mosaic" aria-label="Curated recipe creations preview">
+                <div className="about-photo-card">
+                  <img 
+                    src="/desserts/protein-cheesecake.jpg" 
+                    alt="High-protein cheesecake with fresh berries" 
+                    className="about-strip-img"
+                    loading="lazy"
+                  />
+                  <div className="about-photo-overlay">
+                    <span className="about-photo-pill">Protein Cheesecakes</span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="pillar-title">High-Protein Focus</h3>
-                  <p className="pillar-desc">
-                    Every dish delivers generous, muscle-sparing protein to keep you full for hours and fuel active recovery.
-                  </p>
+
+                <div className="about-photo-card">
+                  <img 
+                    src="/desserts/tiramisu-cups.jpg" 
+                    alt="Greek yogurt protein dessert cup" 
+                    className="about-strip-img"
+                    loading="lazy"
+                  />
+                  <div className="about-photo-overlay">
+                    <span className="about-photo-pill">Greek Yogurt Treats</span>
+                  </div>
+                </div>
+
+                <div className="about-photo-card">
+                  <img 
+                    src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" 
+                    alt="Colorful high-protein meal idea" 
+                    className="about-strip-img"
+                    loading="lazy"
+                  />
+                  <div className="about-photo-overlay">
+                    <span className="about-photo-pill">Balanced Meals</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="about-pillar-card">
-                <div className="pillar-icon-box">
-                  <Sparkles size={22} />
-                </div>
-                <div>
-                  <h3 className="pillar-title">Healthy Desserts</h3>
-                  <p className="pillar-desc">
-                    From molten lava cakes to tiramisu cups, satisfy your sweet tooth without throwing off your daily calorie deficit.
-                  </p>
-                </div>
-              </div>
+              {/* 4 Elegant Feature Cards (2x2 Grid) */}
+              <div className="about-bh-pillars">
+                
+                {/* CARD 1 */}
+                <article className="about-pillar-card">
+                  <div className="pillar-icon-box" aria-hidden="true">
+                    <Flame size={22} strokeWidth={2.2} />
+                  </div>
+                  <div className="pillar-content">
+                    <h3 className="pillar-title">High-Protein Recipes</h3>
+                    <p className="pillar-desc">
+                      Protein-rich recipes designed to make everyday meals and desserts more satisfying.
+                    </p>
+                  </div>
+                </article>
 
-              <div className="about-pillar-card">
-                <div className="pillar-icon-box">
-                  <Utensils size={22} />
-                </div>
-                <div>
-                  <h3 className="pillar-title">Low-Calorie Recipes</h3>
-                  <p className="pillar-desc">
-                    Strictly portioned and verified recipes under 400 calories that maximize volume so you never feel restricted.
-                  </p>
-                </div>
-              </div>
+                {/* CARD 2 */}
+                <article className="about-pillar-card">
+                  <div className="pillar-icon-box" aria-hidden="true">
+                    <Sparkles size={22} strokeWidth={2.2} />
+                  </div>
+                  <div className="pillar-content">
+                    <h3 className="pillar-title">Healthy Dessert Recipes</h3>
+                    <p className="pillar-desc">
+                      High-protein cheesecakes, cookies, mousses, frozen desserts, and sweet treats made with simple ingredients.
+                    </p>
+                  </div>
+                </article>
 
-              <div className="about-pillar-card">
-                <div className="pillar-icon-box">
-                  <HeartHandshake size={22} />
-                </div>
-                <div>
-                  <h3 className="pillar-title">Realistic Meal Ideas</h3>
-                  <p className="pillar-desc">
-                    Practical, accessible ingredients available at any local grocery store with 30-minute prep times.
-                  </p>
-                </div>
+                {/* CARD 3 */}
+                <article className="about-pillar-card">
+                  <div className="pillar-icon-box" aria-hidden="true">
+                    <Utensils size={22} strokeWidth={2.2} />
+                  </div>
+                  <div className="pillar-content">
+                    <h3 className="pillar-title">Low-Calorie Meals</h3>
+                    <p className="pillar-desc">
+                      Flavorful meal ideas and recipes designed around practical portions and everyday nutrition.
+                    </p>
+                  </div>
+                </article>
+
+                {/* CARD 4 */}
+                <article className="about-pillar-card">
+                  <div className="pillar-icon-box" aria-hidden="true">
+                    <Heart size={22} strokeWidth={2.2} />
+                  </div>
+                  <div className="pillar-content">
+                    <h3 className="pillar-title">Simple, Realistic Food</h3>
+                    <p className="pillar-desc">
+                      Easy recipes using accessible ingredients and straightforward preparation for busy everyday routines.
+                    </p>
+                  </div>
+                </article>
+
               </div>
             </div>
 

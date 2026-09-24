@@ -3069,41 +3069,134 @@ input:checked + .slider-round:before {
 }
 
 /* ==========================================================================
-   Section 3: About BHYou
+   Section 3: About BHYou (Premium Editorial Brand Introduction)
    ========================================================================== */
 .about-bh-section {
-  padding: 96px 0;
-  background: var(--light-surface);
-  border-top: 1px solid var(--light-border);
-  border-bottom: 1px solid var(--light-border);
+  padding: 120px 0;
+  background-color: #FAF8F5; /* Warm luxury off-white editorial background */
+  border-top: 1px solid rgba(226, 219, 206, 0.8);
+  border-bottom: 1px solid rgba(226, 219, 206, 0.8);
+  position: relative;
 }
 
 .about-bh-grid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 60px;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 64px;
   align-items: center;
 }
 
-.about-highlight-text {
-  font-size: 18.5px;
-  font-weight: 600;
-  color: var(--text-dark);
-  line-height: 1.7;
+/* Left Story Column */
+.about-bh-story {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-eyebrow-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
-.about-bh-copy p {
-  color: var(--text-muted-dark);
+.about-eyebrow-line {
+  width: 28px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.about-eyebrow-text {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary); /* Muted gold */
+}
+
+.about-section-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(34px, 3.8vw, 48px);
+  font-weight: 800;
+  color: #0b132b; /* Deep luxury navy */
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+}
+
+.about-bh-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.about-lead-copy {
+  font-size: 17.5px;
+  font-weight: 500;
+  color: #1e293b; /* Refined navy slate */
+  line-height: 1.75;
+}
+
+.about-body-copy {
   font-size: 15.5px;
-  line-height: 1.7;
-  margin-bottom: 16px;
+  font-weight: 400;
+  color: #475569; /* Slate 600 */
+  line-height: 1.75;
 }
 
 .about-cta-container {
-  margin-top: 24px;
+  margin-top: 30px;
 }
 
+.about-philosophy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.about-philosophy-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0%;
+  height: 1.5px;
+  background: var(--primary);
+  transition: width 0.25s ease;
+}
+
+.about-philosophy-link:hover {
+  color: var(--primary-hover);
+}
+
+.about-philosophy-link:hover::after {
+  width: calc(100% - 20px);
+}
+
+.about-philosophy-link:hover .about-link-arrow {
+  transform: translateX(6px);
+}
+
+.about-link-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Secondary link fallback */
 .about-secondary-link {
   display: inline-flex;
   align-items: center;
@@ -3123,49 +3216,117 @@ input:checked + .slider-round:before {
   color: var(--primary-hover);
 }
 
+/* Right Column Visual Composition */
+.about-bh-composition {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Photo Mosaic Showcase */
+.about-photo-mosaic {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.about-photo-card {
+  position: relative;
+  height: 110px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  background: #ffffff;
+}
+
+.about-strip-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-photo-card:hover .about-strip-img {
+  transform: scale(1.06);
+}
+
+.about-photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 6px;
+  background: linear-gradient(180deg, transparent 0%, rgba(11, 19, 43, 0.82) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.about-photo-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 4 Feature Cards (2x2 Grid) */
 .about-bh-pillars {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
 
 .about-pillar-card {
   background: #ffffff;
   padding: 24px 20px;
-  border-radius: 12px;
-  border: 1px solid var(--light-border);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .about-pillar-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px -4px rgba(15, 23, 42, 0.08);
+  border-color: rgba(197, 160, 89, 0.4);
 }
 
 .pillar-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: var(--primary-glow);
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: rgba(197, 160, 89, 0.12);
   color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 14px;
+  flex-shrink: 0;
 }
 
 .pillar-title {
-  font-size: 16.5px;
+  font-family: var(--font-heading);
+  font-size: 17px;
   font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: 6px;
+  color: #0b132b; /* Deep luxury navy */
+  margin-bottom: 8px;
+  line-height: 1.3;
 }
 
 .pillar-desc {
   font-size: 13.5px;
-  color: var(--text-muted-dark);
-  line-height: 1.55;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* ==========================================================================
@@ -3762,14 +3923,24 @@ input:checked + .slider-round:before {
     display: none;
   }
   .about-bh-section {
-    padding: 60px 0;
+    padding: 75px 0;
   }
   .about-bh-grid {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 40px;
+  }
+  .about-section-heading {
+    font-size: 32px;
   }
   .about-bh-pillars {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .about-photo-mosaic {
+    gap: 10px;
+  }
+  .about-photo-card {
+    height: 100px;
   }
   .featured-ebook-section {
     padding: 60px 0;
@@ -3823,6 +3994,26 @@ input:checked + .slider-round:before {
   .pricing-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .about-bh-section {
+    padding: 60px 0;
+  }
+  .about-section-heading {
+    font-size: 28px;
+  }
+  .about-bh-pillars {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .about-photo-mosaic {
+    gap: 8px;
+  }
+  .about-photo-card {
+    height: 85px;
+    border-radius: 10px;
+  }
+  .about-photo-pill {
+    font-size: 10px;
   }
 }
 

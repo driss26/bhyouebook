@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  CheckCircle, ArrowRight, ShieldCheck, Star, 
-  BookOpen, Sparkles, Flame, Clock, Calendar, 
-  Utensils, Zap, HeartHandshake, Eye, ChevronDown
+  CheckCircle, ArrowRight, Star, 
+  Sparkles, Flame, Clock, Calendar, 
+  Utensils, HeartHandshake, ChevronDown
 } from 'lucide-react';
 import { firePageView, firePixel, db, PRODUCTS, DEFAULT_HERO_SLIDES } from '../db';
 import type { BlogPost, EbookProduct, HeroSlideItem } from '../db';
+import { CookbookStoreGrid } from '../components/CookbookStoreGrid';
 
 interface HomeProps {
   onToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
@@ -16,7 +17,6 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
   const [product, setProduct] = useState<EbookProduct>(PRODUCTS['bhyou-50-recipes']);
   const [showAboutModal, setShowAboutModal] = useState(false);
-  const [selectedPreviewImage, setSelectedPreviewImage] = useState<string | null>(null);
 
   // Background slider state: images move automatically on their own
   const [heroSlides, setHeroSlides] = useState<HeroSlideItem[]>(DEFAULT_HERO_SLIDES);
@@ -343,186 +343,9 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
       </section>
 
       {/* ================================================== */}
-      {/* 4. BEST-SELLING / FEATURED EBOOK                   */}
+      {/* 4. DIGITAL COOKBOOKS & PRODUCTS (SHOPIFY STORE GRID) */}
       {/* ================================================== */}
-      <section id="featured-ebook" className="featured-ebook-section" aria-label="Featured Ebook">
-        <div className="container">
-          
-          <div className="section-title-wrapper text-center">
-            <span className="section-subtitle">The BHYou Recipe Collection</span>
-            <h2 className="section-title">High-Protein Recipes Under 400 Calories</h2>
-            <p className="section-intro-text">
-              The flagship digital cookbook designed to fuel fat loss and lean muscle with gourmet meals you’ll actually look forward to eating.
-            </p>
-          </div>
-
-          <div className="featured-ebook-showcase">
-            
-            {/* Visual Column: 3D Mockup & Previews */}
-            <div className="ebook-visual-column">
-              <div className="ebook-mockup-wrapper">
-                <div 
-                  className="ebook-mockup" 
-                  onClick={handleBuyClick} 
-                  title="Click to get High-Protein Recipes on Gumroad"
-                  role="button"
-                  tabIndex={0}
-                >
-                  <img 
-                    src={product.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} 
-                    alt="High-Protein Recipes Under 400 Calories Ebook Cover" 
-                    className="ebook-cover-img" 
-                  />
-                  <div className="ebook-spine" />
-                  <div className="mockup-badge">
-                    <span>$15.99</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Interior Page Previews */}
-              <div className="interior-preview-block">
-                <div className="preview-header">
-                  <span className="preview-tag">
-                    <Eye size={14} /> Interior Page Preview
-                  </span>
-                  <span className="preview-sub">Actual cookbook recipes</span>
-                </div>
-                <div 
-                  className="preview-img-container"
-                  onClick={() => setSelectedPreviewImage('/recipe_preview.png')}
-                  title="Click to view high-resolution page preview"
-                >
-                  <img 
-                    src="/recipe_preview.png" 
-                    alt="Interior cookbook page previews: Grilled Lemon Herb Chicken, Fluffy Protein Pancakes, Smashed Avocado Toast, and Berry Smoothie Bowl" 
-                    className="interior-preview-thumb"
-                    loading="lazy"
-                  />
-                  <div className="preview-overlay-btn">
-                    <span>Enlarge Preview</span>
-                  </div>
-                </div>
-                <div className="preview-caption">
-                  <span>Pages 1–4 sample: Full macros, step-by-step instructions, ingredient checklists.</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Merchandising & Value Breakdown Column */}
-            <div className="ebook-details-column">
-              
-              {/* Product Price Box */}
-              <div className="ebook-pricing-card">
-                <div className="pricing-row">
-                  <div className="price-tag-group">
-                    <span className="price-main">${product.price}</span>
-                    {product.originalPrice && <span className="price-original">${product.originalPrice}</span>}
-                    {product.originalPrice && (
-                      <span className="price-badge-save">
-                        SAVE {Math.round((1 - product.price / product.originalPrice) * 100)}%
-                      </span>
-                    )}
-                  </div>
-                  <div className="format-badge">
-                    <BookOpen size={14} />
-                    <span>Instant Digital PDF</span>
-                  </div>
-                </div>
-                <p className="pricing-guarantee-note">
-                  Lifetime access • Free future updates • 100% Mobile &amp; Tablet Friendly
-                </p>
-              </div>
-
-              {/* Transparent Value Checklist: Strictly Actual Content */}
-              <div className="ebook-inclusions">
-                <h3 className="inclusions-title">What Is Included in Your Digital Download:</h3>
-                
-                <div className="inclusions-grid">
-                  <div className="inclusion-item">
-                    <CheckCircle size={18} className="inclusion-icon" />
-                    <div>
-                      <strong>50 High-Protein Recipes</strong>
-                      <p>Carefully balanced meals strictly under 400 kcal and high in protein.</p>
-                    </div>
-                  </div>
-
-                  <div className="inclusion-item">
-                    <CheckCircle size={18} className="inclusion-icon" />
-                    <div>
-                      <strong>Healthy Desserts Section</strong>
-                      <p>15 protein cheesecakes, lava cakes, brownies, and mousse treats.</p>
-                    </div>
-                  </div>
-
-                  <div className="inclusion-item">
-                    <CheckCircle size={18} className="inclusion-icon" />
-                    <div>
-                      <strong>Chicken Meal Preps</strong>
-                      <p>10 easy, juicy chicken recipes designed specifically for batch cooking.</p>
-                    </div>
-                  </div>
-
-                  <div className="inclusion-item">
-                    <CheckCircle size={18} className="inclusion-icon" />
-                    <div>
-                      <strong>7-Day Structured Meal Plan</strong>
-                      <p>Day-by-day breakfast, lunch, snack, and dinner meal prep schedules.</p>
-                    </div>
-                  </div>
-
-                  <div className="inclusion-item">
-                    <CheckCircle size={18} className="inclusion-icon" />
-                    <div>
-                      <strong>Bonus Kitchen Essentials &amp; Cheat Sheets</strong>
-                      <p>High-protein food cheat sheet, shopping lists, and pantry staples.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Answers to Immediate Buyer Questions */}
-              <div className="buyer-qa-accordion">
-                <div className="qa-item">
-                  <h4 className="qa-heading">Who is this ebook for?</h4>
-                  <p className="qa-answer">
-                    Anyone looking to burn fat, build lean muscle, or cook healthier without spending hours in the kitchen or eating bland diet foods.
-                  </p>
-                </div>
-
-                <div className="qa-item">
-                  <h4 className="qa-heading">What happens after purchase?</h4>
-                  <p className="qa-answer">
-                    You receive instant access. A direct download link is sent to your email immediately by Gumroad, allowing you to open and save the PDF on your iPhone, Android, iPad, or computer.
-                  </p>
-                </div>
-              </div>
-
-              {/* Conversion CTA Block */}
-              <div className="ebook-checkout-cta-block">
-                <button 
-                  onClick={handleBuyClick} 
-                  className="btn btn-primary ebook-order-btn"
-                  aria-label={`Get the Ebook — $${product.price}`}
-                >
-                  Get the Ebook — ${product.price}
-                  <ArrowRight size={18} />
-                </button>
-                <div className="checkout-security-notes">
-                  <span className="sec-note">
-                    <ShieldCheck size={16} /> 256-Bit SSL Encrypted Checkout via Gumroad
-                  </span>
-                  <span className="sec-note">
-                    <Zap size={15} /> Instant Delivery to Your Email
-                  </span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </section>
+      <CookbookStoreGrid onToast={onToast} />
 
       {/* ================================================== */}
       {/* 5. FEATURED / POPULAR BLOGS                        */}
@@ -596,38 +419,7 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
         </div>
       </section>
 
-      {/* ================================================== */}
-      {/* Lightbox / Modal for Preview Images               */}
-      {/* ================================================== */}
-      {selectedPreviewImage && (
-        <div 
-          className="preview-lightbox-overlay"
-          onClick={() => setSelectedPreviewImage(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="preview-lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="lightbox-close-btn"
-              onClick={() => setSelectedPreviewImage(null)}
-              aria-label="Close Preview"
-            >
-              ✕
-            </button>
-            <img 
-              src={selectedPreviewImage} 
-              alt="High-resolution cookbook interior preview" 
-              className="lightbox-full-img"
-            />
-            <div className="lightbox-footer">
-              <span>Sample Pages: 50 High-Protein Recipes Under 400 Calories</span>
-              <button onClick={handleBuyClick} className="btn btn-primary btn-sm">
-                Get the Ebook — ${product.price}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* ================================================== */}
       {/* About BHYou Modal for "Learn More About BHYou →"   */}

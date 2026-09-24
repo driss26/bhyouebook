@@ -3840,3 +3840,494 @@ input:checked + .slider-round:before {
   }
 }
 
+/* ==========================================================================
+   Shopify Store Style Products / Cookbooks Library Section
+   ========================================================================== */
+.shopify-store-section {
+  padding: 85px 0 70px;
+  background: var(--light-surface);
+  border-top: 1px solid var(--light-border);
+  border-bottom: 1px solid var(--light-border);
+}
+
+.shopify-store-header {
+  max-width: 780px;
+  margin: 0 auto 50px;
+}
+
+.shopify-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(197, 160, 89, 0.12);
+  color: var(--primary);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 16px;
+}
+
+.shopify-store-title {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.shopify-store-subtitle {
+  font-size: 16.5px;
+  color: var(--text-muted-dark);
+  line-height: 1.65;
+  margin: 0 auto;
+}
+
+/* Shopify 2-Col Product Grid */
+.shopify-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 32px;
+  max-width: 1060px;
+  margin: 0 auto 48px;
+}
+
+.shopify-product-card {
+  background: #ffffff;
+  border: 1px solid var(--light-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.shopify-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: rgba(197, 160, 89, 0.4);
+}
+
+/* Media Wrap */
+.shopify-card-media-wrap {
+  position: relative;
+  background: #0f1015;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.shopify-img-link {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.shopify-product-img {
+  max-width: 250px;
+  max-height: 330px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  transition: transform 0.4s ease;
+}
+
+.shopify-product-card:hover .shopify-product-img {
+  transform: scale(1.04);
+}
+
+.shopify-media-badges {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.shopify-pill-badge {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 5px 12px;
+  border-radius: 6px;
+}
+
+.badge-bestseller {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.badge-new {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.shopify-format-tag {
+  background: rgba(15, 16, 21, 0.75);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.shopify-quick-preview-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: rgba(15, 16, 21, 0.85);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  opacity: 0.9;
+}
+
+.shopify-quick-preview-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  opacity: 1;
+}
+
+/* Card Body (Under image) */
+.shopify-card-body {
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Price row - Placed under image */
+.shopify-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.shopify-sale-price {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+}
+
+.shopify-original-price {
+  font-size: 17px;
+  color: var(--text-muted-dark);
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.shopify-discount-tag {
+  background: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Rating */
+.shopify-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.shopify-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.shopify-rating-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.shopify-reviews-count {
+  font-size: 12.5px;
+  color: var(--text-muted-dark);
+}
+
+/* Title */
+.shopify-product-title {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.shopify-title-link {
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.shopify-title-link:hover {
+  color: var(--primary);
+}
+
+.shopify-product-sub {
+  font-size: 14px;
+  color: var(--text-muted-dark);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Macro Tags */
+.shopify-feature-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.feature-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--light-surface);
+  border: 1px solid var(--light-border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.feature-pill .pill-ico {
+  color: var(--primary);
+}
+
+/* Description */
+.shopify-product-desc {
+  font-size: 14px;
+  color: var(--text-muted-dark);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Inclusions */
+.shopify-inclusions-list {
+  background: var(--light-surface);
+  border: 1px solid var(--light-border);
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inclusion-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+
+.inclusion-row .check-ico {
+  color: #16a34a;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Actions Wrap */
+.shopify-actions-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.shopify-buy-btn {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 15.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.shopify-details-btn {
+  width: 100%;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+/* Store Trust Bar */
+.shopify-store-trust-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  background: #ffffff;
+  border: 1px solid var(--light-border);
+  border-radius: 12px;
+  padding: 24px 30px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.trust-bar-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.trust-bar-ico {
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.trust-bar-item strong {
+  display: block;
+  font-size: 14px;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+}
+
+.trust-bar-item p {
+  font-size: 12.5px;
+  color: var(--text-muted-dark);
+  margin: 0;
+}
+
+/* Cookbooks Page Wrapper */
+.cookbooks-hero-header {
+  padding: 70px 0 45px;
+  background: #0f1015;
+  color: #ffffff;
+}
+
+.cookbooks-header-content {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.cookbooks-main-title {
+  font-size: 44px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.cookbooks-lead-text {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.65;
+}
+
+.cookbooks-guarantee-section {
+  padding: 70px 0;
+  background: #ffffff;
+  border-top: 1px solid var(--light-border);
+}
+
+.guarantee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.guarantee-card {
+  background: var(--light-surface);
+  border: 1px solid var(--light-border);
+  border-radius: 12px;
+  padding: 30px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guarantee-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(197, 160, 89, 0.15);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.guarantee-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.guarantee-card p {
+  font-size: 14px;
+  color: var(--text-muted-dark);
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .shopify-product-grid {
+    grid-template-columns: 1fr;
+  }
+  .shopify-card-media-wrap {
+    height: 320px;
+  }
+  .shopify-store-title {
+    font-size: 30px;
+  }
+  .cookbooks-main-title {
+    font-size: 32px;
+  }
+}
+

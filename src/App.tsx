@@ -11,6 +11,7 @@ import { DessertSalesPage } from './pages/DessertSalesPage';
 import { Blog } from './pages/Blog';
 import { BlogPost } from './pages/BlogPost';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { Cookbooks } from './pages/Cookbooks';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
 
@@ -173,13 +174,8 @@ function App() {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/cookbook" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                  50 Recipes ($15.99)
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/dessert-cookbook" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                  Dessert Cookbook ($19.99)
+                <NavLink to="/cookbooks" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                  Cookbooks
                 </NavLink>
               </li>
               <li>
@@ -187,12 +183,17 @@ function App() {
                   Blog &amp; Recipes
                 </NavLink>
               </li>
+              <li>
+                <a href="/#about" className="nav-link">
+                  About BHYou
+                </a>
+              </li>
             </ul>
 
             {/* CTA buttons */}
             <div className="nav-cta">
-              <Link to="/cookbook" className="btn btn-primary btn-sm nav-cta-desktop" style={{ textDecoration: 'none' }}>
-                Get the Ebook — $15.99
+              <Link to="/cookbooks" className="btn btn-primary btn-sm nav-cta-desktop" style={{ textDecoration: 'none' }}>
+                Browse Cookbooks
               </Link>
               <button 
                 className="mobile-menu-toggle" 
@@ -208,8 +209,7 @@ function App() {
           {mobileMenuOpen && (
             <div className="mobile-nav-dropdown">
               <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-              <Link to="/cookbook" onClick={() => setMobileMenuOpen(false)}>50 High-Protein Recipes ($15.99)</Link>
-              <Link to="/dessert-cookbook" onClick={() => setMobileMenuOpen(false)}>High-Protein Dessert Cookbook ($19.99)</Link>
+              <Link to="/cookbooks" onClick={() => setMobileMenuOpen(false)}>Cookbooks (BHYou Library)</Link>
               <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog &amp; Recipes</Link>
               <a href="/#about" onClick={() => setMobileMenuOpen(false)}>About BHYou</a>
               <a href="mailto:contact@bhyou.com" onClick={() => setMobileMenuOpen(false)}>Contact Us</a>
@@ -221,6 +221,9 @@ function App() {
         <main style={{ flexGrow: 1 }}>
           <Routes>
             <Route path="/" element={<Home onToast={showToast} />} />
+            <Route path="/cookbooks" element={<Cookbooks onToast={showToast} />} />
+            <Route path="/products" element={<Cookbooks onToast={showToast} />} />
+            <Route path="/library" element={<Cookbooks onToast={showToast} />} />
             <Route path="/cookbook" element={<SalesPage onToast={showToast} />} />
             <Route path="/dessert-cookbook" element={<DessertSalesPage onToast={showToast} />} />
             <Route path="/ebooks/high-protein-dessert-cookbook" element={<DessertSalesPage onToast={showToast} />} />

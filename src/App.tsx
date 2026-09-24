@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, NavLink, useLocation } from 'react-router-dom';
 import { 
-  Shield, Menu, X, Send, Bell, Star
+  Shield, Menu, X, Send, Bell, Sparkles, CheckCircle, ArrowRight, BookOpen
 } from 'lucide-react';
 
 // Pages
@@ -56,11 +56,56 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [showPromoModal, setShowPromoModal] = useState(false);
-  const [announcementText, setAnnouncementText] = useState('🔥 Get the High-Protein Cookbook for $11.99 on Gumroad — Start cooking healthy today! Click here to buy →');
+  const [announcementText, setAnnouncementText] = useState('🔥 Special Offer: The High-Protein Dessert Cookbook is $15.99 today! Click here to get it →');
   const [announcementBgStart, setAnnouncementBgStart] = useState('#064e3b');
   const [announcementBgEnd, setAnnouncementBgEnd] = useState('#10b981');
   const [announcementTextColor, setAnnouncementTextColor] = useState('#ecfdf5');
   const [footerEmail, setFooterEmail] = useState('');
+
+  // Automatic promo popup trigger after 5 seconds on site
+  useEffect(() => {
+    const isDismissed = sessionStorage.getItem('bhyou_promo_dismissed');
+    if (isDismissed) return;
+
+    const timer = setTimeout(() => {
+      setShowPromoModal(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Close handler with session persistence
+  const handleClosePromoModal = () => {
+    setShowPromoModal(false);
+    sessionStorage.setItem('bhyou_promo_dismissed', 'true');
+  };
+
+  // Keyboard Escape handler
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClosePromoModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const handleBuyPromoModal = () => {
+    firePixel('Google Ads', 'click_buy_cookbook', { price: 15.99 });
+    firePixel('Meta Pixel', 'InitiateCheckout', { 
+      content_name: 'The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories', 
+      value: 15.99, 
+      currency: 'USD' 
+    });
+    firePixel('Pinterest Tag', 'checkout_click', { 
+      product_id: 'high-protein-dessert-cookbook-70', 
+      value: 15.99 
+    });
+    showToast('Opening Gumroad Secure Checkout...', 'success');
+    window.open('https://bhyou.gumroad.com/l/bhyou', '_blank');
+    handleClosePromoModal();
+  };
 
   // Scroll detection for Navbar transparency
   useEffect(() => {
@@ -325,59 +370,105 @@ function App() {
           ))}
         </div>
 
-        {/* Premium Promo Modal */}
+        {/* Premium Timed Promo Modal (The High-Protein Dessert Cookbook — $15.99) */}
         {showPromoModal && (
-          <div className="promo-modal-overlay" onClick={() => setShowPromoModal(false)}>
-            <div className="promo-modal" onClick={(e) => e.stopPropagation()}>
-              <button className="promo-modal-close" onClick={() => setShowPromoModal(false)}>
+          <div className="promo-modal-overlay" onClick={handleClosePromoModal}>
+            <div className="promo-modal promo-spotlight-modal" onClick={(e) => e.stopPropagation()}>
+              <button 
+                className="promo-modal-close" 
+                onClick={handleClosePromoModal}
+                aria-label="Close offer"
+              >
                 <X size={20} />
               </button>
+              
               <div className="promo-modal-content">
-                <div className="promo-modal-header" style={{ marginBottom: '24px' }}>
-                  <h2>Get the High-Protein Cookbook</h2>
-                  <p>Start your fat loss and fitness journey with 50 premium recipes under 400 calories.</p>
-                </div>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
-                  {/* Ebook Mockup */}
-                  <div className="ebook-mockup" style={{ width: '180px', height: '252px', margin: '0 auto', boxShadow: 'var(--shadow-lg)' }}>
-                    <img src="https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg" alt="BHYou Ebook" className="ebook-cover-img" />
-                    <div className="ebook-spine"></div>
+                <div className="promo-spotlight-grid">
+                  
+                  {/* Left: Product Media */}
+                  <div className="promo-spotlight-media">
+                    <div className="promo-cover-wrap">
+                      <img 
+                        src="https://res.cloudinary.com/dkaob9dmk/image/upload/v1786654276/ghahvw3tceyeuv0dmxa3.webp" 
+                        alt="The High-Protein Dessert Cookbook: 70 Healthy Recipes Under 400 Calories" 
+                        className="promo-cover-img"
+                      />
+                      <div className="promo-instant-badge">
+                        <BookOpen size={12} />
+                        <span>Instant PDF Download</span>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Pricing and details */}
-                  <div style={{ textAlign: 'center', maxWidth: '450px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#fbbf24', marginBottom: '8px' }}>
-                      <div style={{ display: 'flex', gap: '2px' }}>
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                      </div>
-                      <span style={{ fontWeight: 600, color: 'var(--text-dark)' }}>4.9/5.0 Stars</span>
+                  {/* Right: Persuasive Offer Details */}
+                  <div className="promo-spotlight-info">
+                    
+                    <div className="promo-discount-badge">
+                      <Sparkles size={13} />
+                      <span>LIMITED TIME OFFER • 50% OFF</span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', margin: '12px 0' }}>
-                      <span style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-dark)' }}>$11.99</span>
-                      <span style={{ fontSize: '18px', color: 'var(--text-muted-dark)', textDecoration: 'line-through' }}>$24.99</span>
-                      <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 700 }}>SAVE 52%</span>
-                    </div>
-
-                    <p style={{ color: 'var(--text-muted-dark)', fontSize: '14.5px', lineHeight: '1.6', marginBottom: '20px' }}>
-                      Get instant digital PDF access to all 50+ low-calorie, high-protein recipes, our structured 7-Day Meal Plan, grocery shopping lists, and kitchen cheat sheets.
+                    <h2 className="promo-title">
+                      The High-Protein Dessert Cookbook
+                    </h2>
+                    
+                    <p className="promo-subtitle">
+                      70 Healthy Recipes Under 400 Calories
                     </p>
 
-                    <a 
-                      href="https://bhyou.gumroad.com/l/pzebkb" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="btn btn-primary"
-                      style={{ width: '100%', textDecoration: 'none', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', padding: '14px 28px', fontSize: '16px' }}
+                    <p className="promo-description">
+                      Love desserts but still want to hit your protein goals? This premium cookbook features 70 delicious high-protein dessert recipes, each carefully crafted to satisfy your sweet cravings while keeping calories under control.
+                    </p>
+
+                    {/* Highlights Pills */}
+                    <div className="promo-pills-row">
+                      <span className="promo-pill">
+                        <CheckCircle size={13} className="promo-pill-icon" />
+                        70 Recipes
+                      </span>
+                      <span className="promo-pill">
+                        <CheckCircle size={13} className="promo-pill-icon" />
+                        Under 400 Calories
+                      </span>
+                      <span className="promo-pill">
+                        <CheckCircle size={13} className="promo-pill-icon" />
+                        High-Protein
+                      </span>
+                      <span className="promo-pill">
+                        <CheckCircle size={13} className="promo-pill-icon" />
+                        7-Day Meal Plan
+                      </span>
+                    </div>
+
+                    {/* Price Row */}
+                    <div className="promo-price-row">
+                      <span className="promo-price-main">$15.99</span>
+                      <span className="promo-price-old">$29.99</span>
+                      <span className="promo-save-pill">SAVE 47%</span>
+                    </div>
+                    <div className="promo-price-subtext">One-time payment • Lifetime digital access</div>
+
+                    {/* Buy Now CTA */}
+                    <button 
+                      onClick={handleBuyPromoModal}
+                      className="btn btn-primary promo-buy-btn"
                     >
-                      Buy on Gumroad
-                    </a>
+                      <span>Buy Now — $15.99</span>
+                      <ArrowRight size={18} />
+                    </button>
+
+                    {/* Dismiss Link */}
+                    <div className="promo-dismiss-wrap">
+                      <button 
+                        onClick={handleClosePromoModal} 
+                        className="promo-dismiss-btn"
+                      >
+                        No thanks, I'll continue browsing →
+                      </button>
+                    </div>
+
                   </div>
+
                 </div>
               </div>
             </div>

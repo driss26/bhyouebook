@@ -14,6 +14,7 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { Cookbooks } from './pages/Cookbooks';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
+import { About } from './pages/About';
 
 import { initDb, checkAndFixSeoConfigs, firePixel, db } from './db';
 
@@ -184,9 +185,9 @@ function App() {
                 </NavLink>
               </li>
               <li>
-                <a href="/#about" className="nav-link">
+                <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
                   About BHYou
-                </a>
+                </NavLink>
               </li>
             </ul>
 
@@ -197,7 +198,7 @@ function App() {
               </Link>
               <button 
                 className="mobile-menu-toggle" 
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
                 aria-label="Toggle Menu"
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -211,7 +212,7 @@ function App() {
               <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
               <Link to="/cookbooks" onClick={() => setMobileMenuOpen(false)}>Cookbooks (BHYou Library)</Link>
               <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>Blog &amp; Recipes</Link>
-              <a href="/#about" onClick={() => setMobileMenuOpen(false)}>About BHYou</a>
+              <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About BHYou</Link>
               <a href="mailto:contact@bhyou.com" onClick={() => setMobileMenuOpen(false)}>Contact Us</a>
             </div>
           )}
@@ -232,6 +233,8 @@ function App() {
             <Route path="/admin" element={<AdminDashboard onToast={showToast} />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/about" element={<About onToast={showToast} />} />
+            <Route path="*" element={<Home onToast={showToast} />} />
           </Routes>
         </main>
 
@@ -263,7 +266,7 @@ function App() {
                   <li><Link to="/dessert-cookbook" className="footer-link">Desserts</Link></li>
                   <li><Link to="/blog" className="footer-link">Blog</Link></li>
                   <li><Link to="/cookbook" className="footer-link">Ebook</Link></li>
-                  <li><a href="/#about" className="footer-link">About</a></li>
+                  <li><Link to="/about" className="footer-link">About</Link></li>
                   <li><a href="mailto:contact@bhyou.com" className="footer-link">Contact</a></li>
                 </ul>
               </div>

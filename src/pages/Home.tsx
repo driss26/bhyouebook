@@ -284,15 +284,14 @@ export const Home: React.FC<HomeProps> = ({ onToast }) => {
 
               {/* Subtle Gold Text Link */}
               <div className="about-cta-container">
-                <button 
-                  type="button"
-                  onClick={() => setShowAboutModal(true)} 
+                <Link 
+                  to="/about"
                   className="about-philosophy-link"
                   aria-label="Discover the BHYou philosophy"
                 >
                   <span>Discover the BHYou philosophy</span>
                   <span className="about-link-arrow">→</span>
-                </button>
+                </Link>
               </div>
             </div>
 

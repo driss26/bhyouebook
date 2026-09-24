@@ -77,7 +77,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
   // Cloudinary Uploader Helper
   const uploadToCloudinary = async (file: File): Promise<string> => {
     const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dkaob9dmk';
-    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'bhyou_cover';
     
     const formData = new FormData();
     formData.append('file', file);
@@ -289,12 +289,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
     if (!file || !editingProduct) return;
 
     setUploadingCover(true);
+    onToast('Uploading cover to Cloudinary...', 'info');
     try {
       const url = await uploadToCloudinary(file);
-      setEditingProduct({
+      const updatedProduct: EbookProduct = {
         ...editingProduct,
         coverImage: url
-      });
+      };
+      setEditingProduct(updatedProduct);
+      setProducts(prev => ({
+        ...prev,
+        [updatedProduct.id]: updatedProduct
+      }));
+
+      // Automatically save to database & dispatch live update event across the site
+      await db.saveProduct(updatedProduct);
+
       // Also save into media library
       const newItem: MediaItem = {
         id: 'media-' + Date.now(),
@@ -303,12 +313,48 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onToast }) => {
         createdAt: new Date().toISOString()
       };
       await db.saveMediaItem(newItem);
-      onToast('Cover image uploaded to Cloudinary! Click Save to publish.', 'success');
+      onToast(`Cover image uploaded & saved live for ${updatedProduct.title}!`, 'success');
     } catch (err: any) {
       console.error(err);
       onToast(`Upload failed: ${err.message}`, 'error');
     } finally {
       setUploadingCover(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleQuickCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>, productId: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const currentProd = products[productId];
+    if (!currentProd) return;
+
+    setUploadingCover(true);
+    onToast('Uploading cover to Cloudinary...', 'info');
+    try {
+      const url = await uploadToCloudinary(file);
+      const updated: EbookProduct = { ...currentProd, coverImage: url };
+      setProducts(prev => ({ ...prev, [productId]: updated }));
+      if (editingProduct && editingProduct.id === productId) {
+        setEditingProduct(updated);
+      }
+      await db.saveProduct(updated);
+
+      const newItem: MediaItem = {
+        id: 'media-' + Date.now(),
+        url,
+        fileName: file.name,
+        createdAt: new Date().toISOString()
+      };
+      await db.saveMediaItem(newItem);
+      onToast(`Cover image updated & saved live for ${updated.title}!`, 'success');
+    } catch (err: any) {
+      console.error(err);
+      onToast(`Upload failed: ${err.message}`, 'error');
+    } finally {
+      setUploadingCover(false);
+      e.target.value = '';
     }
   };
 
@@ -806,17 +852,42 @@ ${pages.map(p => `  <url>
                     <div>
                       {/* Top Header Card */}
                       <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #27272a' }}>
-                        <div style={{ width: '64px', height: '88px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 6px 14px rgba(0,0,0,0.5)', background: '#09090b' }}>
-                          <img 
-                            src={prod.coverImage} 
-                            alt={prod.title} 
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = prod.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+                          <div style={{ width: '64px', height: '88px', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 6px 14px rgba(0,0,0,0.5)', background: '#09090b' }}>
+                            <img 
+                              src={prod.coverImage} 
+                              alt={prod.title} 
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = prod.id === 'high-protein-dessert-cookbook-70' ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                              }}
+                            />
+                          </div>
+                          <label 
+                            className="btn btn-secondary" 
+                            style={{ 
+                              fontSize: '10px', 
+                              padding: '3px 8px', 
+                              cursor: uploadingCover ? 'not-allowed' : 'pointer', 
+                              display: 'inline-flex', 
+                              alignItems: 'center', 
+                              gap: '4px', 
+                              whiteSpace: 'nowrap' 
                             }}
-                          />
+                            title="Upload new cover image to Cloudinary"
+                          >
+                            <UploadCloud size={11} /> {uploadingCover ? '...' : 'Change Cover'}
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              onChange={(e) => handleQuickCoverUpload(e, prod.id)} 
+                              disabled={uploadingCover}
+                              style={{ display: 'none' }} 
+                            />
+                          </label>
                         </div>
-                        <div style={{ flexGrow: 1 }}>
+
+                        <div style={{ flexGrow: 1, minWidth: 0 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                             <span className="badge" style={{ backgroundColor: prod.id === 'high-protein-dessert-cookbook-70' ? 'var(--primary)' : '#3b82f6', color: 'white', fontSize: '11px' }}>
                               {prod.id === 'high-protein-dessert-cookbook-70' ? 'Dessert Cookbook' : 'Flagship Ebook'}
@@ -830,9 +901,31 @@ ${pages.map(p => `  <url>
                           <h3 style={{ margin: '0 0 4px', fontSize: '17px', color: 'white' }}>
                             {prod.title}
                           </h3>
-                          <span style={{ fontSize: '12px', color: 'var(--text-muted-light)' }}>
+                          <span style={{ fontSize: '12px', color: 'var(--text-muted-light)', display: 'block', marginBottom: '8px' }}>
                             ID: <code>{prod.id}</code> • {prod.recipes} Recipes
                           </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleSelectProduct(prod.id);
+                              setActiveTab('ebooks');
+                            }}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: 'var(--primary)',
+                              fontSize: '12px',
+                              padding: 0,
+                              cursor: 'pointer',
+                              textDecoration: 'underline',
+                              fontWeight: 600,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            <BookOpen size={12} /> Edit full details &amp; covers →
+                          </button>
                         </div>
                       </div>
 

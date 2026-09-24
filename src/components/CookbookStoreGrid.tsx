@@ -104,6 +104,13 @@ export const CookbookStoreGrid: React.FC<CookbookStoreGridProps> = ({
                       alt={`${product.title} Cover`}
                       className="shopify-product-img"
                       loading="lazy"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        const fallback = isDessert ? '/dessert_cookbook_cover.png' : 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                        if (!target.src.endsWith(fallback)) {
+                          target.src = fallback;
+                        }
+                      }}
                     />
                   </Link>
 

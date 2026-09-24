@@ -228,7 +228,17 @@ export const SalesPage: React.FC<SalesPageProps> = ({ onToast }) => {
             <div className="mockup-container">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div className="ebook-mockup" onClick={scrollToBuySection} style={{ width: '300px', height: '420px', cursor: 'pointer' }}>
-                  <img src={product.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} alt={product.title} className="ebook-cover-img" />
+                  <img 
+                    src={product.coverImage || 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg'} 
+                    alt={product.title} 
+                    className="ebook-cover-img" 
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.src.includes('HIGH-PROTEIN-RECIPES.jpg')) {
+                        target.src = 'https://i.ibb.co/8g3JXwpS/HIGH-PROTEIN-RECIPES.jpg';
+                      }
+                    }}
+                  />
                   <div className="ebook-spine"></div>
                 </div>
                 {/* Rating under the image (Desktop) */}

@@ -280,7 +280,17 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                     style={{ cursor: 'pointer', width: '220px', height: '290px', display: 'block', textDecoration: 'none' }} 
                     title="Click to view purchase details"
                   >
-                    <img src={product.coverImage || '/dessert_cookbook_cover.png'} alt={product.title} className="ebook-cover-img" />
+                    <img 
+                      src={product.coverImage || '/dessert_cookbook_cover.png'} 
+                      alt={product.title} 
+                      className="ebook-cover-img" 
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (!target.src.endsWith('/dessert_cookbook_cover.png')) {
+                          target.src = '/dessert_cookbook_cover.png';
+                        }
+                      }}
+                    />
                     <div className="ebook-spine"></div>
                     <div className="mockup-badge">
                       NEW
@@ -378,7 +388,17 @@ export const DessertSalesPage: React.FC<DessertSalesPageProps> = ({ onToast }) =
                   style={{ width: '320px', height: '420px', cursor: 'pointer', boxShadow: 'var(--shadow-xl)', display: 'block', textDecoration: 'none' }} 
                   title="Click to view purchase details"
                 >
-                  <img src={product.coverImage || '/dessert_cookbook_cover.png'} alt={product.title} className="ebook-cover-img" />
+                  <img 
+                    src={product.coverImage || '/dessert_cookbook_cover.png'} 
+                    alt={product.title} 
+                    className="ebook-cover-img" 
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.src.endsWith('/dessert_cookbook_cover.png')) {
+                        target.src = '/dessert_cookbook_cover.png';
+                      }
+                    }}
+                  />
                   <div className="ebook-spine"></div>
                   <div className="mockup-badge">
                     NEW

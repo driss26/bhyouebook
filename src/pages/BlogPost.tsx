@@ -17,94 +17,105 @@ export const BlogPost: React.FC<BlogPostProps> = ({ onToast }) => {
 
   useEffect(() => {
     if (!slug) return;
-    db.getPosts().then((allPosts) => {
-      const foundPost = allPosts.find((p) => p.slug === slug && p.status === 'published');
-      
-      if (foundPost) {
-        setPost(foundPost);
-        // Set recent/related posts (excluding current post)
-        setRecentPosts(
-          allPosts.filter((p) => p.id !== foundPost.id && p.status === 'published').slice(0, 3)
-        );
-        // Track page view (which triggers analytics & Meta Pixel view automatically)
-        firePageView(`/blog/${slug}`);
 
-        // Update HTML head metadata dynamically
-        document.title = foundPost.seoTitle || `${foundPost.title} | BHYou`;
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) {
-          metaDesc.setAttribute('content', foundPost.metaDescription || foundPost.excerpt);
-        }
+    const loadPost = () => {
+      db.getPosts().then((allPosts) => {
+        const foundPost = allPosts.find((p) => p.slug === slug && p.status === 'published');
+        
+        if (foundPost) {
+          setPost(foundPost);
+          // Set recent/related posts (excluding current post)
+          setRecentPosts(
+            allPosts.filter((p) => p.id !== foundPost.id && p.status === 'published').slice(0, 3)
+          );
+          // Track page view (which triggers analytics & Meta Pixel view automatically)
+          firePageView(`/blog/${slug}`);
 
-        // Inject FAQ Schema and Article Schema dynamically
-        const scriptId = 'blog-post-ld-json';
-        let scriptEl = document.getElementById(scriptId) as HTMLScriptElement | null;
-        if (!scriptEl) {
-          scriptEl = document.createElement('script');
-          scriptEl.id = scriptId;
-          scriptEl.type = 'application/ld+json';
-          document.head.appendChild(scriptEl);
-        }
-        
-        const faqJson = foundPost.faqSchema && foundPost.faqSchema.length > 0 ? {
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          'mainEntity': foundPost.faqSchema.map(faq => ({
-            '@type': 'Question',
-            'name': faq.question,
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': faq.answer
-            }
-          }))
-        } : null;
-        
-        const articleJson = {
-          '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          'headline': foundPost.title,
-          'image': [
-            foundPost.featuredImage.startsWith('http') 
-              ? foundPost.featuredImage 
-              : window.location.origin + foundPost.featuredImage
-          ],
-          'datePublished': foundPost.createdAt,
-          'dateModified': foundPost.createdAt,
-          'author': [{
-            '@type': 'Person',
-            'name': foundPost.author,
-            'jobTitle': 'Fitness and Nutrition Coach'
-          }],
-          'publisher': {
-            '@type': 'Organization',
-            'name': 'BHYou',
-            'logo': {
-              '@type': 'ImageObject',
-              'url': window.location.origin + '/favicon.png'
-            }
-          },
-          'description': foundPost.metaDescription || foundPost.excerpt,
-          'mainEntityOfPage': {
-            '@type': 'WebPage',
-            '@id': window.location.origin + '/#/blog/' + foundPost.slug
+          // Update HTML head metadata dynamically
+          document.title = foundPost.seoTitle || `${foundPost.title} | BHYou`;
+          const metaDesc = document.querySelector('meta[name="description"]');
+          if (metaDesc) {
+            metaDesc.setAttribute('content', foundPost.metaDescription || foundPost.excerpt);
           }
-        };
 
-        const schemas: object[] = [articleJson];
-        if (faqJson) {
-          schemas.push(faqJson);
+          // Inject FAQ Schema and Article Schema dynamically
+          const scriptId = 'blog-post-ld-json';
+          let scriptEl = document.getElementById(scriptId) as HTMLScriptElement | null;
+          if (!scriptEl) {
+            scriptEl = document.createElement('script');
+            scriptEl.id = scriptId;
+            scriptEl.type = 'application/ld+json';
+            document.head.appendChild(scriptEl);
+          }
+          
+          const faqJson = foundPost.faqSchema && foundPost.faqSchema.length > 0 ? {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': foundPost.faqSchema.map(faq => ({
+              '@type': 'Question',
+              'name': faq.question,
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': faq.answer
+              }
+            }))
+          } : null;
+          
+          const articleJson = {
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            'headline': foundPost.title,
+            'image': [
+              foundPost.featuredImage.startsWith('http') 
+                ? foundPost.featuredImage 
+                : window.location.origin + foundPost.featuredImage
+            ],
+            'datePublished': foundPost.createdAt,
+            'dateModified': foundPost.createdAt,
+            'author': [{
+              '@type': 'Person',
+              'name': foundPost.author,
+              'jobTitle': 'Fitness and Nutrition Coach'
+            }],
+            'publisher': {
+              '@type': 'Organization',
+              'name': 'BHYou',
+              'logo': {
+                '@type': 'ImageObject',
+                'url': window.location.origin + '/favicon.png'
+              }
+            },
+            'description': foundPost.metaDescription || foundPost.excerpt,
+            'mainEntityOfPage': {
+              '@type': 'WebPage',
+              '@id': window.location.origin + '/#/blog/' + foundPost.slug
+            }
+          };
+
+          const schemas: object[] = [articleJson];
+          if (faqJson) {
+            schemas.push(faqJson);
+          }
+          
+          scriptEl.textContent = JSON.stringify(schemas);
+        } else {
+          // Post not found
+          setPost(null);
         }
-        
-        scriptEl.textContent = JSON.stringify(schemas);
-      } else {
-        // Post not found
+      }).catch(() => {
         setPost(null);
-      }
-    }).catch(() => {
-      setPost(null);
-    });
+      });
+    };
+
+    loadPost();
+
+    const handleUpdate = () => {
+      loadPost();
+    };
+    window.addEventListener('posts_updated', handleUpdate);
 
     return () => {
+      window.removeEventListener('posts_updated', handleUpdate);
       // Reset title to default when leaving
       document.title = '50 High-Protein Recipes Under 400 Calories';
       const metaDesc = document.querySelector('meta[name="description"]');

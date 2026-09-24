@@ -7,6 +7,7 @@ import {
 import { firePageView, db, PRODUCTS, DEFAULT_HERO_SLIDES } from '../db';
 import { supabase } from '../supabaseClient';
 import type { BlogPost, PageSeo, Lead, ContactMessage, TrackingSettings, AnnouncementSettings, MediaItem, EbookProduct, HeroSlideItem } from '../db';
+import { RichTextEditor } from '../components/RichTextEditor';
 
 const hasSupabase = !!import.meta.env.VITE_SUPABASE_URL && !!import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -419,7 +420,8 @@ ${pages.map(p => `  <url>
     if (!editingPost) return;
 
     await db.savePost(editingPost);
-    onToast('Blog post saved successfully!', 'success');
+    window.dispatchEvent(new CustomEvent('posts_updated', { detail: editingPost }));
+    onToast('Blog post saved successfully! Changes are live in database.', 'success');
     setEditingPost(null);
     setIsCreatingPost(false);
     reloadData();
@@ -2044,13 +2046,18 @@ ON CONFLICT ("id") DO UPDATE SET
                   </div>
 
                   <div className="admin-form-group">
-                    <label>Main Content (HTML Support)</label>
-                    <textarea 
-                      required 
-                      className="admin-form-textarea"
-                      style={{ minHeight: '250px', fontFamily: 'monospace' }}
+                    <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                      <span style={{ fontWeight: 600 }}>Main Content (Word-Style Rich Text Editor)</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted-dark)', fontWeight: 400 }}>
+                        Insert images, customize typography, & embed cookbook cards
+                      </span>
+                    </label>
+                    <RichTextEditor
                       value={editingPost.content}
-                      onChange={(e) => setEditingPost({ ...editingPost, content: e.target.value })}
+                      onChange={(html) => setEditingPost({ ...editingPost, content: html })}
+                      onUploadImage={uploadToCloudinary}
+                      onToast={onToast}
+                      minHeight="460px"
                     />
                   </div>
 
